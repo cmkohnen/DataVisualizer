@@ -10,7 +10,7 @@ import java.util.List;
  * @author "Christoph Kohnen", "Hovercraft Full of Eels", "Rodrigo Azevedo"
  *
  * The Base of this Component is an improved version of Hovercraft Full of Eels (https://stackoverflow.com/users/522444/hovercraft-full-of-eels)
- * answer on StackOverflow: https://stackoverflow.com/a/8693635/753012.
+ * answer on StackOverflow: https://stackoverflow.com/a/8693635/753012 by Rodrigo Azevedo. Huge credits to them for figuring out the maths behind this.
  * However, this is heavily modified to include e.g. multiple rows, mathematical functions two y-axes, etc.
  */
 public class Graph extends JPanel {
