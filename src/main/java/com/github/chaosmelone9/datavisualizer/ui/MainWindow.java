@@ -8,9 +8,11 @@ import javax.swing.*;
 public class MainWindow extends JFrame {
 
     WindowContent windowContent;
+    Main instance;
 
     public MainWindow(Main instance) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         super();
+        this.instance = instance;
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         setTitle("DataVisualizer");
         setLocationRelativeTo(null);
@@ -24,5 +26,9 @@ public class MainWindow extends JFrame {
 
     public WindowContent getWindowContent() {
         return windowContent;
+    }
+
+    public Main getInstance() {
+        return instance;
     }
 }
