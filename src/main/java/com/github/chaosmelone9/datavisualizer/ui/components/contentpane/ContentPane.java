@@ -1,7 +1,8 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane;
 
+import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.Graph.Graph;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class ContentPane extends JTabbedPane{
     public ContentPane() {
