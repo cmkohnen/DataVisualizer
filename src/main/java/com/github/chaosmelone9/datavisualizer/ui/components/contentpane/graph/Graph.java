@@ -1,4 +1,4 @@
-package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.Graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
 
 import javax.swing.*;
 import java.awt.*;
