@@ -15,11 +15,11 @@ public class WindowContent extends JRootPane {
     JSplitPane splitPane;
     int dividerLocation = 200;
 
-    public WindowContent(MainWindow window) {
-        this.window = window;
+    public WindowContent(MainWindow instance) {
+        this.window = instance;
         setJMenuBar(new MenuBar(window));
         this.optionPane = new OptionPane();
-        this.contentPane = new ContentPane();
+        this.contentPane = new ContentPane(instance);
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, optionPane, contentPane);
         splitPane.setDividerLocation(dividerLocation);
         setContentPane(splitPane);
