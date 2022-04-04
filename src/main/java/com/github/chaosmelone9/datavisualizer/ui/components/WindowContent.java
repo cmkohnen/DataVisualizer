@@ -1,6 +1,6 @@
 package com.github.chaosmelone9.datavisualizer.ui.components;
 
-import com.github.chaosmelone9.datavisualizer.ui.MainWindow;
+import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.ContentPane;
 import com.github.chaosmelone9.datavisualizer.ui.components.menubar.MenuBar;
 import com.github.chaosmelone9.datavisualizer.ui.components.optionpane.OptionPane;
@@ -19,7 +19,7 @@ public class WindowContent extends JRootPane {
         this.window = instance;
         setJMenuBar(new MenuBar(window));
         this.optionPane = new OptionPane();
-        this.contentPane = new ContentPane(instance);
+        this.contentPane = new ContentPane();
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, optionPane, contentPane);
         splitPane.setDividerLocation(dividerLocation);
         setContentPane(splitPane);
@@ -31,6 +31,7 @@ public class WindowContent extends JRootPane {
         } else {
             splitPane.setDividerLocation(dividerLocation);
         }
+        splitPane.setEnabled(enabled);
         optionPane.setVisible(enabled);
     }
 }

@@ -2,7 +2,9 @@ package com.github.chaosmelone9.datavisualizer;
 
 import com.github.chaosmelone9.datavisualizer.config.Config;
 import com.github.chaosmelone9.datavisualizer.resources.ResourceFetcher;
-import com.github.chaosmelone9.datavisualizer.ui.MainWindow;
+import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
+
+import javax.swing.*;
 
 public class Main {
     Config config;

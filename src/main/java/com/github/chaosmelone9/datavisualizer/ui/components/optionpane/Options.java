@@ -6,7 +6,15 @@ import java.awt.*;
 public class Options extends JPanel {
     public Options() {
         super();
-        add(new JLabel("Example Text"));
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        add(new JLabel("Example Text"), constraints);
         setBackground(new Color(33, 62, 176));
+        for(int i = 0; i < 100; i++) {
+            constraints.gridy = i +1;
+            add(new JButton("Click me"), constraints);
+        }
     }
 }

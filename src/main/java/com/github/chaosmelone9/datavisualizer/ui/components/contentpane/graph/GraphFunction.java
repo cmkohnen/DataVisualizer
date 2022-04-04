@@ -8,6 +8,6 @@ public class GraphFunction {
     public Color colour = new Color(1,1,1);
 
     public double function(double x) {
-        return x * x * x;
+        return 1.5 * x + 1;
     }
 }

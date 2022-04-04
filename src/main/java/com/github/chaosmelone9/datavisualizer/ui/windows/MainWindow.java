@@ -1,4 +1,4 @@
-package com.github.chaosmelone9.datavisualizer.ui;
+package com.github.chaosmelone9.datavisualizer.ui.windows;
 
 import com.github.chaosmelone9.datavisualizer.Main;
 import com.github.chaosmelone9.datavisualizer.ui.components.WindowContent;
