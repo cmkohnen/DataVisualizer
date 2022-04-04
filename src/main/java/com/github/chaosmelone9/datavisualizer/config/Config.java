@@ -16,8 +16,4 @@ public class Config {
         //TODO make config actually load
         return new Config();
     }
-
-    public GraphConfig getGraphConfig() {
-        return new GraphConfig();
-    }
 }
