@@ -9,15 +9,13 @@ import javax.swing.*;
 
 public class WindowContent extends JRootPane {
 
-    MainWindow window;
-    OptionPane optionPane;
-    ContentPane contentPane;
-    JSplitPane splitPane;
-    int dividerLocation = 200;
+    private final OptionPane optionPane;
+    private final ContentPane contentPane;
+    private final JSplitPane splitPane;
+    private int dividerLocation = 200;
 
     public WindowContent(MainWindow instance) {
-        this.window = instance;
-        setJMenuBar(new MenuBar(window));
+        setJMenuBar(new MenuBar(instance));
         this.optionPane = new OptionPane();
         this.contentPane = new ContentPane();
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, optionPane, contentPane);
@@ -33,5 +31,13 @@ public class WindowContent extends JRootPane {
         }
         splitPane.setEnabled(enabled);
         optionPane.setVisible(enabled);
+    }
+
+    public OptionPane getOptionPane() {
+        return optionPane;
+    }
+
+    public ContentPane getContentPane() {
+        return contentPane;
     }
 }

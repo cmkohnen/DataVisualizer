@@ -60,6 +60,8 @@ public class Graph extends JPanel {
     private double maxYA;
     private double maxYB;
 
+    private boolean secondYAxis = false;
+
     private int mouseX;
     private int mouseY;
 
@@ -75,6 +77,7 @@ public class Graph extends JPanel {
     public Graph() {
         super();
 
+        //TODO load from config
         this.title = null;
 
         this.padding = 25;
@@ -147,7 +150,7 @@ public class Graph extends JPanel {
             this.startY = padding;
             this.stopX = getWidth() - padding - labelPadding;
             this.stopY = getHeight() - padding - labelPadding;
-            if(secondYAxis()) {
+            if(secondYAxis) {
                 stopX = stopX - labelPadding;
             }
             this.xScale = ((double) stopX - padding) / (maxX - minX);
@@ -192,7 +195,7 @@ public class Graph extends JPanel {
                             int labelWidth = metrics.stringWidth(yALabel);
                             g2.drawString(yALabel, startX - labelWidth - 5, y + (metrics.getHeight() / 2) - 3);
                         }
-                        if(secondYAxis() && drawYBLabels) {
+                        if(secondYAxis && drawYBLabels) {
                             String yBLabel = ((int) ((minYB + (maxYB - minYB) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
                             g2.drawString(yBLabel, x0B + 5, y + (metrics.getHeight() / 2) - 3);
                         }
@@ -202,7 +205,7 @@ public class Graph extends JPanel {
                     if(drawYAHatchMarks) {
                         g2.drawLine(startX, y, x1A, y);
                     }
-                    if(secondYAxis() && drawYBHatchMarks) {
+                    if(secondYAxis && drawYBHatchMarks) {
                         g2.drawLine(x0B, y, x1B, y);
                     }
                 }
@@ -231,7 +234,7 @@ public class Graph extends JPanel {
             // create x and y axes
             g2.setColor(axisColour);
             g2.drawLine(startX, startY, startX, stopY);
-            if(secondYAxis()) {
+            if(secondYAxis) {
                 g2.drawLine(stopX + labelPadding, startY, stopX + labelPadding, stopY);
             }
             g2.drawLine(startX, stopY, stopX + labelPadding, stopY);
@@ -243,7 +246,7 @@ public class Graph extends JPanel {
             if(minYA < 0 && maxYA > 0) {
                 g2.drawLine(startX, zeroYA, stopX + padding, zeroYA);
             }
-            if(secondYAxis() && (minYB < 0 && maxYB > 0)) {
+            if(secondYAxis && (minYB < 0 && maxYB > 0)) {
                 g2.drawLine(startX, zeroYB, stopX + padding, zeroYB);
             }
 
@@ -284,7 +287,7 @@ public class Graph extends JPanel {
                             .append(Math.round(getXAt(mouseX) * 100.0) / 100.0)
                             .append(", ")
                             .append(Math.round(getYAAt(mouseY) * 100.0) / 100.0);
-                    if(secondYAxis()) {
+                    if(secondYAxis) {
                         label.append(", ").append(Math.round(getYBAt(mouseY) * 100.0) / 100.0);
                     }
                     g2.setColor(backgroundColour);
@@ -302,26 +305,26 @@ public class Graph extends JPanel {
         }
     }
 
-    private boolean secondYAxis() {
-        if(rows.isEmpty() & graphFunctions.isEmpty()) {
-            return false;
-        } else {
-            boolean rowOnRight = false;
-            for (Row row : rows) {
-                if (row.allocateToRightAxis) {
-                    rowOnRight = true;
-                    break;
-                }
+    public boolean hasSecondYAxis() {
+        return this.secondYAxis;
+    }
+
+    private void updateSecondYAxis() {
+        boolean rowOnRight = false;
+        for (Row row : rows) {
+            if (row.allocateToRightAxis) {
+                rowOnRight = true;
+                break;
             }
-            boolean functionOnRight = false;
-            for (GraphFunction graphFunction : graphFunctions) {
-                if (graphFunction.allocateToRightAxis) {
-                    functionOnRight = true;
-                    break;
-                }
-            }
-            return rowOnRight || functionOnRight;
         }
+        boolean functionOnRight = false;
+        for (GraphFunction graphFunction : graphFunctions) {
+            if (graphFunction.allocateToRightAxis) {
+                functionOnRight = true;
+                break;
+            }
+        }
+        this.secondYAxis = rowOnRight || functionOnRight;
     }
 
     public boolean isInGraphRange(int x, int y) {
@@ -360,6 +363,7 @@ public class Graph extends JPanel {
 
     public void addFunction(GraphFunction graphFunction) {
         graphFunctions.add(graphFunction);
+        updateSecondYAxis();
     }
 
     public int getMouseX() {
@@ -372,6 +376,7 @@ public class Graph extends JPanel {
 
     public void setTitle(String title) {
         this.title = title;
+        repaint();
     }
 
     public String getTitle() {
@@ -380,6 +385,7 @@ public class Graph extends JPanel {
 
     public void setPadding(int padding) {
         this.padding = padding;
+        repaint();
     }
 
     public int getPadding() {
@@ -388,6 +394,7 @@ public class Graph extends JPanel {
 
     public void setLabelPadding(int labelPadding) {
         this.labelPadding = labelPadding;
+        repaint();
     }
 
     public int getLabelPadding() {
@@ -396,6 +403,7 @@ public class Graph extends JPanel {
 
     public void setTitlePadding(int titlePadding) {
         this.titlePadding = titlePadding;
+        repaint();
     }
 
     public int getTitlePadding() {
@@ -404,6 +412,7 @@ public class Graph extends JPanel {
 
     public void setPointWidth(int pointWidth) {
         this.pointWidth = pointWidth;
+        repaint();
     }
 
     public int getPointWidth() {
@@ -412,6 +421,7 @@ public class Graph extends JPanel {
 
     public void setNumberXDivisions(int numberXDivisions) {
         this.numberXDivisions = numberXDivisions;
+        repaint();
     }
 
     public int getNumberXDivisions() {
@@ -420,6 +430,7 @@ public class Graph extends JPanel {
 
     public void setNumberYDivisions(int numberYDivisions) {
         this.numberYDivisions = numberYDivisions;
+        repaint();
     }
 
     public int getNumberYDivisions() {
@@ -428,6 +439,7 @@ public class Graph extends JPanel {
 
     public void setDrawXGrid(boolean drawXGrid) {
         this.drawXGrid = drawXGrid;
+        repaint();
     }
 
     public boolean isDrawXGrid() {
@@ -436,6 +448,7 @@ public class Graph extends JPanel {
 
     public void setDrawYGrid(boolean drawYGrid) {
         this.drawYGrid = drawYGrid;
+        repaint();
     }
 
     public boolean isDrawYGrid() {
@@ -444,6 +457,7 @@ public class Graph extends JPanel {
 
     public void setDrawXHatchMarks(boolean drawXHatchMarks) {
         this.drawXHatchMarks = drawXHatchMarks;
+        repaint();
     }
 
     public boolean isDrawXHatchMarks() {
@@ -452,6 +466,7 @@ public class Graph extends JPanel {
 
     public void setDrawYAHatchMarks(boolean drawYAHatchMarks) {
         this.drawYAHatchMarks = drawYAHatchMarks;
+        repaint();
     }
 
     public boolean isDrawYAHatchMarks() {
@@ -460,6 +475,7 @@ public class Graph extends JPanel {
 
     public void setDrawYBHatchMarks(boolean drawYBHatchMarks) {
         this.drawYBHatchMarks = drawYBHatchMarks;
+        repaint();
     }
 
     public boolean isDrawYBHatchMarks() {
@@ -468,6 +484,7 @@ public class Graph extends JPanel {
 
     public void setDrawXLabels(boolean drawXLabels) {
         this.drawXLabels = drawXLabels;
+        repaint();
     }
 
     public boolean isDrawXLabels() {
@@ -476,6 +493,7 @@ public class Graph extends JPanel {
 
     public void setDrawYALabels(boolean drawYALabels) {
         this.drawYALabels = drawYALabels;
+        repaint();
     }
 
     public boolean isDrawYALabels() {
@@ -484,6 +502,7 @@ public class Graph extends JPanel {
 
     public void setDrawYBLabels(boolean drawYBLabels) {
         this.drawYBLabels = drawYBLabels;
+        repaint();
     }
 
     public boolean isDrawYBLabels() {
@@ -492,6 +511,7 @@ public class Graph extends JPanel {
 
     public void setIndicateMouseX(boolean indicateMouseX) {
         this.indicateMouseX = indicateMouseX;
+        repaint();
     }
 
     public boolean isIndicateMouseX() {
@@ -500,6 +520,7 @@ public class Graph extends JPanel {
 
     public void setIndicateMouseY(boolean indicateMouseY) {
         this.indicateMouseY = indicateMouseY;
+        repaint();
     }
 
     public boolean isIndicateMouseY() {
@@ -508,6 +529,7 @@ public class Graph extends JPanel {
 
     public void setLabelMouseXY(boolean labelMouseXY) {
         this.labelMouseXY = labelMouseXY;
+        repaint();
     }
 
     public boolean isLabelMouseXY() {
@@ -516,6 +538,7 @@ public class Graph extends JPanel {
 
     public void setBackgroundColour(Color backgroundColour) {
         this.backgroundColour = backgroundColour;
+        repaint();
     }
 
     public Color getBackgroundColour() {
@@ -524,6 +547,7 @@ public class Graph extends JPanel {
 
     public void setGridColour(Color gridColour) {
         this.gridColour = gridColour;
+        repaint();
     }
 
     public Color getGridColour() {
@@ -532,6 +556,7 @@ public class Graph extends JPanel {
 
     public void setLabelColour(Color labelColour) {
         this.labelColour = labelColour;
+        repaint();
     }
 
     public Color getLabelColour() {
@@ -540,6 +565,7 @@ public class Graph extends JPanel {
 
     public void setTitleColour(Color titleColour) {
         this.titleColour = titleColour;
+        repaint();
     }
 
     public Color getTitleColour() {
@@ -548,6 +574,7 @@ public class Graph extends JPanel {
 
     public void setAxisColour(Color axisColour) {
         this.axisColour = axisColour;
+        repaint();
     }
 
     public Color getAxisColour() {
@@ -556,6 +583,7 @@ public class Graph extends JPanel {
 
     public void setHatchMarkColour(Color hatchMarkColour) {
         this.hatchMarkColour = hatchMarkColour;
+        repaint();
     }
 
     public Color getHatchMarkColour() {
@@ -564,6 +592,7 @@ public class Graph extends JPanel {
 
     public void setIndicatorColour(Color indicatorColour) {
         this.indicatorColour = indicatorColour;
+        repaint();
     }
 
     public Color getIndicatorColour() {
@@ -572,6 +601,7 @@ public class Graph extends JPanel {
 
     public void setGraphStroke(Stroke graphStroke) {
         this.graphStroke = graphStroke;
+        repaint();
     }
 
     public Stroke getGraphStroke() {
@@ -580,6 +610,7 @@ public class Graph extends JPanel {
 
     public void setUiStroke(Stroke uiStroke) {
         this.uiStroke = uiStroke;
+        repaint();
     }
 
     public Stroke getUiStroke() {
@@ -588,6 +619,7 @@ public class Graph extends JPanel {
 
     public void setMinX(double minX) {
         this.minX = minX;
+        repaint();
     }
 
     public double getMinX() {
@@ -596,6 +628,7 @@ public class Graph extends JPanel {
 
     public void setMaxX(double maxX) {
         this.maxX = maxX;
+        repaint();
     }
 
     public double getMaxX() {
@@ -604,6 +637,7 @@ public class Graph extends JPanel {
 
     public void setMinYA(double minYA) {
         this.minYA = minYA;
+        repaint();
     }
 
     public double getMinYA() {
@@ -612,6 +646,7 @@ public class Graph extends JPanel {
 
     public void setMinYB(double minYB) {
         this.minYB = minYB;
+        repaint();
     }
 
     public double getMinYB() {
@@ -620,6 +655,7 @@ public class Graph extends JPanel {
 
     public void setMaxYA(double maxYA) {
         this.maxYA = maxYA;
+        repaint();
     }
 
     public double getMaxYA() {
@@ -628,6 +664,7 @@ public class Graph extends JPanel {
 
     public void setMaxYB(double maxYB) {
         this.maxYB = maxYB;
+        repaint();
     }
 
     public double getMaxYB() {
