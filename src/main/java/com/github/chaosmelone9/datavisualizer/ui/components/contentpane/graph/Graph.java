@@ -85,8 +85,8 @@ public class Graph extends JPanel {
         //TODO load from config
         this.title = null;
 
-        this.padding = 25;
-        this.labelPadding = 25;
+        this.padding = 20;
+        this.labelPadding = 100;
         this.titlePadding = 30;
 
         this.pointWidth = 4;
@@ -155,14 +155,17 @@ public class Graph extends JPanel {
             //figuring out dimensions of the graph
             this.startX = padding + labelPadding;
             this.startY = padding;
-            this.stopX = getWidth() - padding - labelPadding;
+            if(hasTitle) {
+                this.startY = startY + titlePadding;
+            }
+            this.stopX = getWidth() - padding;
             this.stopY = getHeight() - padding - labelPadding;
             if(hasSecondYAxis) {
-                stopX = stopX - labelPadding;
+                this.stopX = stopX - labelPadding;
             }
-            this.xScale = ((double) stopX - padding) / (maxX - minX);
-            this.yAScale = ((double) stopY - padding) / (maxYA - minYA);
-            this.yBScale = ((double) stopY - padding) / (maxYB - minYB);
+            this.xScale = (stopX - startX) / (maxX - minX);
+            this.yAScale = (stopY - startY) / (maxYA - minYA);
+            this.yBScale = (stopY - startY) / (maxYB - minYB);
 
             //figure out where 0s are
             int zeroX = (int) Math.abs(minX * xScale) + startX;
@@ -171,18 +174,14 @@ public class Graph extends JPanel {
 
             //draw Title
             if(hasTitle) {
-                startY = startY + titlePadding;
                 g2.setColor(titleColour);
                 g2.drawString(title,(getWidth() / 2) - (metrics.stringWidth(title) / 2), padding);
             }
 
             //paint background
             g2.setColor(backgroundColour);
-            int backgroundWidth = stopX - padding;
-            int backgroundHeight = stopY - padding;
-            if(hasTitle) {
-                backgroundHeight = backgroundHeight - titlePadding;
-            }
+            int backgroundWidth = stopX - startX;
+            int backgroundHeight = stopY - startY;
             g2.fillRect(startX, startY, backgroundWidth, backgroundHeight);
             if(hasBackgroundImage) {
                 g2.drawImage(backgroundImage, startX, startY, backgroundWidth, backgroundHeight, this);
@@ -190,14 +189,11 @@ public class Graph extends JPanel {
 
             /// create hatch marks and grid lines for y-axis.
             for (int i = 0; i < numberYDivisions + 1; i++) {
-                int x1A = startX + pointWidth;
-                int x0B = stopX + labelPadding;
-                int x1B = x0B - pointWidth;
                 int y = stopY - ((i * (stopY - startY)) / numberYDivisions);
                 if(i % 10 == 0) {
                     if(drawYGrid) {
                         g2.setColor(gridColour);
-                        g2.drawLine(startX, y, stopX + labelPadding, y);
+                        g2.drawLine(startX, y, stopX, y);
                     }
                     if(drawYALabels || drawYBLabels) {
                         g2.setColor(labelColour);
@@ -208,23 +204,23 @@ public class Graph extends JPanel {
                         }
                         if(hasSecondYAxis && drawYBLabels) {
                             String yBLabel = ((int) ((minYB + (maxYB - minYB) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
-                            g2.drawString(yBLabel, x0B + 5, y + (metrics.getHeight() / 2) - 3);
+                            g2.drawString(yBLabel, stopX + 5, y + (metrics.getHeight() / 2) - 3);
                         }
                     }
                 } else if(drawYAHatchMarks || drawYBHatchMarks) {
                     g2.setColor(hatchMarkColour);
                     if(drawYAHatchMarks) {
-                        g2.drawLine(startX, y, x1A, y);
+                        g2.drawLine(startX, y, startX + pointWidth, y);
                     }
                     if(hasSecondYAxis && drawYBHatchMarks) {
-                        g2.drawLine(x0B, y, x1B, y);
+                        g2.drawLine(stopX, y, stopX - pointWidth, y);
                     }
                 }
             }
 
             // and for x-axis
             for (int i = 0; i < numberXDivisions + 1; i++) {
-                int x = i * (stopX - padding) / numberXDivisions + padding + labelPadding;
+                int x = i * (stopX - startX) / numberXDivisions + startX;
                 if(i % 10 == 0) {
                     if(drawXGrid) {
                         g2.setColor(gridColour);
@@ -246,19 +242,19 @@ public class Graph extends JPanel {
             g2.setColor(axisColour);
             g2.drawLine(startX, startY, startX, stopY);
             if(hasSecondYAxis) {
-                g2.drawLine(stopX + labelPadding, startY, stopX + labelPadding, stopY);
+                g2.drawLine(stopX, startY, stopX, stopY);
             }
-            g2.drawLine(startX, stopY, stopX + labelPadding, stopY);
+            g2.drawLine(startX, stopY, stopX, stopY);
 
             //draw x and y axes at 0
             if(minX < 0 && maxX > 0) {
                 g2.drawLine(zeroX, startY, zeroX, stopY);
             }
             if(minYA < 0 && maxYA > 0) {
-                g2.drawLine(startX, zeroYA, stopX + padding, zeroYA);
+                g2.drawLine(startX, zeroYA, stopX, zeroYA);
             }
             if(hasSecondYAxis && (minYB < 0 && maxYB > 0)) {
-                g2.drawLine(startX, zeroYB, stopX + padding, zeroYB);
+                g2.drawLine(startX, zeroYB, stopX, zeroYB);
             }
 
             //render rows and functions
@@ -266,7 +262,7 @@ public class Graph extends JPanel {
             g2.setStroke(graphStroke);
             for (GraphFunction graphFunction : graphFunctions) {
                 g2.setColor(graphFunction.colour);
-                for(int i = startX + 1; i < stopX + padding; i++) {
+                for(int i = startX + 1; i < stopX; i++) {
                     int y0;
                     int y1;
                     if(!graphFunction.allocateToRightAxis) {
@@ -288,7 +284,7 @@ public class Graph extends JPanel {
                 g2.setStroke(uiStroke);
                 g2.setColor(indicatorColour);
                 if(indicateMouseX) {
-                    g2.drawLine(startX, mouseY, stopX + padding, mouseY);
+                    g2.drawLine(startX, mouseY, stopX, mouseY);
                 }
                 if(indicateMouseY) {
                     g2.drawLine(mouseX, startY, mouseX, stopY);
@@ -343,7 +339,7 @@ public class Graph extends JPanel {
     }
 
     public boolean isXInGraphRange(int x) {
-        return x >= startX && x <= stopX + padding;
+        return x >= startX && x <= stopX;
     }
 
     public boolean isYInGraphRange(int y) {
@@ -358,13 +354,13 @@ public class Graph extends JPanel {
 
     public double getYAAt(int y) throws OutOfGraphBoundsException {
         if (isYInGraphRange(y)) {
-            return (y * 1.0 - stopY) / yAScale - minYA;
+            return ((y * 1.0 - stopY) / yAScale - minYA) * -1;
         } else throw new OutOfGraphBoundsException("yA not in Range");
     }
 
     public double getYBAt(int y) throws OutOfGraphBoundsException {
         if (isYInGraphRange(y)) {
-            return (y * 1.0 - stopY) / yBScale - minYB;
+            return ((y * 1.0 - stopY) / yBScale - minYB) * -1;
         } else throw new OutOfGraphBoundsException("yB not in Range");
     }
 
