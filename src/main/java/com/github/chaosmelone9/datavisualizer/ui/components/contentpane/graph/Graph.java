@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,8 @@ public class Graph extends JPanel {
     private Color hatchMarkColour;
     private Color indicatorColour;
 
+    private BufferedImage backgroundImage;
+
     private Stroke graphStroke;
     private Stroke uiStroke;
 
@@ -60,7 +63,9 @@ public class Graph extends JPanel {
     private double maxYA;
     private double maxYB;
 
-    private boolean secondYAxis = false;
+    private boolean hasSecondYAxis = false;
+    private boolean hasTitle = false;
+    private boolean hasBackgroundImage = false;
 
     private int mouseX;
     private int mouseY;
@@ -108,6 +113,8 @@ public class Graph extends JPanel {
         this.hatchMarkColour = new Color(19, 145, 21);
         this.indicatorColour = new Color(22,54,122);
 
+        this.backgroundImage = null;
+
         this.graphStroke = new BasicStroke(2f);
         this.uiStroke = new BasicStroke(1f);
 
@@ -150,7 +157,7 @@ public class Graph extends JPanel {
             this.startY = padding;
             this.stopX = getWidth() - padding - labelPadding;
             this.stopY = getHeight() - padding - labelPadding;
-            if(secondYAxis) {
+            if(hasSecondYAxis) {
                 stopX = stopX - labelPadding;
             }
             this.xScale = ((double) stopX - padding) / (maxX - minX);
@@ -163,7 +170,7 @@ public class Graph extends JPanel {
             int zeroYB = (int) (stopY - Math.abs(minYB * yBScale));
 
             //draw Title
-            if(drawTitle()) {
+            if(hasTitle) {
                 startY = startY + titlePadding;
                 g2.setColor(titleColour);
                 g2.drawString(title,(getWidth() / 2) - (metrics.stringWidth(title) / 2), padding);
@@ -171,10 +178,14 @@ public class Graph extends JPanel {
 
             //paint background
             g2.setColor(backgroundColour);
-            if(drawTitle()) {
-                g2.fillRect(startX, startY, stopX - padding, stopY  - padding - titlePadding);
-            } else {
-                g2.fillRect(startX, startY, stopX - padding, stopY - padding);
+            int backgroundWidth = stopX - padding;
+            int backgroundHeight = stopY - padding;
+            if(hasTitle) {
+                backgroundHeight = backgroundHeight - titlePadding;
+            }
+            g2.fillRect(startX, startY, backgroundWidth, backgroundHeight);
+            if(hasBackgroundImage) {
+                g2.drawImage(backgroundImage, startX, startY, backgroundWidth, backgroundHeight, this);
             }
 
             /// create hatch marks and grid lines for y-axis.
@@ -195,7 +206,7 @@ public class Graph extends JPanel {
                             int labelWidth = metrics.stringWidth(yALabel);
                             g2.drawString(yALabel, startX - labelWidth - 5, y + (metrics.getHeight() / 2) - 3);
                         }
-                        if(secondYAxis && drawYBLabels) {
+                        if(hasSecondYAxis && drawYBLabels) {
                             String yBLabel = ((int) ((minYB + (maxYB - minYB) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
                             g2.drawString(yBLabel, x0B + 5, y + (metrics.getHeight() / 2) - 3);
                         }
@@ -205,7 +216,7 @@ public class Graph extends JPanel {
                     if(drawYAHatchMarks) {
                         g2.drawLine(startX, y, x1A, y);
                     }
-                    if(secondYAxis && drawYBHatchMarks) {
+                    if(hasSecondYAxis && drawYBHatchMarks) {
                         g2.drawLine(x0B, y, x1B, y);
                     }
                 }
@@ -234,7 +245,7 @@ public class Graph extends JPanel {
             // create x and y axes
             g2.setColor(axisColour);
             g2.drawLine(startX, startY, startX, stopY);
-            if(secondYAxis) {
+            if(hasSecondYAxis) {
                 g2.drawLine(stopX + labelPadding, startY, stopX + labelPadding, stopY);
             }
             g2.drawLine(startX, stopY, stopX + labelPadding, stopY);
@@ -246,7 +257,7 @@ public class Graph extends JPanel {
             if(minYA < 0 && maxYA > 0) {
                 g2.drawLine(startX, zeroYA, stopX + padding, zeroYA);
             }
-            if(secondYAxis && (minYB < 0 && maxYB > 0)) {
+            if(hasSecondYAxis && (minYB < 0 && maxYB > 0)) {
                 g2.drawLine(startX, zeroYB, stopX + padding, zeroYB);
             }
 
@@ -287,7 +298,7 @@ public class Graph extends JPanel {
                             .append(Math.round(getXAt(mouseX) * 100.0) / 100.0)
                             .append(", ")
                             .append(Math.round(getYAAt(mouseY) * 100.0) / 100.0);
-                    if(secondYAxis) {
+                    if(hasSecondYAxis) {
                         label.append(", ").append(Math.round(getYBAt(mouseY) * 100.0) / 100.0);
                     }
                     g2.setColor(backgroundColour);
@@ -306,7 +317,7 @@ public class Graph extends JPanel {
     }
 
     public boolean hasSecondYAxis() {
-        return this.secondYAxis;
+        return this.hasSecondYAxis;
     }
 
     private void updateSecondYAxis() {
@@ -324,7 +335,7 @@ public class Graph extends JPanel {
                 break;
             }
         }
-        this.secondYAxis = rowOnRight || functionOnRight;
+        this.hasSecondYAxis = rowOnRight || functionOnRight;
     }
 
     public boolean isInGraphRange(int x, int y) {
@@ -337,10 +348,6 @@ public class Graph extends JPanel {
 
     public boolean isYInGraphRange(int y) {
         return y >= startY && y <= stopY;
-    }
-
-    private boolean drawTitle() {
-        return title != null;
     }
 
     public double getXAt(int x) throws OutOfGraphBoundsException {
@@ -376,11 +383,22 @@ public class Graph extends JPanel {
 
     public void setTitle(String title) {
         this.title = title;
+        this.hasTitle = title != null;
         repaint();
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public void setBackgroundImage(BufferedImage image) {
+        this.backgroundImage = image;
+        this.hasBackgroundImage = image != null;
+        repaint();
+    }
+
+    public BufferedImage getBackgroundImage() {
+        return backgroundImage;
     }
 
     public void setPadding(int padding) {

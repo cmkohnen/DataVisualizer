@@ -6,6 +6,7 @@ import com.github.chaosmelone9.datavisualizer.ui.components.menubar.MenuBar;
 import com.github.chaosmelone9.datavisualizer.ui.components.optionpane.OptionPane;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class WindowContent extends JRootPane {
 
@@ -14,10 +15,10 @@ public class WindowContent extends JRootPane {
     private final JSplitPane splitPane;
     private int dividerLocation = 200;
 
-    public WindowContent(MainWindow instance) {
+    public WindowContent(MainWindow instance) throws IOException {
         setJMenuBar(new MenuBar(instance));
         this.optionPane = new OptionPane();
-        this.contentPane = new ContentPane();
+        this.contentPane = new ContentPane(instance);
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, optionPane, contentPane);
         splitPane.setDividerLocation(dividerLocation);
         setContentPane(splitPane);
