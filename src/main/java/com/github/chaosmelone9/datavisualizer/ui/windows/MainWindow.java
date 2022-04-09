@@ -2,6 +2,7 @@ package com.github.chaosmelone9.datavisualizer.ui.windows;
 
 import com.github.chaosmelone9.datavisualizer.Main;
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.ContentPane;
+import com.github.chaosmelone9.datavisualizer.ui.components.menubar.MenuBar;
 import com.github.chaosmelone9.datavisualizer.ui.components.optionpane.OptionPane;
 
 import javax.imageio.ImageIO;
@@ -30,6 +31,7 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(ImageIO.read(instance.getFetcher().fetch("icon.png")));
         setContentPane(splitPane);
+        setJMenuBar(new MenuBar(this));
         setVisible(true);
     }
 
