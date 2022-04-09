@@ -24,6 +24,18 @@ public class GraphCustomizerWindow extends PopupWindow{
         add(new CheckBox("Indicate x position of mouse-pointer", graph.isIndicateMouseX(), true, actionEvent -> graph.setIndicateMouseX(((CheckBox) actionEvent.getSource()).isSelected())));
         add(new CheckBox("Indicate y position of mouse-pointer", graph.isIndicateMouseY(), true, actionEvent -> graph.setIndicateMouseY(((CheckBox) actionEvent.getSource()).isSelected())));
         add(new CheckBox("Label x and y position of mouse-pointer", graph.isLabelMouseXY(), true, actionEvent -> graph.setLabelMouseXY(((CheckBox) actionEvent.getSource()).isSelected())));
+
+        //Color pickers
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        add(new JLabel("Colors"));
+        add(new ColorPicker("Background Color", actionEvent -> graph.setBackgroundColour(JColorChooser.showDialog(this, "Choose Colour", graph.getBackgroundColour()))));
+        add(new ColorPicker("Grid Color", actionEvent -> graph.setGridColour(JColorChooser.showDialog(this, "Choose Colour", graph.getGridColour()))));
+        add(new ColorPicker("Label Color", actionEvent -> graph.setLabelColour(JColorChooser.showDialog(this, "Choose Colour", graph.getLabelColour()))));
+        add(new ColorPicker("Title Color", actionEvent -> graph.setTitleColour(JColorChooser.showDialog(this, "Choose Colour", graph.getTitleColour()))));
+        add(new ColorPicker("Axis Color", actionEvent -> graph.setAxisColour(JColorChooser.showDialog(this, "Choose Colour", graph.getAxisColour()))));
+        add(new ColorPicker("Hatch mark Color", actionEvent -> graph.setHatchMarkColour(JColorChooser.showDialog(this, "Choose Colour", graph.getHatchMarkColour()))));
+        add(new ColorPicker("Indicator Color", actionEvent -> graph.setIndicatorColour(JColorChooser.showDialog(this, "Choose Colour", graph.getIndicatorColour()))));
     }
 
     private static class CheckBox extends JCheckBox {
@@ -31,6 +43,13 @@ public class GraphCustomizerWindow extends PopupWindow{
             super(name);
             setSelected(selected);
             setEnabled(enabled);
+            addActionListener(actionListener);
+        }
+    }
+
+    private static class ColorPicker extends JButton {
+        public ColorPicker(String name, ActionListener actionListener) {
+            super(name);
             addActionListener(actionListener);
         }
     }
