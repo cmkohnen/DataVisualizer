@@ -3,6 +3,7 @@ package com.github.chaosmelone9.datavisualizer.ui.windows;
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph.Graph;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
 public class GraphCustomizerWindow extends PopupWindow{
     Graph graph;
@@ -12,63 +13,25 @@ public class GraphCustomizerWindow extends PopupWindow{
 
         //Checkboxes
         add(new JLabel("Select Components"));
+        add(new CheckBox("Draw x grid", graph.isDrawXGrid(), true, actionEvent -> graph.setDrawXGrid(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Draw y grid", graph.isDrawYGrid(), true, actionEvent -> graph.setDrawYGrid(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Draw x hatch marks", graph.isDrawXHatchMarks(), true, actionEvent -> graph.setDrawXHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Draw hatch marks of left y-axis", graph.isDrawYAHatchMarks(), true, actionEvent -> graph.setDrawYAHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Draw hatch marks of right y-axis", graph.isDrawYBHatchMarks(), graph.hasSecondYAxis(), actionEvent -> graph.setDrawYBHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Draw x labels", graph.isDrawXLabels(), true, actionEvent -> graph.setDrawXLabels(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Draw y labels of left y-axis", graph.isDrawYALabels(), true, actionEvent -> graph.setDrawYALabels(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Draw y labels of right y-axis", graph.isDrawYBLabels(), graph.hasSecondYAxis(), actionEvent -> graph.setDrawYBLabels(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Indicate x position of mouse-pointer", graph.isIndicateMouseX(), true, actionEvent -> graph.setIndicateMouseX(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Indicate y position of mouse-pointer", graph.isIndicateMouseY(), true, actionEvent -> graph.setIndicateMouseY(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox("Label x and y position of mouse-pointer", graph.isLabelMouseXY(), true, actionEvent -> graph.setLabelMouseXY(((CheckBox) actionEvent.getSource()).isSelected())));
+    }
 
-        //TODO this could probably be optimized but I'm too dumb to figure it out
-        JCheckBox drawXGrid = new JCheckBox("Draw x grid");
-        drawXGrid.setSelected(graph.isDrawXGrid());
-        drawXGrid.addActionListener(actionEvent -> graph.setDrawXGrid(drawXGrid.isSelected()));
-        add(drawXGrid);
-
-        JCheckBox drawYGrid = new JCheckBox("Draw y grid");
-        drawYGrid.setSelected(graph.isDrawYGrid());
-        drawYGrid.addActionListener(actionEvent -> graph.setDrawYGrid(drawYGrid.isSelected()));
-        add(drawYGrid);
-
-        JCheckBox drawXHatchMarks = new JCheckBox("Draw x hatch marks");
-        drawXHatchMarks.setSelected(graph.isDrawXHatchMarks());
-        drawXHatchMarks.addActionListener(actionEvent -> graph.setDrawXHatchMarks(drawXHatchMarks.isSelected()));
-        add(drawXHatchMarks);
-
-        JCheckBox drawYAHatchMarks = new JCheckBox("Draw hatch marks of left y-axis");
-        drawYAHatchMarks.setSelected(graph.isDrawYAHatchMarks());
-        drawYAHatchMarks.addActionListener(actionEvent -> graph.setDrawYAHatchMarks(drawYAHatchMarks.isSelected()));
-        add(drawYAHatchMarks);
-
-        JCheckBox drawYBHatchMarks = new JCheckBox("Draw hatch marks of right y-axis");
-        drawYBHatchMarks.setSelected(graph.isDrawYBHatchMarks());
-        drawYBHatchMarks.setEnabled(graph.hasSecondYAxis());
-        drawYBHatchMarks.addActionListener(actionEvent -> graph.setDrawYBHatchMarks(drawYBHatchMarks.isSelected()));
-        add(drawYBHatchMarks);
-
-        JCheckBox drawXLabels = new JCheckBox("Draw x labels");
-        drawXLabels.setSelected(graph.isDrawXLabels());
-        drawXLabels.addActionListener(actionEvent -> graph.setDrawXLabels(drawXLabels.isSelected()));
-        add(drawXLabels);
-
-        JCheckBox drawYALabels = new JCheckBox("Draw y labels of left y-axis");
-        drawYALabels.setSelected(graph.isDrawYALabels());
-        drawYALabels.addActionListener(actionEvent -> graph.setDrawYALabels(drawYALabels.isSelected()));
-        add(drawYALabels);
-
-        JCheckBox drawYBLabels = new JCheckBox("Draw y labels of right y-axis");
-        drawYBLabels.setSelected(graph.isDrawYBLabels());
-        drawYBLabels.setEnabled(graph.hasSecondYAxis());
-        drawYBLabels.addActionListener(actionEvent -> graph.setDrawYBLabels(drawYBLabels.isSelected()));
-        add(drawYBLabels);
-
-        JCheckBox indicateMouseX = new JCheckBox("Indicate x position of mouse-pointer");
-        indicateMouseX.setSelected(graph.isIndicateMouseX());
-        indicateMouseX.addActionListener(actionEvent -> graph.setIndicateMouseX(indicateMouseX.isSelected()));
-        add(indicateMouseX);
-
-        JCheckBox indicateMouseY = new JCheckBox("Indicate y position of mouse-pointer");
-        indicateMouseY.setSelected(graph.isIndicateMouseY());
-        indicateMouseY.addActionListener(actionEvent -> graph.setIndicateMouseY(indicateMouseY.isSelected()));
-        add(indicateMouseY);
-
-        JCheckBox labelMouseXY = new JCheckBox("Label x and y position of mouse-pointer");
-        labelMouseXY.setSelected(graph.isLabelMouseXY());
-        labelMouseXY.addActionListener(actionEvent -> graph.setLabelMouseXY(labelMouseXY.isSelected()));
-        add(labelMouseXY);
+    private static class CheckBox extends JCheckBox {
+        public CheckBox(String name, boolean selected, boolean enabled, ActionListener actionListener) {
+            super(name);
+            setSelected(selected);
+            setEnabled(enabled);
+            addActionListener(actionListener);
+        }
     }
 }
