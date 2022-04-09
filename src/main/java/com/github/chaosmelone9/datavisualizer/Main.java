@@ -2,9 +2,12 @@ package com.github.chaosmelone9.datavisualizer;
 
 import com.github.chaosmelone9.datavisualizer.config.Config;
 import com.github.chaosmelone9.datavisualizer.resources.ResourceFetcher;
+import com.github.chaosmelone9.datavisualizer.ui.windows.ErrorWindow;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.util.Optional;
 
 public class Main {
     Config config;
@@ -24,21 +27,32 @@ public class Main {
 
     private Main(String[] args) {
         this.fetcher = new ResourceFetcher();
+        this.config = Config.init();
         if(args.length > 0) {
-            if(args[0].equals("--about")) {
-                try {
-                    System.out.println(fetcher.fetchTextFromFile("about.txt"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            initCLI(args);
         } else {
-            this.config = Config.init();
             try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                window = new MainWindow(this);
+                initGUI();
             } catch (Exception e) {
-                System.out.println("Error");
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception ignored) {}
+                new ErrorWindow("Something went wrong", Optional.of(e));
+            }
+        }
+    }
+
+    private void initGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        window = new MainWindow(this);
+    }
+
+    private void initCLI(String[] args) {
+        if(args[0].equals("--about")) {
+            try {
+                //TODO implement Logger and forward this
+                System.out.println(fetcher.fetchTextFromFile("about.txt"));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
