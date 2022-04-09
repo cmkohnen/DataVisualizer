@@ -35,6 +35,7 @@ public class Main {
         } else {
             this.config = Config.init();
             try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 window = new MainWindow(this);
             } catch (Exception e) {
                 System.out.println("Error");
