@@ -8,7 +8,7 @@ public class GraphCustomizerWindow extends PopupWindow{
     Graph graph;
     public GraphCustomizerWindow(MainWindow window) {
         super("Customize Graph", window);
-        this.graph = window.getWindowContent().getContentPane().getGraph();
+        this.graph = window.getContentPane().getGraph();
 
         //Checkboxes
         add(new JLabel("Select Components"));

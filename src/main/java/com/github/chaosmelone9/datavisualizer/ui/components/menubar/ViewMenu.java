@@ -11,7 +11,7 @@ public class ViewMenu extends JMenu {
 
         JCheckBoxMenuItem toggleOptionPane = new JCheckBoxMenuItem("Show Options Menu");
         toggleOptionPane.setState(true);
-        toggleOptionPane.addActionListener(actionEvent -> window.getWindowContent().toggleOptionPane(((AbstractButton) actionEvent.getSource()).getModel().isSelected()));
+        toggleOptionPane.addActionListener(actionEvent -> window.toggleOptionPane(toggleOptionPane.isSelected()));
 
         JMenuItem invokeGraphCustomizer = new JMenuItem("Customize Graph...");
         invokeGraphCustomizer.addActionListener(actionEvent -> new GraphCustomizerWindow(window));
