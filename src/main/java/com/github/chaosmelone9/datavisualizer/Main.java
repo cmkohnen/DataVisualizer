@@ -14,7 +14,15 @@ public class Main {
     ResourceFetcher fetcher;
     MainWindow window;
     public static void main(String[] args) {
-        new Main(args);
+        if(args.length > 0) {
+            new Main(args);
+        } else {
+            new Main();
+        }
+    }
+
+    public static void createNewGUIInstance() {
+        new Main();
     }
 
     public Config getConfig() {
@@ -28,17 +36,23 @@ public class Main {
     private Main(String[] args) {
         this.fetcher = new ResourceFetcher();
         this.config = Config.init();
-        if(args.length > 0) {
+        try {
             initCLI(args);
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Main() {
+        this.fetcher = new ResourceFetcher();
+        this.config = Config.init();
+        try {
+            initGUI();
+        } catch (Exception e) {
             try {
-                initGUI();
-            } catch (Exception e) {
-                try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception ignored) {}
-                new ErrorWindow("Something went wrong", Optional.of(e));
-            }
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ignored) {}
+            new ErrorWindow("Something went wrong", Optional.of(e));
         }
     }
 
@@ -47,14 +61,10 @@ public class Main {
         window = new MainWindow(this);
     }
 
-    private void initCLI(String[] args) {
+    private void initCLI(String[] args) throws IOException {
         if(args[0].equals("--about")) {
-            try {
-                //TODO implement Logger and forward this
-                System.out.println(fetcher.fetchTextFromFile("about.txt"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            //TODO implement Logger and forward this
+            System.out.println(fetcher.fetchTextFromFile("about.txt"));
         }
     }
 }
