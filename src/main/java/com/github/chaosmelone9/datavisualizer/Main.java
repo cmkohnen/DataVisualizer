@@ -12,7 +12,7 @@ import java.util.Optional;
 public class Main {
     Config config;
     ResourceFetcher fetcher;
-    MainWindow window;
+    Logger logger;
     public static void main(String[] args) {
         if(args.length > 0) {
             new Main(args);
@@ -33,9 +33,14 @@ public class Main {
         return fetcher;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     private Main(String[] args) {
         this.fetcher = new ResourceFetcher();
         this.config = Config.init();
+        this.logger = config.getLogger();
         try {
             initCLI(args);
         } catch (Exception e) {
@@ -47,6 +52,7 @@ public class Main {
         this.fetcher = new ResourceFetcher();
         this.config = Config.init();
         try {
+            UIManager.setLookAndFeel("UIManager.getSystemLookAndFeelClassName()");
             initGUI();
         } catch (Exception e) {
             try {
@@ -58,13 +64,12 @@ public class Main {
 
     private void initGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        window = new MainWindow(this);
+        new MainWindow(this);
     }
 
     private void initCLI(String[] args) throws IOException {
         if(args[0].equals("--about")) {
-            //TODO implement Logger and forward this
-            System.out.println(fetcher.fetchTextFromFile("about.txt"));
+            logger.echo(fetcher.fetchTextFromFile("about.txt"));
         }
     }
 }

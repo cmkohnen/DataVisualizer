@@ -30,7 +30,7 @@ public class PopupWindow extends JFrame {
         try {
             setIconImage(ImageIO.read(window.getInstance().getFetcher().fetch("icon.png")));
         } catch (IOException e) {
-            e.printStackTrace();
+            mainWindow.getInstance().getLogger().logStackTrace(e);
         }
         setVisible(true);
     }

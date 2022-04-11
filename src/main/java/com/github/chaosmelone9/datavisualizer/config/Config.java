@@ -1,5 +1,7 @@
 package com.github.chaosmelone9.datavisualizer.config;
 
+import com.github.chaosmelone9.datavisualizer.Logger;
+
 import java.io.File;
 
 public class Config {
@@ -15,5 +17,9 @@ public class Config {
     public static Config load(File configFile) {
         //TODO make config actually load
         return new Config();
+    }
+
+    public Logger getLogger() {
+        return new Logger();
     }
 }

@@ -1,5 +1,7 @@
 package com.github.chaosmelone9.datavisualizer.ui.windows;
 
+import com.github.chaosmelone9.datavisualizer.Logger;
+
 import javax.swing.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -20,8 +22,7 @@ public class ErrorWindow extends JDialog {
             PrintWriter pw = new PrintWriter(sw, true);
             e.printStackTrace(pw);
             String stacktrace = sw.getBuffer().toString();
-            //TODO implement Logger and forward this
-            System.out.println(stacktrace);
+            new Logger().logStackTrace(e);
             JTextArea textArea = new JTextArea();
             textArea.setText(stacktrace);
             textArea.setEditable(false);
