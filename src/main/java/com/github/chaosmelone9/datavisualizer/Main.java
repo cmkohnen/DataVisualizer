@@ -52,7 +52,7 @@ public class Main {
         this.fetcher = new ResourceFetcher();
         this.config = Config.init();
         try {
-            UIManager.setLookAndFeel("UIManager.getSystemLookAndFeelClassName()");
+            //UIManager.setLookAndFeel("UIManager.getSystemLookAndFeelClassName()");
             initGUI();
         } catch (Exception e) {
             try {

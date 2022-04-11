@@ -1,13 +1,16 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
 
 import java.awt.*;
+import java.util.function.Function;
 
 public class GraphFunction {
-    public boolean allocateToRightAxis = true;
+    public Function<Double, Double> function;
+    public Color colour;
+    public boolean allocateToRightAxis;
 
-    public Color colour = new Color(1,1,1);
-
-    public double function(double x) {
-        return 1.5 * x + 1;
+    public GraphFunction(Function<Double, Double> function, boolean allocateToRightAxis, Color colour) {
+        this.function = function;
+        this.colour = colour;
+        this.allocateToRightAxis = allocateToRightAxis;
     }
 }
