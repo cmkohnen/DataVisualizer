@@ -111,11 +111,11 @@ public class Graph extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         try {
+            /* begin setup of rendering and adjust values*/
             //setup rendering
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setStroke(uiStroke);
             FontMetrics metrics = g2.getFontMetrics();
 
             //figuring out dimensions of the graph
@@ -138,6 +138,8 @@ public class Graph extends JPanel {
             this.zeroYA = (int) (stopY - Math.abs(minYA * yAScale));
             this.zeroYB = (int) (stopY - Math.abs(minYB * yBScale));
 
+            /*begin rendering of ui*/
+            g2.setStroke(uiStroke);
             //draw Title
             if(hasTitle) {
                 g2.setColor(titleColour);
@@ -153,78 +155,9 @@ public class Graph extends JPanel {
                 g2.drawImage(backgroundImage, startX, startY, backgroundWidth, backgroundHeight, this);
             }
 
-            /// create hatch marks and grid lines for y-axis.
-            for (int i = 0; i < numberYDivisions + 1; i++) {
-                int y = stopY - ((i * (stopY - startY)) / numberYDivisions);
-                if(i % 10 == 0) {
-                    if(drawYGrid) {
-                        g2.setColor(gridColour);
-                        g2.drawLine(startX, y, stopX, y);
-                    }
-                    if(drawYALabels || drawYBLabels) {
-                        g2.setColor(labelColour);
-                        if(drawYALabels) {
-                            String yALabel = ((int) ((minYA + (maxYA - minYA) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
-                            int labelWidth = metrics.stringWidth(yALabel);
-                            g2.drawString(yALabel, startX - labelWidth - 5, y + (metrics.getHeight() / 2) - 3);
-                        }
-                        if(hasSecondYAxis && drawYBLabels) {
-                            String yBLabel = ((int) ((minYB + (maxYB - minYB) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
-                            g2.drawString(yBLabel, stopX + 5, y + (metrics.getHeight() / 2) - 3);
-                        }
-                    }
-                } else if(drawYAHatchMarks || drawYBHatchMarks) {
-                    g2.setColor(hatchMarkColour);
-                    if(drawYAHatchMarks) {
-                        g2.drawLine(startX, y, startX + pointWidth, y);
-                    }
-                    if(hasSecondYAxis && drawYBHatchMarks) {
-                        g2.drawLine(stopX, y, stopX - pointWidth, y);
-                    }
-                }
-            }
-
-            // and for x-axis
-            for (int i = 0; i < numberXDivisions + 1; i++) {
-                int x = i * (stopX - startX) / numberXDivisions + startX;
-                if(i % 10 == 0) {
-                    if(drawXGrid) {
-                        g2.setColor(gridColour);
-                        g2.drawLine(x, stopY, x, startY);
-                    }
-                    if(drawXLabels) {
-                        g2.setColor(labelColour);
-                        String xLabel = ((int) ((minX + (maxX - minX) * ((i * 1.0) / numberXDivisions)) * 100)) / 100.0 + "";
-                        int labelWidth = metrics.stringWidth(xLabel);
-                        g2.drawString(xLabel, x - labelWidth / 2, stopY + metrics.getHeight() + 3);
-                    }
-                } else if(drawXHatchMarks) {
-                    g2.setColor(hatchMarkColour);
-                    g2.drawLine(x, stopY, x, stopY - pointWidth);
-                }
-            }
-
-            // create x and y axes
-            g2.setColor(axisColour);
-            g2.drawLine(startX, startY, startX, stopY);
-            if(hasSecondYAxis) {
-                g2.drawLine(stopX, startY, stopX, stopY);
-            }
-            g2.drawLine(startX, stopY, stopX, stopY);
-
-            //draw x and y axes at 0
-            if(minX < 0 && maxX > 0) {
-                g2.drawLine(zeroX, startY, zeroX, stopY);
-            }
-            if(minYA < 0 && maxYA > 0) {
-                g2.drawLine(startX, zeroYA, stopX, zeroYA);
-            }
-            if(hasSecondYAxis && (minYB < 0 && maxYB > 0)) {
-                g2.drawLine(startX, zeroYB, stopX, zeroYB);
-            }
-
-            //render rows
+            /* Begin rendering of Content */
             g2.setStroke(graphStroke);
+            //render rows
             for (GraphRow graphRow : graphRows) {
                 g2.setColor(graphRow.colour);
                 for (int i = 0; i < graphRow.row.points.length - 1; i++) {
@@ -270,12 +203,23 @@ public class Graph extends JPanel {
             }
 
             //render polygons
-            //TODO do some fancy math, so only part of polygon is displayed, which is visible
             for (GraphPolygon graphPolygon : graphPolygons) {
                 g2.setColor(graphPolygon.colour);
                 Polygon polygon = new Polygon();
                 for (com.github.chaosmelone9.datavisualizer.datasets.Point point : graphPolygon.polygon.points) {
-                    polygon.addPoint(getXOf(point.x), getYOf(point.y, graphPolygon.allocateToRightAxis));
+                    int x = getXOf(point.x);
+                    int y = getYOf(point.y, graphPolygon.allocateToRightAxis);
+                    if(x > stopX) {
+                        x = stopX;
+                    } else if(x < startX) {
+                        x = startX;
+                    }
+                    if(y > stopY) {
+                        y = stopY;
+                    } else if(y < startY) {
+                        y = startY;
+                    }
+                    polygon.addPoint(x, y);
                 }
                 if(graphPolygon.filled) {
                     g2.fillPolygon(polygon);
@@ -289,8 +233,9 @@ public class Graph extends JPanel {
                 g2.setColor(graphPoint.color);
                 int x = getXOf(graphPoint.point.x);
                 int y = getYOf(graphPoint.point.y, graphPoint.allocateToRightAxis);
-                if(isInGraphRange(x, y))
+                if(isInGraphRange(x, y)) {
                     g2.fillOval(x, y, pointWidth, pointWidth);
+                }
             }
 
             //render Markers
@@ -305,6 +250,78 @@ public class Graph extends JPanel {
                 }
             }
 
+
+            /* resume rendering of ui*/
+            g2.setStroke(uiStroke);
+            // create hatch marks and grid lines for y-axes.
+            for (int i = 0; i < numberYDivisions + 1; i++) {
+                int y = stopY - ((i * (stopY - startY)) / numberYDivisions);
+                if(i % 10 == 0) {
+                    if(drawYGrid) {
+                        g2.setColor(gridColour);
+                        g2.drawLine(startX, y, stopX, y);
+                    }
+                    if(drawYALabels || drawYBLabels) {
+                        g2.setColor(labelColour);
+                        if(drawYALabels) {
+                            String yALabel = ((int) ((minYA + (maxYA - minYA) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
+                            int labelWidth = metrics.stringWidth(yALabel);
+                            g2.drawString(yALabel, startX - labelWidth - 5, y + (metrics.getHeight() / 2) - 3);
+                        }
+                        if(hasSecondYAxis && drawYBLabels) {
+                            String yBLabel = ((int) ((minYB + (maxYB - minYB) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
+                            g2.drawString(yBLabel, stopX + 5, y + (metrics.getHeight() / 2) - 3);
+                        }
+                    }
+                } else if(drawYAHatchMarks || drawYBHatchMarks) {
+                    g2.setColor(hatchMarkColour);
+                    if(drawYAHatchMarks) {
+                        g2.drawLine(startX, y, startX + pointWidth, y);
+                    }
+                    if(hasSecondYAxis && drawYBHatchMarks) {
+                        g2.drawLine(stopX, y, stopX - pointWidth, y);
+                    }
+                }
+            }
+
+            // create hatch marks and grid lines for x-axis.
+            for (int i = 0; i < numberXDivisions + 1; i++) {
+                int x = i * (stopX - startX) / numberXDivisions + startX;
+                if(i % 10 == 0) {
+                    if(drawXGrid) {
+                        g2.setColor(gridColour);
+                        g2.drawLine(x, stopY, x, startY);
+                    }
+                    if(drawXLabels) {
+                        g2.setColor(labelColour);
+                        String xLabel = ((int) ((minX + (maxX - minX) * ((i * 1.0) / numberXDivisions)) * 100)) / 100.0 + "";
+                        int labelWidth = metrics.stringWidth(xLabel);
+                        g2.drawString(xLabel, x - labelWidth / 2, stopY + metrics.getHeight() + 3);
+                    }
+                } else if(drawXHatchMarks) {
+                    g2.setColor(hatchMarkColour);
+                    g2.drawLine(x, stopY, x, stopY - pointWidth);
+                }
+            }
+
+            // create x and y axes
+            g2.setColor(axisColour);
+            g2.drawLine(startX, startY, startX, stopY);
+            if(hasSecondYAxis) {
+                g2.drawLine(stopX, startY, stopX, stopY);
+            }
+            g2.drawLine(startX, stopY, stopX, stopY);
+
+            //draw x and y axes at 0
+            if(minX < 0 && maxX > 0) {
+                g2.drawLine(zeroX, startY, zeroX, stopY);
+            }
+            if(minYA < 0 && maxYA > 0) {
+                g2.drawLine(startX, zeroYA, stopX, zeroYA);
+            }
+            if(hasSecondYAxis && (minYB < 0 && maxYB > 0)) {
+                g2.drawLine(startX, zeroYB, stopX, zeroYB);
+            }
 
             //draw X and Y indication at Mouse-pointer
             if((indicateMouseX || indicateMouseY || labelMouseXY) && isInGraphRange(mouseX, mouseY)) {
@@ -331,7 +348,7 @@ public class Graph extends JPanel {
                 }
             }
 
-            //cleanup
+            /*cleanup*/
             g2.dispose();
             g.dispose();
         } catch (OutOfGraphBoundsException e) {
