@@ -4,19 +4,29 @@ import com.github.chaosmelone9.datavisualizer.ui.windows.AboutWindow;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-public class HelpMenu extends JMenu {
+public class HelpMenu extends Menu {
     public HelpMenu(MainWindow window) {
-        super("Help");
-        JMenuItem about = new JMenuItem("about");
-        add(about);
-        about.addActionListener(actionEvent -> {
+        super(window, "Help");
+
+        add(new MenuItem("Github page", a -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/ChaosMelone9/DataVisualizer"));
+            } catch (IOException | URISyntaxException ex) {
+                window.getInstance().getLogger().logStackTrace(ex);
+            }
+        }));
+
+        add(new MenuItem("about", e -> {
             try {
                 new AboutWindow(window);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                window.getInstance().getLogger().logStackTrace(ex);
             }
-        });
+        }));
     }
 }

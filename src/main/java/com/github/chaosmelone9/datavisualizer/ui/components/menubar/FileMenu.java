@@ -5,20 +5,12 @@ import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
 
-public class FileMenu extends JMenu {
-
-    MainWindow window;
-
+public class FileMenu extends Menu {
     public FileMenu(MainWindow window) {
-        super("File");
-        this.window = window;
+        super(window, "File");
 
-        JMenuItem newInstance = new JMenuItem("New");
-        newInstance.addActionListener(actionEvent -> Main.createNewGUIInstance());
-        add(newInstance);
+        add(new MenuItem("New", actionEvent -> Main.createNewGUIInstance()));
 
-        JMenuItem close = new JMenuItem("Close");
-        close.addActionListener(actionEvent -> window.dispose());
-        add(close);
+        add(new MenuItem("Close", actionEvent -> window.dispose()));
     }
 }

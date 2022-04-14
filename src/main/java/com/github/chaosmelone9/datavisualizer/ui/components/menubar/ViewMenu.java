@@ -5,18 +5,11 @@ import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
 
-public class ViewMenu extends JMenu {
+public class ViewMenu extends Menu {
     public ViewMenu(MainWindow window) {
-        super("View");
+        super(window, "View");
 
-        JCheckBoxMenuItem toggleOptionPane = new JCheckBoxMenuItem("Show Options Menu");
-        toggleOptionPane.setState(true);
-        toggleOptionPane.addActionListener(actionEvent -> window.toggleOptionPane(toggleOptionPane.isSelected()));
-
-        JMenuItem invokeGraphCustomizer = new JMenuItem("Customize Graph...");
-        invokeGraphCustomizer.addActionListener(actionEvent -> new GraphCustomizerWindow(window));
-
-        add(toggleOptionPane);
-        add(invokeGraphCustomizer);
+        add(new CheckBoxMenuItem("Show options menu", true, actionEvent -> window.toggleOptionPane(((JCheckBoxMenuItem) (actionEvent.getSource())).isSelected())));
+        add(new MenuItem("Customize Graph...", actionEvent -> new GraphCustomizerWindow(window)));
     }
 }
