@@ -1,6 +1,7 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane;
 
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph.Graph;
+import com.github.chaosmelone9.datavisualizer.ui.windows.GraphPopupWindow;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;

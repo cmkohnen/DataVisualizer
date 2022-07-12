@@ -56,4 +56,11 @@ public class MainWindow extends JFrame {
     public ContentPane getContentPane() {
         return contentPane;
     }
+
+    public void detachGraph() {
+        new GraphPopupWindow(this, contentPane.getGraph());
+    }
+    public void reattachGraph() {
+        contentPane.add(contentPane.getGraph(), "Graph");
+    }
 }
