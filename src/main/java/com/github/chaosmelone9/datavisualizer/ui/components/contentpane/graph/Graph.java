@@ -14,8 +14,8 @@ import java.util.List;
  *
  * @author "Christoph Kohnen", "Hovercraft Full of Eels", "Rodrigo Azevedo"
  *
- * The Base of this Component is an improved version of Hovercraft Full of Eels (https://stackoverflow.com/users/522444/hovercraft-full-of-eels)
- * answer on StackOverflow: https://stackoverflow.com/a/8693635/753012 by Rodrigo Azevedo. Huge credits to them for figuring out the maths behind this.
+ * The Base of this Component is an improved version of Hovercraft Full of Eels (<a href="https://stackoverflow.com/users/522444/hovercraft-full-of-eels">...</a>)
+ * answer on StackOverflow: <a href="https://stackoverflow.com/a/8693635/753012">...</a> by Rodrigo Azevedo. Huge credits to them for figuring out the maths behind this.
  * However, this is heavily modified to include e.g. multiple rows, mathematical functions two y-axes, etc.
  */
 public class Graph extends JPanel {
@@ -341,10 +341,17 @@ public class Graph extends JPanel {
                     if(hasSecondYAxis) {
                         label.append(", ").append(Math.round(getYBAt(mouseY) * 100.0) / 100.0);
                     }
+                    int labelX;
+                    int labelWidth = metrics.stringWidth(label.toString());
+                    if(mouseX > (getWidth() / 2)) {
+                        labelX = mouseX - labelWidth;
+                    } else {
+                        labelX = mouseX;
+                    }
                     g2.setColor(backgroundColour);
-                    g2.fillRect(mouseX + 1, mouseY - metrics.getHeight() - 5, metrics.stringWidth(label.toString()) + 5, metrics.getHeight() + 5);
+                    g2.fillRect(labelX + 1, mouseY - metrics.getHeight() - 5,  labelWidth + 5, metrics.getHeight() + 5);
                     g2.setColor(indicatorColour);
-                    g2.drawString(label.toString(), mouseX + 3, mouseY - 3);
+                    g2.drawString(label.toString(), labelX + 3, mouseY - 3);
                 }
             }
 
