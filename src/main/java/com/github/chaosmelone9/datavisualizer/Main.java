@@ -51,6 +51,7 @@ public class Main {
     private Main() {
         this.fetcher = new ResourceFetcher();
         this.config = Config.init();
+        this.logger = config.getLogger();
         try {
             //UIManager.setLookAndFeel("UIManager.getSystemLookAndFeelClassName()");
             initGUI();
