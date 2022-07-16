@@ -1,6 +1,5 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.menubar;
 
-import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.ContentPane;
 import com.github.chaosmelone9.datavisualizer.ui.windows.GraphCustomizerWindow;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 

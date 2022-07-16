@@ -815,4 +815,12 @@ public class Graph extends JPanel {
     public double getMaxYB() {
         return maxYB;
     }
+
+    public BufferedImage renderToImage() {
+        BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+        paint(g2d);
+        g2d.dispose();
+        return image;
+    }
 }

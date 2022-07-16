@@ -2,8 +2,11 @@ package com.github.chaosmelone9.datavisualizer.ui.windows;
 
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph.Graph;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class GraphCustomizerWindow extends PopupWindow{
     Graph graph;
@@ -36,6 +39,25 @@ public class GraphCustomizerWindow extends PopupWindow{
         add(new ColorPicker("Axis Color", actionEvent -> graph.setAxisColour(JColorChooser.showDialog(this, "Choose Colour", graph.getAxisColour()))));
         add(new ColorPicker("Hatch mark Color", actionEvent -> graph.setHatchMarkColour(JColorChooser.showDialog(this, "Choose Colour", graph.getHatchMarkColour()))));
         add(new ColorPicker("Indicator Color", actionEvent -> graph.setIndicatorColour(JColorChooser.showDialog(this, "Choose Colour", graph.getIndicatorColour()))));
+
+        add(new JLabel("Background Image"));
+        JButton backgroundImageButton = new JButton("Background Image");
+        backgroundImageButton.addActionListener(actionEvent -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new java.io.File("."));
+            fileChooser.setDialogTitle("Choose Background Image");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "bmp"));
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    graph.setBackgroundImage(ImageIO.read(fileChooser.getSelectedFile()));
+                } catch (IOException e) {
+                    mainWindow.getInstance().getLogger().logStackTrace(e);
+                }
+            }
+        });
+        add(backgroundImageButton);
     }
 
     private static class CheckBox extends JCheckBox {

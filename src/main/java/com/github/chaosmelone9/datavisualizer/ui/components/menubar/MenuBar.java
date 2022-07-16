@@ -8,6 +8,7 @@ public class MenuBar extends JMenuBar {
     public MenuBar(MainWindow window) {
         register(new FileMenu(window));
         register(new ViewMenu(window));
+        register(new ToolsMenu(window));
         register(new HelpMenu(window));
     }
 
