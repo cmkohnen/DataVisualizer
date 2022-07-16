@@ -70,7 +70,7 @@ public class Graph extends JPanel {
     private double maxYB = GraphConfig.DEFAULT_MAX_YB;
 
     private boolean hasSecondYAxis = false;
-    private boolean hasTitle = title != null;
+    private boolean hasTitle = false;
     private boolean hasBackgroundImage = false;
 
     private int mouseX;
@@ -351,6 +351,7 @@ public class Graph extends JPanel {
                     g2.setColor(backgroundColour);
                     g2.fillRect(labelX + 1, mouseY - metrics.getHeight() - 5,  labelWidth + 5, metrics.getHeight() + 5);
                     g2.setColor(indicatorColour);
+                    g2.drawRect(labelX + 1, mouseY - metrics.getHeight() - 5,  labelWidth + 5, metrics.getHeight() + 5);
                     g2.drawString(label.toString(), labelX + 3, mouseY - 3);
                 }
             }

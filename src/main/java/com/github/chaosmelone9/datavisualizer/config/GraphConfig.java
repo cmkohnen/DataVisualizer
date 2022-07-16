@@ -28,11 +28,11 @@ public class GraphConfig {
 
     public static final Color DEFAULT_BACKGROUND_COLOUR = Color.WHITE;
     public static final Color DEFAULT_GRID_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_LABEL_COLOUR = Color.WHITE;
-    public static final Color DEFAULT_TITLE_COLOUR = Color.WHITE;
+    public static final Color DEFAULT_LABEL_COLOUR = Color.BLACK;
+    public static final Color DEFAULT_TITLE_COLOUR = Color.BLACK;
     public static final Color DEFAULT_AXIS_COLOUR = Color.BLACK;
     public static final Color DEFAULT_HATCH_MARK_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_INDICATOR_COLOUR = Color.CYAN;
+    public static final Color DEFAULT_INDICATOR_COLOUR = Color.BLACK;
 
     public static final BufferedImage DEFAULT_BACKGROUND_IMAGE = null;
 
