@@ -16,10 +16,12 @@ public class GraphConfig {
 
     public static final boolean DEFAULT_DRAW_X_GRID = true;
     public static final boolean DEFAULT_DRAW_Y_GRID = true;
-    public static final boolean DEFAULT_DRAW_X_HATCH_MARKS = true;
+    public static final boolean DEFAULT_DRAW_XA_HATCH_MARKS = true;
+    public static final boolean DEFAULT_DRAW_XB_HATCH_MARKS = true;
     public static final boolean DEFAULT_DRAW_YA_HATCH_MARKS = true;
     public static final boolean DEFAULT_DRAW_YB_HATCH_MARKS = true;
-    public static final boolean DEFAULT_DRAW_X_LABELS = true;
+    public static final boolean DEFAULT_DRAW_XA_LABELS = true;
+    public static final boolean DEFAULT_DRAW_XB_LABELS = true;
     public static final boolean DEFAULT_DRAW_YA_LABELS = true;
     public static final boolean DEFAULT_DRAW_YB_LABELS = true;
     public static final boolean DEFAULT_INDICATE_MOUSE_X = false;
@@ -39,8 +41,10 @@ public class GraphConfig {
     public static final Stroke DEFAULT_GRAPH_STROKE = new BasicStroke(2f);
     public static final Stroke DEFAULT_UI_STROKE = new BasicStroke(1f);
 
-    public static final int DEFAULT_MIN_X = 0;
-    public static final int DEFAULT_MAX_X = 10;
+    public static final int DEFAULT_MIN_XA = 0;
+    public static final int DEFAULT_MIN_XB = 0;
+    public static final int DEFAULT_MAX_XA = 10;
+    public static final int DEFAULT_MAX_XB = 100;
     public static final int DEFAULT_MIN_YA = 0;
     public static final int DEFAULT_MIN_YB = 0;
     public static final int DEFAULT_MAY_YA = 10;
