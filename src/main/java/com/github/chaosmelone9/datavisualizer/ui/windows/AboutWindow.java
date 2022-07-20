@@ -24,7 +24,6 @@ public class AboutWindow extends JDialog {
         private Content() {
             super();
             setLayout(new BorderLayout());
-            //add(new JTextArea(window.getInstance().getFetcher().fetchTextFromFile("about.txt")));
         }
 
         @Override

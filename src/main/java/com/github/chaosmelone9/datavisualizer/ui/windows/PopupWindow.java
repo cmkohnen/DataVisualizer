@@ -16,6 +16,7 @@ public class PopupWindow extends JFrame {
         this.content = new JPanel();
         this.layout = new GridBagLayout();
         this.constraints = layout.getConstraints(content);
+        window.registerPopupWindow(this);
         JScrollPane pane = new JScrollPane(content);
         setContentPane(pane);
         content.setLayout(layout);

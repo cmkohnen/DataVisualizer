@@ -16,7 +16,7 @@ public class GraphPopupWindow extends PopupWindow {
             public void windowClosing(WindowEvent e)
             {
                 e.getWindow().dispose();
-                window.getContentPane().reattachGraph();
+                window.getJMenuBar().getViewMenu().reattachGraph();
             }
         });
     }

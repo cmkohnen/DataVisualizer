@@ -226,6 +226,7 @@ public class Graph extends JPanel {
                 for (com.github.chaosmelone9.datavisualizer.datasets.Point point : graphPolygon.polygon.points) {
                     int x = getXOf(point.x, graphPolygon.allocateToSecondXAxis);
                     int y = getYOf(point.y, graphPolygon.allocateToSecondYAxis);
+                    //TODO do some fancy math to make this work
                     if(x > stopX) {
                         x = stopX;
                     } else if(x < startX) {

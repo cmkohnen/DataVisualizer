@@ -3,7 +3,6 @@ package com.github.chaosmelone9.datavisualizer.ui.components.menubar;
 import com.github.chaosmelone9.datavisualizer.ui.windows.AboutWindow;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
