@@ -1,10 +1,12 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
 
+import com.github.chaosmelone9.datavisualizer.Main;
 import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import java.util.List;
  * However, this is heavily modified to include e.g. multiple rows, mathematical functions two y-axes, etc.
  */
 public class Graph extends JPanel {
+
+    private final Main instance;
 
     List<GraphFunction> graphFunctions = new ArrayList<>();
     List<GraphMarker> graphMarkers = new ArrayList<>();
@@ -96,23 +100,12 @@ public class Graph extends JPanel {
     private int zeroYA;
     private int zeroYB;
 
-    public Graph() {
+    public Graph(Main instance) {
         super();
-        addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent mouseEvent) {
-                mouseX = mouseEvent.getX();
-                mouseY = mouseEvent.getY();
-                repaint();
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent mouseEvent) {
-                mouseX = mouseEvent.getX();
-                mouseY = mouseEvent.getY();
-                repaint();
-            }
-        });
+        this.instance = instance;
+        GraphListener listener = new GraphListener();
+        addMouseMotionListener(listener);
+        addMouseListener(listener);
     }
 
     @Override
@@ -397,7 +390,7 @@ public class Graph extends JPanel {
             g2.dispose();
             g.dispose();
         } catch (OutOfGraphBoundsException e) {
-            e.printStackTrace();
+            instance.getLogger().logStackTrace(e);
         }
     }
 
@@ -532,13 +525,13 @@ public class Graph extends JPanel {
     public double getXAAt(int x) throws OutOfGraphBoundsException {
         if(isXInGraphRange(x)) {
             return (x * 1.0 - startX) / xAScale + minXA;
-        } else throw new OutOfGraphBoundsException("xA not in Range");
+        } else throw new OutOfGraphBoundsException("xA");
     }
 
     public double getXBAt(int x) throws OutOfGraphBoundsException {
         if(isXInGraphRange(x)) {
             return (x * 1.0 - startX) / xBScale + minXB;
-        } else throw new OutOfGraphBoundsException("xB not in Range");
+        } else throw new OutOfGraphBoundsException("xB");
     }
 
     public double getXAt(int x, boolean allocateToSecondXAxis) throws OutOfGraphBoundsException {
@@ -552,13 +545,13 @@ public class Graph extends JPanel {
     public double getYAAt(int y) throws OutOfGraphBoundsException {
         if (isYInGraphRange(y)) {
             return ((y * 1.0 - stopY) / yAScale - minYA) * -1;
-        } else throw new OutOfGraphBoundsException("yA not in Range");
+        } else throw new OutOfGraphBoundsException("yA");
     }
 
     public double getYBAt(int y) throws OutOfGraphBoundsException {
         if (isYInGraphRange(y)) {
             return ((y * 1.0 - stopY) / yBScale - minYB) * -1;
-        } else throw new OutOfGraphBoundsException("yB not in Range");
+        } else throw new OutOfGraphBoundsException("yB");
     }
 
     public double getYAt(int y, boolean allocateToSecondYAxis) throws OutOfGraphBoundsException {
@@ -963,5 +956,52 @@ public class Graph extends JPanel {
         paint(g2d);
         g2d.dispose();
         return image;
+    }
+
+    private static class OutOfGraphBoundsException extends Exception {
+        public OutOfGraphBoundsException(String value) {
+            super(String.format("%s is out of graph bounds", value));
+        }
+    }
+
+    private class GraphListener implements MouseMotionListener, MouseListener {
+        @Override
+        public void mouseDragged(MouseEvent mouseEvent) {
+            mouseX = mouseEvent.getX();
+            mouseY = mouseEvent.getY();
+            repaint();
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent mouseEvent) {
+            mouseX = mouseEvent.getX();
+            mouseY = mouseEvent.getY();
+            repaint();
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 }

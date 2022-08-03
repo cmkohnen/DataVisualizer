@@ -7,7 +7,7 @@ import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 import javax.swing.*;
 
 public class ContentPane extends JTabbedPane{
-    private final Graph graph = new Graph();
+    private final Graph graph;
     private final Table table = new Table();
     private final GraphComponents graphComponents = new GraphComponents();
 
@@ -18,6 +18,7 @@ public class ContentPane extends JTabbedPane{
     private boolean graphDetached = false;
     public ContentPane(MainWindow window) {
         this.window = window;
+        this.graph = new Graph(window.getInstance());
         add(graph, "Graph");
         add(table, "Table");
         add(graphComponents, "Functions and other markings");
