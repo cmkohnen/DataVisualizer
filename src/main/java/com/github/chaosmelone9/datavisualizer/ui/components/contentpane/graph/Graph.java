@@ -1,3 +1,21 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+ *  DataVisualizer
+ *  Copyright (C) 2022 Christoph Kohnen <christoph.kohnen@gymbane.eu>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
 
 import com.github.chaosmelone9.datavisualizer.Main;
@@ -5,9 +23,7 @@ import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +122,7 @@ public class Graph extends JPanel {
         GraphListener listener = new GraphListener();
         addMouseMotionListener(listener);
         addMouseListener(listener);
+        addMouseWheelListener(listener);
     }
 
     @Override
@@ -964,7 +981,7 @@ public class Graph extends JPanel {
         }
     }
 
-    private class GraphListener implements MouseMotionListener, MouseListener {
+    private class GraphListener implements MouseMotionListener, MouseListener, MouseWheelListener {
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
             mouseX = mouseEvent.getX();
@@ -1001,6 +1018,11 @@ public class Graph extends JPanel {
 
         @Override
         public void mouseExited(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
 
         }
     }

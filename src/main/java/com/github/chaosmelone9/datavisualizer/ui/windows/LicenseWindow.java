@@ -16,13 +16,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.datasets;
+package com.github.chaosmelone9.datavisualizer.ui.windows;
 
-public class Point {
-    public double x;
-    public double y;
-    public Point(double x, double y) {
-        this.x = x;
-        this.y = y;
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+
+public class LicenseWindow extends PopupWindow{
+    public LicenseWindow(MainWindow window) throws IOException {
+        super("License", window);
+
+        JTextPane textPane = new JTextPane();
+        textPane.setText(window.getInstance().getFetcher().fetchTextFromFile("LICENSE"));
+        textPane.setEditable(false);
+        setContentPane(new JScrollPane(textPane));
     }
 }
