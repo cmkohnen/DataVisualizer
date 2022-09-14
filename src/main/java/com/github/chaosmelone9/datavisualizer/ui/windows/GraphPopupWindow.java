@@ -26,6 +26,7 @@ import java.awt.event.WindowEvent;
 public class GraphPopupWindow extends PopupWindow {
     public GraphPopupWindow(MainWindow window, Graph graph) {
         super("Graph", window);
+        setSize(graph.getSize());
         setContentPane(graph);
 
         addWindowListener(new WindowAdapter()

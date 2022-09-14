@@ -19,10 +19,13 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane;
 
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph.Graph;
+import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph.GraphFunction;
 import com.github.chaosmelone9.datavisualizer.ui.windows.GraphPopupWindow;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.function.Function;
 
 public class ContentPane extends JTabbedPane{
     private final Graph graph;
@@ -40,6 +43,8 @@ public class ContentPane extends JTabbedPane{
         add(graph, "Graph");
         add(table, "Table");
         add(graphComponents, "Functions and other markings");
+        Function<Double, Double> function = y -> y * y;
+        graph.addFunction(new GraphFunction(function,true,true, Color.BLACK));
     }
 
     public Graph getGraph() {

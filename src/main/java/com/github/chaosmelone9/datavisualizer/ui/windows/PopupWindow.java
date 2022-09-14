@@ -34,13 +34,12 @@ public class PopupWindow extends JFrame {
         this.content = new JPanel();
         this.layout = new GridBagLayout();
         this.constraints = layout.getConstraints(content);
-        window.registerPopupWindow(this);
+        mainWindow.registerPopupWindow(this);
         JScrollPane pane = new JScrollPane(content);
         setContentPane(pane);
         content.setLayout(layout);
         setTitle(title);
-        setLocationRelativeTo(window);
-        setSize((int) (window.getWidth() - window.getWidth() * .25), (int) (window.getHeight() - window.getHeight() * .25));
+        setLocationRelativeTo(mainWindow);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -57,5 +56,9 @@ public class PopupWindow extends JFrame {
     protected void add(JComponent component) {
         constraints.gridy = constraints.gridy + 1;
         content.add(component, constraints);
+    }
+
+    protected void autoAdjustSize() {
+        setSize((int) (mainWindow.getWidth() - mainWindow.getWidth() * .25), (int) (mainWindow.getHeight() - mainWindow.getHeight() * .25));
     }
 }

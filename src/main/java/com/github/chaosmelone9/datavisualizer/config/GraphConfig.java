@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 public class GraphConfig {
     public static final String DEFAULT_TITLE = null;
 
+    public static final Dimension DEFAULT_MINIMUM_SIZE = new Dimension(500, 350);
     public static final int DEFAULT_PADDING = 20;
     public static final int DEFAULT_LABEL_PADDING = 30;
     public static final int DEFAULT_TITLE_PADDING = 30;
@@ -49,10 +50,12 @@ public class GraphConfig {
     public static final Color DEFAULT_BACKGROUND_COLOUR = Color.WHITE;
     public static final Color DEFAULT_GRID_COLOUR = Color.BLACK;
     public static final Color DEFAULT_LABEL_COLOUR = Color.BLACK;
+    public static final Color DEFAULT_SECOND_LABEL_COLOUR = Color.RED;
     public static final Color DEFAULT_TITLE_COLOUR = Color.BLACK;
     public static final Color DEFAULT_AXIS_COLOUR = Color.BLACK;
     public static final Color DEFAULT_HATCH_MARK_COLOUR = Color.BLACK;
     public static final Color DEFAULT_INDICATOR_COLOUR = Color.BLACK;
+    public static final Color DEFAULT_UI_COLOUR = Color.BLACK;
 
     public static final BufferedImage DEFAULT_BACKGROUND_IMAGE = null;
 

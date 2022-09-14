@@ -30,6 +30,7 @@ public class GraphCustomizerWindow extends PopupWindow{
     Graph graph;
     public GraphCustomizerWindow(MainWindow window) {
         super("Customize Graph", window);
+        autoAdjustSize();
         this.graph = window.getContentPane().getGraph();
 
         //Checkboxes
@@ -54,11 +55,13 @@ public class GraphCustomizerWindow extends PopupWindow{
         add(new JLabel("Colors"));
         add(new ColorPicker("Background Color", actionEvent -> graph.setBackgroundColour(JColorChooser.showDialog(this, "Choose Colour", graph.getBackgroundColour()))));
         add(new ColorPicker("Grid Color", actionEvent -> graph.setGridColour(JColorChooser.showDialog(this, "Choose Colour", graph.getGridColour()))));
+        add(new ColorPicker("Second Label Color", actionEvent -> graph.setLabelSecondColour(JColorChooser.showDialog(this, "Choose Colour", graph.getLabelSecondColour()))));
         add(new ColorPicker("Label Color", actionEvent -> graph.setLabelColour(JColorChooser.showDialog(this, "Choose Colour", graph.getLabelColour()))));
         add(new ColorPicker("Title Color", actionEvent -> graph.setTitleColour(JColorChooser.showDialog(this, "Choose Colour", graph.getTitleColour()))));
         add(new ColorPicker("Axis Color", actionEvent -> graph.setAxisColour(JColorChooser.showDialog(this, "Choose Colour", graph.getAxisColour()))));
         add(new ColorPicker("Hatch mark Color", actionEvent -> graph.setHatchMarkColour(JColorChooser.showDialog(this, "Choose Colour", graph.getHatchMarkColour()))));
         add(new ColorPicker("Indicator Color", actionEvent -> graph.setIndicatorColour(JColorChooser.showDialog(this, "Choose Colour", graph.getIndicatorColour()))));
+        add(new ColorPicker("UI Color", actionEvent -> graph.setUiColour(JColorChooser.showDialog(this, "Choose Colour", graph.getUiColour()))));
 
         add(new JLabel("Background Image"));
         JButton backgroundImageButton = new JButton("Background Image");
