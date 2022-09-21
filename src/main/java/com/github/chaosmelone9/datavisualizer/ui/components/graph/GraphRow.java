@@ -16,17 +16,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph;
+
+import com.github.chaosmelone9.datavisualizer.datasets.Point;
+import com.github.chaosmelone9.datavisualizer.datasets.Row;
 
 import java.awt.*;
 
-public class GraphPolygon extends GraphObject {
-    com.github.chaosmelone9.datavisualizer.datasets.Polygon polygon;
-    boolean filled;
+public class GraphRow extends GraphObject {
+    protected Row row;
 
-    public GraphPolygon(com.github.chaosmelone9.datavisualizer.datasets.Polygon polygon, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled) {
+    public GraphRow(Row row, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, colour);
-        this.polygon = polygon;
-        this.filled = filled;
+        this.row = row;
+    }
+
+    @Override
+    protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
+        boolean isInRange = false;
+        for (Point point : row.points) {
+            if(isPointInRange(minX, minY, maxX, maxY, point)) {
+                isInRange = true;
+                break;
+            }
+        }
+        return isInRange;
     }
 }

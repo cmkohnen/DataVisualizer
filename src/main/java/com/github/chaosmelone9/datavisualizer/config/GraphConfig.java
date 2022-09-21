@@ -18,6 +18,8 @@
  */
 package com.github.chaosmelone9.datavisualizer.config;
 
+import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -47,15 +49,16 @@ public class GraphConfig {
     public static final boolean DEFAULT_INDICATE_MOUSE_Y = false;
     public static final boolean DEFAULT_LABEL_MOUSE_XY = true;
 
-    public static final Color DEFAULT_BACKGROUND_COLOUR = Color.WHITE;
-    public static final Color DEFAULT_GRID_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_LABEL_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_SECOND_LABEL_COLOUR = Color.RED;
-    public static final Color DEFAULT_TITLE_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_AXIS_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_HATCH_MARK_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_INDICATOR_COLOUR = Color.BLACK;
-    public static final Color DEFAULT_UI_COLOUR = Color.BLACK;
+    public static final Color DEFAULT_BACKGROUND_COLOUR = Adwaita.LIGHT1;
+    public static final Color DEFAULT_GRID_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_LABEL_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_SECOND_LABEL_COLOUR = Adwaita.RED5;
+    public static final Color DEFAULT_TITLE_COLOUR = Adwaita.BLUE5;
+    public static final Color DEFAULT_AXIS_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_HATCH_MARK_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_INDICATOR_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_UI_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_UI_BACKGROUND_COLOUR = Adwaita.LIGHT2;
 
     public static final BufferedImage DEFAULT_BACKGROUND_IMAGE = null;
 

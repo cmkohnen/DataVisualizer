@@ -19,18 +19,24 @@
 package com.github.chaosmelone9.datavisualizer.ui.windows;
 
 import com.github.chaosmelone9.datavisualizer.Main;
+import com.github.chaosmelone9.datavisualizer.datasets.Oval;
+import com.github.chaosmelone9.datavisualizer.datasets.Point;
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.ContentPane;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphDataSet;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphFunction;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphMarker;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphOval;
 import com.github.chaosmelone9.datavisualizer.ui.components.menubar.MenuBar;
 import com.github.chaosmelone9.datavisualizer.ui.components.optionpane.OptionPane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class MainWindow extends JFrame {
 
@@ -40,6 +46,7 @@ public class MainWindow extends JFrame {
     private final JSplitPane splitPane;
 
     private final MenuBar menuBar;
+    private GraphDataSet graphDataSet;
     public int dividerLocation = 200;
 
     private final List<PopupWindow> popupWindows = new ArrayList<>();
@@ -51,6 +58,7 @@ public class MainWindow extends JFrame {
         this.contentPane = new ContentPane(this);
         this.splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, optionPane, contentPane);
         this.menuBar = new MenuBar(this);
+        this.graphDataSet = new GraphDataSet(this);
         splitPane.setDividerLocation(dividerLocation);
 
         setTitle("DataVisualizer");
@@ -60,6 +68,10 @@ public class MainWindow extends JFrame {
         setContentPane(splitPane);
         setJMenuBar(menuBar);
         setVisible(true);
+
+        this.graphDataSet.addFunction(new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), false, false, Color.BLACK));
+        this.graphDataSet.addGraphOval(new GraphOval(new Oval(new Point(5, 10),10,10), false, false, Color.CYAN, true));
+        this.graphDataSet.addGraphMarker(new GraphMarker(true, 5, false, false, Color.BLACK));
 
         addWindowListener(new WindowAdapter()
         {

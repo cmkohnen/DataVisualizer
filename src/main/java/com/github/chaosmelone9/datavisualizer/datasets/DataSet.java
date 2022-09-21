@@ -18,5 +18,21 @@
  */
 package com.github.chaosmelone9.datavisualizer.datasets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataSet {
+    private final List<Row> rows;
+
+    public DataSet() {
+        this.rows = new ArrayList<>();
+    }
+
+    public void addRow(Row row) {
+        this.rows.add(row);
+    }
+
+    public List<Row> getRows() {
+        return rows;
+    }
 }

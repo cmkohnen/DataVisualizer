@@ -1,4 +1,4 @@
-package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
 import java.awt.*;
 

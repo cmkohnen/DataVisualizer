@@ -16,17 +16,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
-
-import com.github.chaosmelone9.datavisualizer.datasets.Row;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
 import java.awt.*;
+import java.util.function.Function;
 
-public class GraphRow extends GraphObject {
-    Row row;
+public class GraphFunction extends GraphObject {
+    protected Function<Double, Double> function;
 
-    public GraphRow(Row row, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour) {
+    public GraphFunction(Function<Double, Double> function, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, colour);
-        this.row = row;
+        this.function = function;
+    }
+
+    @Override
+    protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
+        return true;
     }
 }

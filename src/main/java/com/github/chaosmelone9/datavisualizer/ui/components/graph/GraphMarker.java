@@ -16,15 +16,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
 import java.awt.*;
 
-public class GraphPoint extends GraphObject {
-    com.github.chaosmelone9.datavisualizer.datasets.Point point;
+public class GraphMarker extends GraphObject {
+    protected boolean xOrY;
+    protected double value;
 
-    public GraphPoint(com.github.chaosmelone9.datavisualizer.datasets.Point point , boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color color) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, color);
-        this.point = point;
+    public GraphMarker(boolean xOrY, double value, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour) {
+        super(allocateToSecondXAxis, allocateToSecondYAxis, colour);
+        this.xOrY = xOrY;
+        this.value = value;
+    }
+
+    @Override
+    public boolean isInRange(double minX, double minY, double maxX, double maxY) {
+        if(xOrY) {
+            return minX < value && maxX > value;
+        } else {
+            return minY < value && maxY > value;
+        }
     }
 }

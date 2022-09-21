@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
 import com.github.chaosmelone9.datavisualizer.Main;
 import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
@@ -84,6 +84,7 @@ public class Graph extends JPanel {
     private Color indicatorColour = GraphConfig.DEFAULT_INDICATOR_COLOUR;
 
     private Color uiColour = GraphConfig.DEFAULT_UI_COLOUR;
+    private Color uiBackgroundColour = GraphConfig.DEFAULT_UI_BACKGROUND_COLOUR;
 
     private BufferedImage backgroundImage = GraphConfig.DEFAULT_BACKGROUND_IMAGE;
 
@@ -170,10 +171,10 @@ public class Graph extends JPanel {
                 this.yBScale = (stopY - startY) / (maxYB - minYB);
 
                 //figure out where 0s are
-                this.zeroXA = (int) Math.abs(minXA * xAScale) + startX;
-                this.zeroXB = (int) Math.abs(minXB * xBScale) + startX;
-                this.zeroYA = (int) (stopY - Math.abs(minYA * yAScale));
-                this.zeroYB = (int) (stopY - Math.abs(minYB * yBScale));
+                this.zeroXA = (int) -(minXA * xAScale) + startX;
+                this.zeroXB = (int) -(minXB * xBScale) + startX;
+                this.zeroYA = (int) (stopY + (minYA * yAScale));
+                this.zeroYB = (int) (stopY + (minYB * yBScale));
 
                 /*begin rendering of ui*/
                 graphics2D.setStroke(uiStroke);
@@ -196,106 +197,108 @@ public class Graph extends JPanel {
                 graphics2D.setStroke(graphStroke);
                 //render rows
                 for (GraphRow graphRow : graphRows) {
-                    graphics2D.setColor(graphRow.colour);
-                    for (int i = 0; i < graphRow.row.points.length - 1; i++) {
-                        int x0 = getXOf(graphRow.row.points[i].x, graphRow.allocateToSecondXAxis);
-                        int x1 = getXOf(graphRow.row.points[i + 1].x, graphRow.allocateToSecondXAxis);
-                        int y0 = getYOf(graphRow.row.points[i].y, graphRow.allocateToSecondYAxis);
-                        int y1 = getYOf(graphRow.row.points[i +1].y, graphRow.allocateToSecondYAxis);
-                        if(isInGraphRange(x0, y0) && isInGraphRange(x1, y1)) {
-                            graphics2D.drawLine(x0, y0, x1, y1);
+                    if(isGraphObjectInRange(graphRow)) {
+                        graphics2D.setColor(graphRow.colour);
+                        for (int i = 0; i < graphRow.row.points.length - 1; i++) {
+                            int x0 = getXOf(graphRow.row.points[i].x, graphRow.allocateToSecondXAxis);
+                            int x1 = getXOf(graphRow.row.points[i + 1].x, graphRow.allocateToSecondXAxis);
+                            int y0 = getYOf(graphRow.row.points[i].y, graphRow.allocateToSecondYAxis);
+                            int y1 = getYOf(graphRow.row.points[i +1].y, graphRow.allocateToSecondYAxis);
+                            if(isInGraphRange(x0, y0) && isInGraphRange(x1, y1)) {
+                                graphics2D.drawLine(x0, y0, x1, y1);
+                            }
                         }
                     }
                 }
 
                 //render functions
                 for (GraphFunction graphFunction : graphFunctions) {
-                    graphics2D.setColor(graphFunction.colour);
-                    for(int i = startX + 1; i < stopX; i++) {
-                        int y0 = getYOf(graphFunction.function.apply(getXAt(i - 1, graphFunction.allocateToSecondXAxis)), graphFunction.allocateToSecondYAxis);
-                        int y1 = getYOf(graphFunction.function.apply(getXAt(i, graphFunction.allocateToSecondXAxis)), graphFunction.allocateToSecondYAxis);
-                        if(isYInGraphRange(y0) && isYInGraphRange(y1)) {
-                            graphics2D.drawLine(i - 1,y0, i, y1);
+                    if(isGraphObjectInRange(graphFunction)) {
+                        graphics2D.setColor(graphFunction.colour);
+                        for(int i = startX + 1; i < stopX; i++) {
+                            int y0 = getYOf(graphFunction.function.apply(getXAt(i - 1, graphFunction.allocateToSecondXAxis)), graphFunction.allocateToSecondYAxis);
+                            int y1 = getYOf(graphFunction.function.apply(getXAt(i, graphFunction.allocateToSecondXAxis)), graphFunction.allocateToSecondYAxis);
+                            if(isYInGraphRange(y0) && isYInGraphRange(y1)) {
+                                graphics2D.drawLine(i - 1,y0, i, y1);
+                            }
                         }
                     }
                 }
 
                 //render ovals
                 for (GraphOval graphOval : graphOvals) {
-                    graphics2D.setColor(graphOval.colour);
-                    int x = getXOf(graphOval.oval.center.x, graphOval.allocateToSecondXAxis);
-                    int y = getYOf(graphOval.oval.center.y, graphOval.allocateToSecondYAxis);
-                    int x1;
-                    int y1;
-                    if(graphOval.allocateToSecondXAxis) {
-                        x1 = (int) (graphOval.oval.xHeight * xBScale);
-                    } else {
-                        x1 = (int) (graphOval.oval.xHeight * xAScale);
-                    }
-                    if(graphOval.allocateToSecondYAxis) {
-                        y1 = (int) (graphOval.oval.yHeight * yBScale);
-                    } else {
-                        y1 = (int) (graphOval.oval.yHeight * yAScale);
-                    }
-                    if(graphOval.filled) {
-                        graphics2D.fillOval(x, y, x1, y1);
-                    } else {
-                        graphics2D.drawOval(x, y, x1, y1);
+                    if(isGraphObjectInRange(graphOval)) {
+                        graphics2D.setColor(graphOval.colour);
+                        int x = getXOf(graphOval.oval.center.x, graphOval.allocateToSecondXAxis);
+                        int y = getYOf(graphOval.oval.center.y, graphOval.allocateToSecondYAxis);
+                        int x1;
+                        int y1;
+                        if(graphOval.allocateToSecondXAxis) {
+                            x1 = (int) (graphOval.oval.xHeight * xBScale);
+                        } else x1 = (int) (graphOval.oval.xHeight * xAScale);
+                        if(graphOval.allocateToSecondYAxis) {
+                            y1 = (int) (graphOval.oval.yHeight * yBScale);
+                        } else y1 = (int) (graphOval.oval.yHeight * yAScale);
+                        if(graphOval.filled) {
+                            graphics2D.fillOval(x, y, x1, y1);
+                        } else graphics2D.drawOval(x, y, x1, y1);
                     }
                 }
 
                 //render polygons
                 for (GraphPolygon graphPolygon : graphPolygons) {
-                    graphics2D.setColor(graphPolygon.colour);
-                    Polygon polygon = new Polygon();
-                    for (com.github.chaosmelone9.datavisualizer.datasets.Point point : graphPolygon.polygon.points) {
-                        int x = getXOf(point.x, graphPolygon.allocateToSecondXAxis);
-                        int y = getYOf(point.y, graphPolygon.allocateToSecondYAxis);
-                        //TODO do some fancy math to make this work
-                        if(x > stopX) {
-                            x = stopX;
-                        } else if(x < startX) {
-                            x = startX;
+                    if(isGraphObjectInRange(graphPolygon)) {
+                        graphics2D.setColor(graphPolygon.colour);
+                        Polygon polygon = new Polygon();
+                        for (com.github.chaosmelone9.datavisualizer.datasets.Point point : graphPolygon.polygon.points) {
+                            int x = getXOf(point.x, graphPolygon.allocateToSecondXAxis);
+                            int y = getYOf(point.y, graphPolygon.allocateToSecondYAxis);
+                            polygon.addPoint(x, y);
                         }
-                        if(y > stopY) {
-                            y = stopY;
-                        } else if(y < startY) {
-                            y = startY;
+                        if(graphPolygon.filled) {
+                            graphics2D.fillPolygon(polygon);
+                        } else {
+                            graphics2D.drawPolygon(polygon);
                         }
-                        polygon.addPoint(x, y);
-                    }
-                    if(graphPolygon.filled) {
-                        graphics2D.fillPolygon(polygon);
-                    } else {
-                        graphics2D.drawPolygon(polygon);
                     }
                 }
 
                 //render points
                 for (GraphPoint graphPoint : graphPoints) {
-                    graphics2D.setColor(graphPoint.colour);
-                    int x = getXOf(graphPoint.point.x, graphPoint.allocateToSecondXAxis);
-                    int y = getYOf(graphPoint.point.y, graphPoint.allocateToSecondYAxis);
-                    if(isInGraphRange(x, y)) {
-                        graphics2D.fillOval(x, y, pointWidth, pointWidth);
+                    if(isGraphObjectInRange(graphPoint)) {
+                        graphics2D.setColor(graphPoint.colour);
+                        int x = getXOf(graphPoint.point.x, graphPoint.allocateToSecondXAxis);
+                        int y = getYOf(graphPoint.point.y, graphPoint.allocateToSecondYAxis);
+                        if(isInGraphRange(x, y)) {
+                            graphics2D.fillOval(x, y, pointWidth, pointWidth);
+                        }
                     }
                 }
 
                 //render Markers
                 for (GraphMarker graphMarker : graphMarkers) {
-                    graphics2D.setColor(graphMarker.colour);
-                    if(graphMarker.xOrY) {
-                        int x = getXOf(graphMarker.value, graphMarker.allocateToSecondXAxis);
-                        graphics2D.drawLine(x, startY, x, stopY);
-                    } else {
-                        int y = getYOf(graphMarker.value, graphMarker.allocateToSecondYAxis);
-                        graphics2D.drawLine(startX, y, stopX, y);
+                    if (isGraphObjectInRange(graphMarker)) {
+                        graphics2D.setColor(graphMarker.colour);
+                        if(graphMarker.xOrY) {
+                            int x = getXOf(graphMarker.value, graphMarker.allocateToSecondXAxis);
+                            graphics2D.drawLine(x, startY, x, stopY);
+                        } else {
+                            int y = getYOf(graphMarker.value, graphMarker.allocateToSecondYAxis);
+                            graphics2D.drawLine(startX, y, stopX, y);
+                        }
                     }
                 }
 
 
                 /* resume rendering of ui*/
                 graphics2D.setStroke(uiStroke);
+                //draw over badly rendered parts ;)
+                graphics2D.setColor(uiBackgroundColour);
+                graphics2D.fillRect(0,0,width,startY);
+                graphics2D.fillRect(0,startY,startX, stopY - startY);
+                graphics2D.fillRect(stopX, startY, width - stopX, stopY - startY);
+                graphics2D.fillRect(0, stopY, width, height - stopY);
+
                 // create hatch marks and grid lines for y-axes.
                 for (int i = 0; i < numberYDivisions + 1; i++) {
                     int y = stopY - ((i * (stopY - startY)) / numberYDivisions);
@@ -387,7 +390,7 @@ public class Graph extends JPanel {
                 if(minYA < 0 && maxYA > 0) {
                     graphics2D.setColor(axisColour);
                     graphics2D.drawLine(startX, zeroYA, stopX, zeroYA);
-                    Rectangle labelRectangle = new Rectangle(startY - metrics.stringWidth("0") - 8, zeroYA - (metrics.getHeight() / 2), metrics.stringWidth("0") + 8, metrics.getHeight());
+                    Rectangle labelRectangle = new Rectangle(startX - metrics.stringWidth("0") - 8, zeroYA - (metrics.getHeight() / 2), metrics.stringWidth("0") + 8, metrics.getHeight());
                     renderHelper.drawBorderedRect(labelRectangle, backgroundColour, uiColour);
                     graphics2D.setColor(labelSecondColour);
                     graphics2D.drawString("0", startX - metrics.stringWidth("0") - 5, zeroYA + (metrics.getHeight() / 2) - 3);
@@ -496,9 +499,7 @@ public class Graph extends JPanel {
     private int getXOf(double x, boolean allocateToSecondXAxis) {
         if(allocateToSecondXAxis) {
             return getXBOf(x);
-        } else {
-            return getXAOf(x);
-        }
+        } else return getXAOf(x);
     }
 
     private int getYAOf(double y) {
@@ -512,9 +513,7 @@ public class Graph extends JPanel {
     private int getYOf(double y, boolean allocateToSecondYAxis) {
         if(allocateToSecondYAxis) {
             return getYBOf(y);
-        } else {
-            return getYAOf(y);
-        }
+        } else return getYAOf(y);
     }
 
     public double getXAAt(int x) throws OutOfGraphBoundsException {
@@ -532,9 +531,7 @@ public class Graph extends JPanel {
     public double getXAt(int x, boolean allocateToSecondXAxis) throws OutOfGraphBoundsException {
         if(allocateToSecondXAxis) {
             return getXBAt(x);
-        } else {
-            return getXAAt(x);
-        }
+        } else return getXAAt(x);
     }
 
     public double getYAAt(int y) throws OutOfGraphBoundsException {
@@ -552,9 +549,35 @@ public class Graph extends JPanel {
     public double getYAt(int y, boolean allocateToSecondYAxis) throws OutOfGraphBoundsException {
         if(allocateToSecondYAxis) {
             return getYBAt(y);
-        } else {
-            return getYAAt(y);
-        }
+        } else return getYAAt(y);
+    }
+
+    private double getMinX(boolean onSecondXAxis) {
+        if (onSecondXAxis) {
+            return minXB;
+        } else return minXA;
+    }
+
+    private double getMaxX(boolean onSecondXAxis) {
+        if (onSecondXAxis) {
+            return maxXB;
+        } else return maxXA;
+    }
+
+    private double getMinY(boolean onSecondYAxis) {
+        if (onSecondYAxis) {
+            return minYB;
+        } else return minYA;
+    }
+
+    private double getMaxY(boolean onSecondYAxis) {
+        if (onSecondYAxis) {
+            return maxYB;
+        } else return maxYA;
+    }
+
+    private boolean isGraphObjectInRange(GraphObject graphObject) {
+        return graphObject.isInRange(getMinX(graphObject.allocateToSecondXAxis), getMinY(graphObject.allocateToSecondYAxis), getMaxX(graphObject.allocateToSecondXAxis), getMaxY(graphObject.allocateToSecondYAxis));
     }
 
     public void addFunction(GraphFunction graphFunction) {
@@ -591,6 +614,15 @@ public class Graph extends JPanel {
         graphRows.add(graphRow);
         updateSecondAxes();
         repaint();
+    }
+
+    public void clearData() {
+        graphFunctions.clear();
+        graphMarkers.clear();
+        graphOvals.clear();
+        graphPoints.clear();
+        graphPolygons.clear();
+        graphRows.clear();
     }
 
     public int getMouseX() {
@@ -874,10 +906,19 @@ public class Graph extends JPanel {
 
     public void setUiColour(Color uiColour) {
         this.uiColour = uiColour;
+        repaint();
     }
 
     public Color getUiColour() {
         return uiColour;
+    }
+
+    public void setUiBackgroundColour(Color uiBackgroundColour) {
+        this.uiBackgroundColour = uiBackgroundColour;
+    }
+
+    public Color getUiBackgroundColour() {
+        return uiBackgroundColour;
     }
 
     public void setGraphStroke(Stroke graphStroke) {
@@ -980,12 +1021,6 @@ public class Graph extends JPanel {
 
     public Dimension getGraphSize() {
         return new Dimension(stopX - startX, stopY - startY);
-    }
-
-    private static class OutOfGraphBoundsException extends Exception {
-        public OutOfGraphBoundsException(String value) {
-            super(String.format("%s is out of graph bounds", value));
-        }
     }
 
     private class GraphListener implements MouseMotionListener, MouseListener, MouseWheelListener {

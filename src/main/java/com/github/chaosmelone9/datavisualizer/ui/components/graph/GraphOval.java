@@ -16,19 +16,43 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
 import com.github.chaosmelone9.datavisualizer.datasets.Oval;
+import com.github.chaosmelone9.datavisualizer.datasets.Point;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraphOval extends GraphObject {
-    Oval oval;
-    boolean filled;
+    protected Oval oval;
+    protected boolean filled;
 
     public GraphOval(Oval oval, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, colour);
         this.oval = oval;
         this.filled = filled;
+    }
+
+    @Override
+    protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
+        List<Point> list = new ArrayList<>();
+        double ovalMinX = oval.center.x - oval.xHeight;
+        double ovalMaxX = oval.center.x + oval.xHeight;
+        double ovalMinY = oval.center.y - oval.yHeight;
+        double ovalMaxY = oval.center.y + oval.yHeight;
+        list.add(new Point(ovalMinX, ovalMinY));
+        list.add(new Point(ovalMinX, ovalMaxY));
+        list.add(new Point(ovalMaxX, ovalMinY));
+        list.add(new Point(ovalMaxX, ovalMaxY));
+        list.add(oval.center);
+        boolean isInRange = false;
+        for (Point point : list) {
+            if(isPointInRange(minX, minY, maxX, maxY, point)) {
+                isInRange = true;
+            }
+        }
+        return isInRange;
     }
 }

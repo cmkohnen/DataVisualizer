@@ -18,7 +18,7 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.windows;
 
-import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.graph.Graph;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Graph;
 
 import javax.swing.*;
 import java.awt.*;
