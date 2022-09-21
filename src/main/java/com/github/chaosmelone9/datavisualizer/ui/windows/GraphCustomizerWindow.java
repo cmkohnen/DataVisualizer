@@ -62,6 +62,7 @@ public class GraphCustomizerWindow extends PopupWindow{
         add(new ColorPicker("Hatch mark Color", actionEvent -> graph.setHatchMarkColour(JColorChooser.showDialog(this, "Choose Colour", graph.getHatchMarkColour()))));
         add(new ColorPicker("Indicator Color", actionEvent -> graph.setIndicatorColour(JColorChooser.showDialog(this, "Choose Colour", graph.getIndicatorColour()))));
         add(new ColorPicker("UI Color", actionEvent -> graph.setUiColour(JColorChooser.showDialog(this, "Choose Colour", graph.getUiColour()))));
+        add(new ColorPicker("UI Background Color", actionEvent -> graph.setUiBackgroundColour(JColorChooser.showDialog(this, "Choose Colour", graph.getUiBackgroundColour()))));
 
         add(new JLabel("Background Image"));
         JButton backgroundImageButton = new JButton("Background Image");

@@ -26,8 +26,8 @@ import java.awt.*;
 public class GraphRow extends GraphObject {
     protected Row row;
 
-    public GraphRow(Row row, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, colour);
+    public GraphRow(Row row, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+        super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.row = row;
     }
 

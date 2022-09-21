@@ -24,8 +24,8 @@ import java.util.function.Function;
 public class GraphFunction extends GraphObject {
     protected Function<Double, Double> function;
 
-    public GraphFunction(Function<Double, Double> function, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, colour);
+    public GraphFunction(Function<Double, Double> function, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+        super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.function = function;
     }
 

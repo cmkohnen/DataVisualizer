@@ -31,13 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author "Christoph Kohnen", "Hovercraft Full of Eels", "Rodrigo Azevedo"
  * <p>
- * The Base of this Component is an improved version of Hovercraft Full of Eels (<a href="https://stackoverflow.com/users/522444/hovercraft-full-of-eels">...</a>)
- * answer on StackOverflow: <a href="https://stackoverflow.com/a/8693635/753012">...</a> by Rodrigo Azevedo. Huge credits to them for figuring out the maths behind this.
+ * The Base of this Component is an improved version of <a href="https://stackoverflow.com/users/522444/hovercraft-full-of-eels">Hovercraft Full of Eels</a>
+ * <a href="https://stackoverflow.com/a/8693635/753012">answer on StackOverflow</a> by Rodrigo Azevedo. Huge credits to them for figuring out the maths behind this.
  * However, this is heavily modified to include e.g. multiple rows, mathematical functions two y-axes, etc.
  */
+@SuppressWarnings("unused")
 public class Graph extends JPanel {
 
     private final Main instance;
@@ -56,7 +56,7 @@ public class Graph extends JPanel {
     private int labelPadding = GraphConfig.DEFAULT_LABEL_PADDING;
     private int titlePadding = GraphConfig.DEFAULT_TITLE_PADDING;
 
-    private int pointWidth = GraphConfig.DEFAULT_POINT_WIDTH;
+    private int pointRadius = GraphConfig.DEFAULT_POINT_WIDTH;
     private int numberXDivisions = GraphConfig.DEFAULT_NUMBER_X_DIVISIONS;
     private int numberYDivisions = GraphConfig.DEFAULT_NUMBER_Y_DIVISIONS;
 
@@ -113,6 +113,9 @@ public class Graph extends JPanel {
     private int startY;
     private int stopY;
 
+    private int graphWidth;
+    private int graphHeight;
+
     private double xAScale;
     private double xBScale;
     private double yAScale;
@@ -165,10 +168,14 @@ public class Graph extends JPanel {
                 if(hasSecondYAxis) {
                     this.stopX -= labelPadding;
                 }
-                this.xAScale = (stopX - startX) / (maxXA - minXA);
-                this.xBScale = (stopX - startX) / (maxXB - minXB);
-                this.yAScale = (stopY - startY) / (maxYA - minYA);
-                this.yBScale = (stopY - startY) / (maxYB - minYB);
+
+                this.graphWidth = stopX - startX;
+                this.graphHeight = stopY - startY;
+
+                this.xAScale = graphWidth / (maxXA - minXA);
+                this.xBScale = graphWidth / (maxXB - minXB);
+                this.yAScale = graphHeight / (maxYA - minYA);
+                this.yBScale = graphHeight / (maxYB - minYB);
 
                 //figure out where 0s are
                 this.zeroXA = (int) -(minXA * xAScale) + startX;
@@ -186,18 +193,16 @@ public class Graph extends JPanel {
 
                 //paint background
                 graphics2D.setColor(backgroundColour);
-                int backgroundWidth = stopX - startX;
-                int backgroundHeight = stopY - startY;
-                graphics2D.fillRect(startX, startY, backgroundWidth, backgroundHeight);
+                graphics2D.fillRect(startX, startY, graphWidth, graphHeight);
                 if(hasBackgroundImage) {
-                    graphics2D.drawImage(backgroundImage, startX, startY, backgroundWidth, backgroundHeight, this);
+                    graphics2D.drawImage(backgroundImage, startX, startY, graphWidth, graphHeight, this);
                 }
 
                 /* Begin rendering of Content */
                 graphics2D.setStroke(graphStroke);
                 //render rows
                 for (GraphRow graphRow : graphRows) {
-                    if(isGraphObjectInRange(graphRow)) {
+                    if(graphRow.visible && isGraphObjectInRange(graphRow)) {
                         graphics2D.setColor(graphRow.colour);
                         for (int i = 0; i < graphRow.row.points.length - 1; i++) {
                             int x0 = getXOf(graphRow.row.points[i].x, graphRow.allocateToSecondXAxis);
@@ -213,7 +218,7 @@ public class Graph extends JPanel {
 
                 //render functions
                 for (GraphFunction graphFunction : graphFunctions) {
-                    if(isGraphObjectInRange(graphFunction)) {
+                    if(graphFunction.visible && isGraphObjectInRange(graphFunction)) {
                         graphics2D.setColor(graphFunction.colour);
                         for(int i = startX + 1; i < stopX; i++) {
                             int y0 = getYOf(graphFunction.function.apply(getXAt(i - 1, graphFunction.allocateToSecondXAxis)), graphFunction.allocateToSecondYAxis);
@@ -227,7 +232,7 @@ public class Graph extends JPanel {
 
                 //render ovals
                 for (GraphOval graphOval : graphOvals) {
-                    if(isGraphObjectInRange(graphOval)) {
+                    if(graphOval.visible && isGraphObjectInRange(graphOval)) {
                         graphics2D.setColor(graphOval.colour);
                         int x = getXOf(graphOval.oval.center.x, graphOval.allocateToSecondXAxis);
                         int y = getYOf(graphOval.oval.center.y, graphOval.allocateToSecondYAxis);
@@ -247,7 +252,7 @@ public class Graph extends JPanel {
 
                 //render polygons
                 for (GraphPolygon graphPolygon : graphPolygons) {
-                    if(isGraphObjectInRange(graphPolygon)) {
+                    if(graphPolygon.visible && isGraphObjectInRange(graphPolygon)) {
                         graphics2D.setColor(graphPolygon.colour);
                         Polygon polygon = new Polygon();
                         for (com.github.chaosmelone9.datavisualizer.datasets.Point point : graphPolygon.polygon.points) {
@@ -265,19 +270,19 @@ public class Graph extends JPanel {
 
                 //render points
                 for (GraphPoint graphPoint : graphPoints) {
-                    if(isGraphObjectInRange(graphPoint)) {
+                    if(graphPoint.visible && isGraphObjectInRange(graphPoint)) {
                         graphics2D.setColor(graphPoint.colour);
                         int x = getXOf(graphPoint.point.x, graphPoint.allocateToSecondXAxis);
                         int y = getYOf(graphPoint.point.y, graphPoint.allocateToSecondYAxis);
                         if(isInGraphRange(x, y)) {
-                            graphics2D.fillOval(x, y, pointWidth, pointWidth);
+                            graphics2D.fillOval(x, y, pointRadius, pointRadius);
                         }
                     }
                 }
 
                 //render Markers
                 for (GraphMarker graphMarker : graphMarkers) {
-                    if (isGraphObjectInRange(graphMarker)) {
+                    if (graphMarker.visible && isGraphObjectInRange(graphMarker)) {
                         graphics2D.setColor(graphMarker.colour);
                         if(graphMarker.xOrY) {
                             int x = getXOf(graphMarker.value, graphMarker.allocateToSecondXAxis);
@@ -295,13 +300,13 @@ public class Graph extends JPanel {
                 //draw over badly rendered parts ;)
                 graphics2D.setColor(uiBackgroundColour);
                 graphics2D.fillRect(0,0,width,startY);
-                graphics2D.fillRect(0,startY,startX, stopY - startY);
-                graphics2D.fillRect(stopX, startY, width - stopX, stopY - startY);
+                graphics2D.fillRect(0,startY,startX, graphHeight);
+                graphics2D.fillRect(stopX, startY, width - stopX, graphHeight);
                 graphics2D.fillRect(0, stopY, width, height - stopY);
 
                 // create hatch marks and grid lines for y-axes.
                 for (int i = 0; i < numberYDivisions + 1; i++) {
-                    int y = stopY - ((i * (stopY - startY)) / numberYDivisions);
+                    int y = stopY - ((i * graphHeight) / numberYDivisions);
                     if(i % 10 == 0) {
                         if(drawYGrid) {
                             graphics2D.setColor(gridColour);
@@ -321,17 +326,17 @@ public class Graph extends JPanel {
                     } else if(drawYAHatchMarks || drawYBHatchMarks) {
                         graphics2D.setColor(hatchMarkColour);
                         if(drawYAHatchMarks) {
-                            graphics2D.drawLine(startX, y, startX + pointWidth, y);
+                            graphics2D.drawLine(startX, y, startX + pointRadius, y);
                         }
                         if(hasSecondYAxis && drawYBHatchMarks) {
-                            graphics2D.drawLine(stopX, y, stopX - pointWidth, y);
+                            graphics2D.drawLine(stopX, y, stopX - pointRadius, y);
                         }
                     }
                 }
 
                 // create hatch marks and grid lines for x-axis.
                 for (int i = 0; i < numberXDivisions + 1; i++) {
-                    int x = i * (stopX - startX) / numberXDivisions + startX;
+                    int x = i * graphWidth / numberXDivisions + startX;
                     if(i % 10 == 0) {
                         if(drawXGrid) {
                             graphics2D.setColor(gridColour);
@@ -351,10 +356,10 @@ public class Graph extends JPanel {
                     } else if(drawXAHatchMarks || drawXBHatchMarks) {
                         graphics2D.setColor(hatchMarkColour);
                         if(drawXAHatchMarks) {
-                            graphics2D.drawLine(x, stopY, x, stopY - pointWidth);
+                            graphics2D.drawLine(x, stopY, x, stopY - pointRadius);
                         }
                         if(hasSecondXAxis && drawXBHatchMarks) {
-                            graphics2D.drawLine(x, startY, x, startY + pointWidth);
+                            graphics2D.drawLine(x, startY, x, startY + pointRadius);
                         }
                     }
                 }
@@ -436,6 +441,16 @@ public class Graph extends JPanel {
                         graphics2D.setColor(labelColour);
                         graphics2D.drawString(label.toString(), labelX + 3, mouseY - 3);
                     }
+                }
+
+                if(minXA > maxXA || minXB > maxXB || minYA > maxYA || minYB > minYB) {
+                    Rectangle rectangle = new Rectangle((int) (startX + 0.05 * graphWidth), (int) (startY + 0.05 * graphHeight), (int) (0.9 * graphWidth), (int) (0.9 * graphHeight));
+                    renderHelper.drawBorderedRect(rectangle, uiBackgroundColour, uiColour);
+                    String wrongDimensions = "Wrong Dimensions configured.";
+                    BufferedImage image = ImageIO.read(instance.getFetcher().fetch("warning.png"));
+                    graphics2D.drawImage(image, (graphWidth / 2) - 25 + startX, (graphHeight / 2) - 35 + startY, 50, 50, this);
+                    graphics2D.setColor(labelColour);
+                    graphics2D.drawString(wrongDimensions, (graphWidth / 2) - (metrics.stringWidth(wrongDimensions) / 2) + startX, (graphHeight / 2) + (metrics.getHeight() / 2) + 20 + startY);
                 }
 
                 /*cleanup*/
@@ -689,13 +704,13 @@ public class Graph extends JPanel {
         return titlePadding;
     }
 
-    public void setPointWidth(int pointWidth) {
-        this.pointWidth = pointWidth;
+    public void setPointRadius(int pointRadius) {
+        this.pointRadius = pointRadius;
         repaint();
     }
 
-    public int getPointWidth() {
-        return pointWidth;
+    public int getPointRadius() {
+        return pointRadius;
     }
 
     public void setNumberXDivisions(int numberXDivisions) {
@@ -1020,7 +1035,7 @@ public class Graph extends JPanel {
     }
 
     public Dimension getGraphSize() {
-        return new Dimension(stopX - startX, stopY - startY);
+        return new Dimension(graphWidth, graphHeight);
     }
 
     private class GraphListener implements MouseMotionListener, MouseListener, MouseWheelListener {

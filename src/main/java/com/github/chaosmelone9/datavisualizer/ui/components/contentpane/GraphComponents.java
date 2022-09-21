@@ -18,12 +18,13 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane;
 
+import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class GraphComponents extends JPanel {
     public GraphComponents() {
         super();
-        setBackground(Color.BLUE);
+        setBackground(Adwaita.BLUE2);
     }
 }

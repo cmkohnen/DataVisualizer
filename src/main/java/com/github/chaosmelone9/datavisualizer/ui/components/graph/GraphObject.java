@@ -18,24 +18,28 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
+import com.github.chaosmelone9.datavisualizer.datasets.Point;
+
 import java.awt.*;
 
 public class GraphObject {
     protected Color colour;
     protected boolean allocateToSecondYAxis;
     protected boolean allocateToSecondXAxis;
+    protected boolean visible;
 
-    public GraphObject(boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour) {
+    public GraphObject(boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
         this.colour = colour;
         this.allocateToSecondYAxis = allocateToSecondYAxis;
         this.allocateToSecondXAxis = allocateToSecondXAxis;
+        this.visible = visible;
     }
 
     protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
         return false;
     }
 
-    protected boolean isPointInRange(double minX, double minY, double maxX, double maxY, com.github.chaosmelone9.datavisualizer.datasets.Point point) {
+    protected boolean isPointInRange(double minX, double minY, double maxX, double maxY, Point point) {
         return (minX <= point.x && point.x <= maxX) || (minY <= point.y && point.y <= maxY);
     }
 }

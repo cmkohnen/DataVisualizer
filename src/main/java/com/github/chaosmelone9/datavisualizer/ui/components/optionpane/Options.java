@@ -18,6 +18,8 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.components.optionpane;
 
+import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -31,7 +33,7 @@ public class Options extends JPanel {
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(new JLabel("Example Text"), constraints);
-        setBackground(new Color(33, 62, 176));
+        setBackground(Adwaita.BLUE5);
         for(int i = 0; i < 100; i++) {
             constraints.gridy = i + 1;
             add(new JButton("Click me"), constraints);

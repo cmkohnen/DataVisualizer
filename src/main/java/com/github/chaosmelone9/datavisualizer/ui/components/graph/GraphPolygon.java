@@ -27,8 +27,8 @@ public class GraphPolygon extends GraphObject {
     protected Polygon polygon;
     protected boolean filled;
 
-    protected GraphPolygon(Polygon polygon, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, colour);
+    protected GraphPolygon(Polygon polygon, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled, boolean visible) {
+        super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.polygon = polygon;
         this.filled = filled;
     }
