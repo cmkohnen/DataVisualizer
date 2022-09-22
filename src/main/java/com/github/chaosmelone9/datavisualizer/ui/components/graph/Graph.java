@@ -443,7 +443,7 @@ public class Graph extends JPanel {
                     }
                 }
 
-                if(minXA > maxXA || minXB > maxXB || minYA > maxYA || minYB > minYB) {
+                if(minXA > maxXA || minXB > maxXB || minYA > maxYA || minYB > maxYB) {
                     Rectangle rectangle = new Rectangle((int) (startX + 0.05 * graphWidth), (int) (startY + 0.05 * graphHeight), (int) (0.9 * graphWidth), (int) (0.9 * graphHeight));
                     renderHelper.drawBorderedRect(rectangle, uiBackgroundColour, uiColour);
                     String wrongDimensions = "Wrong Dimensions configured.";
@@ -638,6 +638,77 @@ public class Graph extends JPanel {
         graphPoints.clear();
         graphPolygons.clear();
         graphRows.clear();
+    }
+
+    //TODO use some fancy math
+    public void zoomXA(double factor) {
+        setMinXA(minXA + minXA * factor);
+        setMaxXA(maxXA - maxXA * factor);
+    }
+
+    public void zoomXB(double factor) {
+        setMinXB(minXB + minXA * factor);
+        setMaxXB(maxXB - maxXB * factor);
+    }
+
+    public void zoomYA(double factor) {
+        setMinYA(minYA + minYA * factor);
+        setMaxYA(maxYA - maxYA * factor);
+    }
+
+    public void zoomYB(double factor) {
+        setMinYB(minYB + minYB * factor);
+        setMaxYB(maxYB - maxYB * factor);
+    }
+
+    public void zoomX(double factor) {
+        zoomXA(factor);
+        zoomXB(factor);
+    }
+
+    public void zoomY(double factor) {
+        zoomYA(factor);
+        zoomYB(factor);
+    }
+
+    public void zoom(double factor) {
+        zoomX(factor);
+        zoomY(factor);
+    }
+
+    public void moveXA(double value) {
+        setMinXA(minXA + value);
+        setMaxXA(maxXA + value);
+    }
+
+    public void moveXB(double value) {
+        setMinXB(minXB + value);
+        setMaxXB(maxXB + value);
+    }
+
+    public void moveYA(double value) {
+        setMinYA(minYA + value);
+        setMaxYA(maxYA + value);
+    }
+
+    public void moveYB(double value) {
+        setMinYB(minYB + value);
+        setMaxYB(maxYB + value);
+    }
+
+    public void moveX(double value) {
+        moveXA(value);
+        moveXB(value);
+    }
+
+    public void moveY(double value) {
+        moveYA(value);
+        moveYB(value);
+    }
+
+    public void move(double value) {
+        moveX(value);
+        moveY(value);
     }
 
     public int getMouseX() {
@@ -930,6 +1001,7 @@ public class Graph extends JPanel {
 
     public void setUiBackgroundColour(Color uiBackgroundColour) {
         this.uiBackgroundColour = uiBackgroundColour;
+        repaint();
     }
 
     public Color getUiBackgroundColour() {
@@ -956,7 +1028,6 @@ public class Graph extends JPanel {
 
     public void setMinXA(double minXA) {
         this.minXA = minXA;
-        repaint();
     }
 
     public double getMinXA() {
@@ -965,7 +1036,6 @@ public class Graph extends JPanel {
 
     public void setMinXB(double minXB) {
         this.minXB = minXB;
-        repaint();
     }
 
     public double getMinXB() {
@@ -974,7 +1044,6 @@ public class Graph extends JPanel {
 
     public void setMaxXA(double maxXA) {
         this.maxXA = maxXA;
-        repaint();
     }
 
     public double getMaxXA() {
@@ -983,7 +1052,6 @@ public class Graph extends JPanel {
 
     public void setMaxXB(double maxXB) {
         this.maxXB = maxXB;
-        repaint();
     }
 
     public double getMaxXB() {
@@ -992,7 +1060,6 @@ public class Graph extends JPanel {
 
     public void setMinYA(double minYA) {
         this.minYA = minYA;
-        repaint();
     }
 
     public double getMinYA() {
@@ -1001,7 +1068,6 @@ public class Graph extends JPanel {
 
     public void setMinYB(double minYB) {
         this.minYB = minYB;
-        repaint();
     }
 
     public double getMinYB() {
@@ -1010,7 +1076,6 @@ public class Graph extends JPanel {
 
     public void setMaxYA(double maxYA) {
         this.maxYA = maxYA;
-        repaint();
     }
 
     public double getMaxYA() {
@@ -1019,7 +1084,6 @@ public class Graph extends JPanel {
 
     public void setMaxYB(double maxYB) {
         this.maxYB = maxYB;
-        repaint();
     }
 
     public double getMaxYB() {
@@ -1028,9 +1092,9 @@ public class Graph extends JPanel {
 
     public BufferedImage renderToImage() {
         BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = image.createGraphics();
-        paint(g2d);
-        g2d.dispose();
+        Graphics2D graphics2D = image.createGraphics();
+        paint(graphics2D);
+        graphics2D.dispose();
         return image;
     }
 
@@ -1039,48 +1103,79 @@ public class Graph extends JPanel {
     }
 
     private class GraphListener implements MouseMotionListener, MouseListener, MouseWheelListener {
+        private int deltaX;
+        private int deltaY;
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
+            deltaX = mouseEvent.getX() - mouseX;
+            deltaY = mouseEvent.getY() - mouseY;
             mouseX = mouseEvent.getX();
             mouseY = mouseEvent.getY();
+            if(mouseEvent.isAltDown() && isInGraphRange(mouseX, mouseY)) {
+                if(!mouseEvent.isShiftDown()) {
+                    moveYA(deltaY / yAScale);
+                    moveYB(deltaY / yBScale);
+                }
+                if(!mouseEvent.isControlDown()) {
+                    moveXA(-deltaX / xAScale);
+                    moveXB(-deltaX / xBScale);
+                }
+            }
             repaint();
         }
 
         @Override
         public void mouseMoved(MouseEvent mouseEvent) {
+            deltaX = mouseEvent.getX() - mouseX;
+            deltaY = mouseEvent.getY() - mouseY;
             mouseX = mouseEvent.getX();
             mouseY = mouseEvent.getY();
             repaint();
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(MouseEvent mouseEvent) {
+            System.out.println("click");
+        }
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {
 
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mouseReleased(MouseEvent mouseEvent) {
 
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseEntered(MouseEvent mouseEvent) {
 
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void mouseExited(MouseEvent mouseEvent) {
 
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
-
+        public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+            if(isInGraphRange(mouseX, mouseY)) {
+                if(mouseWheelEvent.isShiftDown()) {
+                    if(mouseWheelEvent.getWheelRotation() > 0) {
+                        zoomX(0.1);
+                    } else zoomX(-0.1);
+                } else if(mouseWheelEvent.isControlDown()) {
+                    if(mouseWheelEvent.getWheelRotation() > 0) {
+                        zoomY(0.1);
+                    } else zoomY(-0.1);
+                } else {
+                    if(mouseWheelEvent.getWheelRotation() > 0) {
+                        zoom(0.1);
+                    } else zoom(-0.1);
+                }
+                repaint();
+            }
         }
     }
 }
