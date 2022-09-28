@@ -28,28 +28,51 @@ public class GraphZoomWindow extends PopupWindow {
         super("Zoom", window);
         Dimension spinnerDimension = new Dimension(60, 25);
         JSpinner minXA = new JSpinner(new SpinnerNumberModel(graph.getMinXA(), null, null, 0.1));
-        minXA.addChangeListener(e -> graph.setMinXA((double) minXA.getValue()));
+        minXA.addChangeListener(e -> {
+            graph.setMinXA((double) minXA.getValue());
+            graph.repaint();
+        });
         minXA.setPreferredSize(spinnerDimension);
         JSpinner maxXA = new JSpinner(new SpinnerNumberModel(graph.getMaxXA(), null, null, 0.1));
-        maxXA.addChangeListener(e -> graph.setMaxXA((double) maxXA.getValue()));
+        maxXA.addChangeListener(e -> {
+            graph.setMaxXA((double) maxXA.getValue());
+            graph.repaint();
+        });
         maxXA.setPreferredSize(spinnerDimension);
         JSpinner minXB = new JSpinner(new SpinnerNumberModel(graph.getMinXB(), null, null, 0.1));
-        minXB.addChangeListener(e -> graph.setMinXB((double) minXB.getValue()));
+        minXB.addChangeListener(e -> {
+            graph.setMinXB((double) minXB.getValue());
+            graph.repaint();
+        });
         minXB.setPreferredSize(spinnerDimension);
         JSpinner maxXB = new JSpinner(new SpinnerNumberModel(graph.getMaxXB(), null, null, 0.1));
-        maxXB.addChangeListener(e -> graph.setMaxXB((double) maxXB.getValue()));
+        maxXB.addChangeListener(e -> {
+            graph.setMaxXB((double) maxXB.getValue());
+            graph.repaint();
+        });
         maxXB.setPreferredSize(spinnerDimension);
         JSpinner minYA = new JSpinner(new SpinnerNumberModel(graph.getMinYA(), null, null, 0.1));
-        minYA.addChangeListener(e -> graph.setMinYA((double) minYA.getValue()));
+        minYA.addChangeListener(e -> {
+            graph.setMinYA((double) minYA.getValue());
+            graph.repaint();
+        });
         minYA.setPreferredSize(spinnerDimension);
         JSpinner maxYA = new JSpinner(new SpinnerNumberModel(graph.getMaxYA(), null, null, 0.1));
-        maxYA.addChangeListener(e -> graph.setMaxYA((double) maxYA.getValue()));
+        maxYA.addChangeListener(e -> {
+            graph.setMaxYA((double) maxYA.getValue());
+            graph.repaint();
+        });
         maxYA.setPreferredSize(spinnerDimension);
         JSpinner minYB = new JSpinner(new SpinnerNumberModel(graph.getMinYB(), null, null, 0.1));
-        minYB.addChangeListener(e -> graph.setMinYB((double) minYB.getValue()));
+        minYB.addChangeListener(e -> {
+            graph.setMinYB((double) minYB.getValue());
+            graph.repaint();
+        });
         minYB.setPreferredSize(spinnerDimension);
         JSpinner maxYB = new JSpinner(new SpinnerNumberModel(graph.getMaxYB(), null, null, 0.1));
-        maxYB.addChangeListener(e -> graph.setMaxYB((double) maxYB.getValue()));
+        maxYB.addChangeListener(e -> {
+            graph.setMaxYB((double) maxYB.getValue()); graph.repaint();
+        });
         maxYB.setPreferredSize(spinnerDimension);
 
         boolean xB = graph.hasSecondXAxis();

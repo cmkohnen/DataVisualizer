@@ -73,4 +73,6 @@ public class GraphConfig {
     public static final int DEFAULT_MIN_YB = 0;
     public static final int DEFAULT_MAY_YA = 10;
     public static final int DEFAULT_MAX_YB = 100;
+
+    public static final double DEFAULT_ZOOM_FACTOR = 0.1;
 }

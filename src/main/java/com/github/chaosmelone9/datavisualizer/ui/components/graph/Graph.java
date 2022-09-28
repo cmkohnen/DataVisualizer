@@ -100,6 +100,8 @@ public class Graph extends JPanel {
     private double maxYA = GraphConfig.DEFAULT_MAY_YA;
     private double maxYB = GraphConfig.DEFAULT_MAX_YB;
 
+    private double zoomFactor = GraphConfig.DEFAULT_ZOOM_FACTOR;
+
     private boolean hasSecondYAxis = false;
     private boolean hasSecondXAxis = false;
     private boolean hasTitle = false;
@@ -640,25 +642,28 @@ public class Graph extends JPanel {
         graphRows.clear();
     }
 
-    //TODO use some fancy math
     public void zoomXA(double factor) {
-        setMinXA(minXA + minXA * factor);
-        setMaxXA(maxXA - maxXA * factor);
+        double deltaXA = (maxXA - minXA) * factor;
+        setMinXA(minXA + deltaXA);
+        setMaxXA(maxXA - deltaXA);
     }
 
     public void zoomXB(double factor) {
-        setMinXB(minXB + minXA * factor);
-        setMaxXB(maxXB - maxXB * factor);
+        double deltaXB = (maxXB - minXB) * factor;
+        setMinXB(minXB + deltaXB);
+        setMaxXB(maxXB - deltaXB);
     }
 
     public void zoomYA(double factor) {
-        setMinYA(minYA + minYA * factor);
-        setMaxYA(maxYA - maxYA * factor);
+        double deltaYA = (maxYA - minYA) * factor;
+        setMinYA(minYA + deltaYA);
+        setMaxYA(maxYA - deltaYA);
     }
 
     public void zoomYB(double factor) {
-        setMinYB(minYB + minYB * factor);
-        setMaxYB(maxYB - maxYB * factor);
+        double deltaYB = (maxYB - minYB) * factor;
+        setMinYB(minYB + deltaYB);
+        setMaxYB(maxYB - deltaYB);
     }
 
     public void zoomX(double factor) {
@@ -674,6 +679,53 @@ public class Graph extends JPanel {
     public void zoom(double factor) {
         zoomX(factor);
         zoomY(factor);
+    }
+
+    private void mouseZoomXA(double factor) {
+        double xRange = (maxXA - minXA);
+        double deltaMax = xRange / ((mouseX - startX) / xAScale);
+        double deltaMin = xRange / ((stopX - mouseX) / xAScale);
+        setMinXA(minXA + deltaMin * factor);
+        setMaxXA(maxXA - deltaMax * factor);
+    }
+
+    private void mouseZoomXB(double factor) {
+        double xRange = (maxXB - minXB);
+        double deltaMax = xRange / ((mouseX - startX) / xBScale);
+        double deltaMin = xRange / ((stopX - mouseX) / xBScale);
+        setMinXB(minXB + deltaMin * factor);
+        setMaxXB(maxXB - deltaMax * factor);
+    }
+
+    private void mouseZoomYA(double factor) {
+        double yRange = (maxYA - minYA);
+        double deltaMin = yRange / ((mouseY - startY) / yAScale);
+        double deltaMax = yRange / ((stopY - mouseY) / yAScale);
+        setMinYA(minYA + deltaMin * factor);
+        setMaxYA(maxYA - deltaMax * factor);
+    }
+
+    private void mouseZoomYB(double factor) {
+        double yRange = (maxYB - minYB);
+        double deltaMin = yRange / ((mouseY - startY) / yBScale);
+        double deltaMax = yRange / ((stopY - mouseY) / yBScale);
+        setMinYB(minYB + deltaMin * factor);
+        setMaxYB(maxYB - deltaMax * factor);
+    }
+
+    private void mouseZoomX(double factor) {
+        mouseZoomXA(factor);
+        mouseZoomXB(factor);
+    }
+
+    private void mouseZoomY(double factor) {
+        mouseZoomYA(factor);
+        mouseZoomYB(factor);
+    }
+
+    private void mouseZoom(double factor) {
+        mouseZoomX(factor);
+        mouseZoomY(factor);
     }
 
     public void moveXA(double value) {
@@ -1090,6 +1142,14 @@ public class Graph extends JPanel {
         return maxYB;
     }
 
+    public void setZoomFactor(double factor) {
+        this.zoomFactor = factor;
+    }
+
+    public double getZoomFactor() {
+        return zoomFactor;
+    }
+
     public BufferedImage renderToImage() {
         BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics2D = image.createGraphics();
@@ -1111,14 +1171,16 @@ public class Graph extends JPanel {
             deltaY = mouseEvent.getY() - mouseY;
             mouseX = mouseEvent.getX();
             mouseY = mouseEvent.getY();
-            if(mouseEvent.isAltDown() && isInGraphRange(mouseX, mouseY)) {
-                if(!mouseEvent.isShiftDown()) {
-                    moveYA(deltaY / yAScale);
-                    moveYB(deltaY / yBScale);
-                }
-                if(!mouseEvent.isControlDown()) {
-                    moveXA(-deltaX / xAScale);
-                    moveXB(-deltaX / xBScale);
+            if(isInGraphRange(mouseX, mouseY)) {
+                if(mouseEvent.isAltDown()) {
+                    if(!mouseEvent.isShiftDown()) {
+                        moveYA(deltaY / yAScale);
+                        moveYB(deltaY / yBScale);
+                    }
+                    if(!mouseEvent.isControlDown()) {
+                        moveXA(-deltaX / xAScale);
+                        moveXB(-deltaX / xBScale);
+                    }
                 }
             }
             repaint();
@@ -1130,7 +1192,9 @@ public class Graph extends JPanel {
             deltaY = mouseEvent.getY() - mouseY;
             mouseX = mouseEvent.getX();
             mouseY = mouseEvent.getY();
-            repaint();
+            if(labelMouseXY || indicateMouseX || indicateMouseY) {
+                repaint();
+            }
         }
 
         @Override
@@ -1163,16 +1227,16 @@ public class Graph extends JPanel {
             if(isInGraphRange(mouseX, mouseY)) {
                 if(mouseWheelEvent.isShiftDown()) {
                     if(mouseWheelEvent.getWheelRotation() > 0) {
-                        zoomX(0.1);
-                    } else zoomX(-0.1);
+                        mouseZoomX(zoomFactor);
+                    } else mouseZoomX(-zoomFactor);
                 } else if(mouseWheelEvent.isControlDown()) {
                     if(mouseWheelEvent.getWheelRotation() > 0) {
-                        zoomY(0.1);
-                    } else zoomY(-0.1);
+                        mouseZoomY(zoomFactor);
+                    } else mouseZoomY(-zoomFactor);
                 } else {
                     if(mouseWheelEvent.getWheelRotation() > 0) {
-                        zoom(0.1);
-                    } else zoom(-0.1);
+                        mouseZoom(zoomFactor);
+                    } else mouseZoom(-zoomFactor);
                 }
                 repaint();
             }
