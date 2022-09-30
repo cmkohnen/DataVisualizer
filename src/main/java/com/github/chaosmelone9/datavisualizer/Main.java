@@ -26,7 +26,6 @@ import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Optional;
 
 public class Main {
     private final DataDirectory dataDirectory;
@@ -73,7 +72,7 @@ public class Main {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (Exception ignored) {}
-                new ErrorWindow(true, "Something went wrong", e, false);
+                new ErrorWindow(true, "Something went wrong", e, true);
             }
         }
 

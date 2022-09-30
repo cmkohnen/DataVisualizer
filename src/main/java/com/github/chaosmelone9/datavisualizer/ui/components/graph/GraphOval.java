@@ -53,6 +53,9 @@ public class GraphOval extends GraphObject {
                 isInRange = true;
             }
         }
+        if(ovalMaxX > maxX && ovalMinX < minX && ovalMaxY > maxY && ovalMinY < minY) {
+            isInRange = true;
+        }
         return isInRange;
     }
 }
