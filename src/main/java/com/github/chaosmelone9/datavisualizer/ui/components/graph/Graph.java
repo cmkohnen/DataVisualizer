@@ -37,7 +37,6 @@ import java.util.List;
  * <a href="https://stackoverflow.com/a/8693635/753012">answer on StackOverflow</a> by Rodrigo Azevedo. Huge credits to them for figuring out the maths behind this.
  * However, this is heavily modified to include e.g. multiple rows, mathematical functions two y-axes, etc.
  */
-@SuppressWarnings("unused")
 public class Graph extends JPanel {
 
     private final Main instance;
@@ -56,7 +55,7 @@ public class Graph extends JPanel {
     private int labelPadding = GraphConfig.DEFAULT_LABEL_PADDING;
     private int titlePadding = GraphConfig.DEFAULT_TITLE_PADDING;
 
-    private int pointRadius = GraphConfig.DEFAULT_POINT_WIDTH;
+    private int pointRadius = GraphConfig.DEFAULT_POINT_RADIUS;
     private int numberXDivisions = GraphConfig.DEFAULT_NUMBER_X_DIVISIONS;
     private int numberYDivisions = GraphConfig.DEFAULT_NUMBER_Y_DIVISIONS;
 

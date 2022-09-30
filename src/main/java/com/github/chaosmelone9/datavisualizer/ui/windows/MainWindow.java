@@ -19,6 +19,7 @@
 package com.github.chaosmelone9.datavisualizer.ui.windows;
 
 import com.github.chaosmelone9.datavisualizer.Main;
+import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
 import com.github.chaosmelone9.datavisualizer.datasets.Oval;
 import com.github.chaosmelone9.datavisualizer.datasets.Point;
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
@@ -84,6 +85,8 @@ public class MainWindow extends JFrame {
                 e.getWindow().dispose();
             }
         });
+
+        System.out.println(GraphConfig.readJSONFromGraph(getContentPane().getGraph()));
     }
 
     public Main getInstance() {
