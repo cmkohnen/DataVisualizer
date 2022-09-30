@@ -85,8 +85,6 @@ public class MainWindow extends JFrame {
                 e.getWindow().dispose();
             }
         });
-
-        System.out.println(GraphConfig.readJSONFromGraph(getContentPane().getGraph()));
     }
 
     public Main getInstance() {

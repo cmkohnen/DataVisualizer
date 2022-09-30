@@ -131,6 +131,45 @@ public class GraphConfig {
         graph.setTitle((String) object.get("Title"));
         graph.setMinimumSize((Dimension) object.get("MinimumSize"));
         graph.setPadding((Integer) object.get("Padding"));
-        //TODO Copilot help i'm Stuck
+        graph.setLabelPadding((Integer) object.get("LabelPadding"));
+        graph.setTitlePadding((Integer) object.get("TitlePadding"));
+        graph.setPointRadius((Integer) object.get("PointRadius"));
+        graph.setNumberXDivisions((Integer) object.get("NumberXDivisions"));
+        graph.setNumberYDivisions((Integer) object.get("NumberYDivisions"));
+        graph.setDrawXGrid((Boolean) object.get("DrawXGrid"));
+        graph.setDrawYGrid((Boolean) object.get("DrawYGrid"));
+        graph.setDrawXAHatchMarks((Boolean) object.get("DrawXAHatchMarks"));
+        graph.setDrawXBHatchMarks((Boolean) object.get("DrawXBHatchMarks"));
+        graph.setDrawYAHatchMarks((Boolean) object.get("DrawYAHatchMarks"));
+        graph.setDrawYBHatchMarks((Boolean) object.get("DrawYBHatchMarks"));
+        graph.setDrawXALabels((Boolean) object.get("DrawXALabels"));
+        graph.setDrawXBLabels((Boolean) object.get("DrawXBLabels"));
+        graph.setDrawYALabels((Boolean) object.get("DrawYALabels"));
+        graph.setDrawYBLabels((Boolean) object.get("DrawYBLabels"));
+        graph.setIndicateMouseX((Boolean) object.get("IndicateMouseX"));
+        graph.setIndicateMouseY((Boolean) object.get("IndicateMouseY"));
+        graph.setLabelMouseXY((Boolean) object.get("LabelMouseXY"));
+        graph.setBackgroundColour((Color) object.get("BackgroundColour"));
+        graph.setGridColour((Color) object.get("GridColour"));
+        graph.setLabelColour((Color) object.get("LabelColour"));
+        graph.setLabelSecondColour((Color) object.get("LabelSecondColour"));
+        graph.setTitleColour((Color) object.get("TitleColour"));
+        graph.setAxisColour((Color) object.get("AxisColour"));
+        graph.setHatchMarkColour((Color) object.get("HatchMarkColour"));
+        graph.setIndicatorColour((Color) object.get("IndicatorColour"));
+        graph.setUiColour((Color) object.get("UIColour"));
+        graph.setUiBackgroundColour((Color) object.get("UIBackgroundColour"));
+        graph.setBackgroundImage((BufferedImage) object.get("BackgroundImage"));
+        graph.setGraphStroke((Stroke) object.get("GraphStroke"));
+        graph.setUiStroke((Stroke) object.get("UIStroke"));
+        graph.setMinXA((Double) object.get("MinXA"));
+        graph.setMinXB((Double) object.get("MinXB"));
+        graph.setMaxXA((Double) object.get("MaxXA"));
+        graph.setMaxXB((Double) object.get("MaxXB"));
+        graph.setMinYA((Double) object.get("MinYA"));
+        graph.setMinYB((Double) object.get("MinYB"));
+        graph.setMaxYA((Double) object.get("MaxYA"));
+        graph.setMaxYB((Double) object.get("MaxYB"));
+        graph.setZoomFactor((Double) object.get("ZoomFactor"));
     }
 }
