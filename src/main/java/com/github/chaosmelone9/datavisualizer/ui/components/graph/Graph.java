@@ -20,6 +20,8 @@ package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
 import com.github.chaosmelone9.datavisualizer.Main;
 import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
+import com.github.chaosmelone9.datavisualizer.ui.components.GraphData.GraphDataChangeListener;
+import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,6 +39,7 @@ import java.util.List;
  * <a href="https://stackoverflow.com/a/8693635/753012">answer on StackOverflow</a> by Rodrigo Azevedo. Huge credits to them for figuring out the maths behind this.
  * However, this is heavily modified to include e.g. multiple rows, mathematical functions two y-axes, etc.
  */
+@SuppressWarnings("unused")
 public class Graph extends JPanel {
 
     private final Main instance;
@@ -127,9 +130,15 @@ public class Graph extends JPanel {
     private int zeroYA;
     private int zeroYB;
 
-    public Graph(Main instance) {
+    public Graph(MainWindow window) {
         super();
-        this.instance = instance;
+        this.instance = window.getInstance();
+        window.getGraphDataSet().addListener((changeType, graphObject) -> {
+            switch (changeType) {
+                case ADD -> add(graphObject);
+                case REMOVE -> remove(graphObject);
+            }
+        });
         GraphListener listener = new GraphListener();
         addMouseMotionListener(listener);
         addMouseListener(listener);
@@ -596,38 +605,28 @@ public class Graph extends JPanel {
         return graphObject.isInRange(getMinX(graphObject.allocateToSecondXAxis), getMinY(graphObject.allocateToSecondYAxis), getMaxX(graphObject.allocateToSecondXAxis), getMaxY(graphObject.allocateToSecondYAxis));
     }
 
-    public void addFunction(GraphFunction graphFunction) {
-        graphFunctions.add(graphFunction);
+    public void add(GraphObject object) {
+        switch (object.getType()) {
+            case GRAPHFUNCTION -> graphFunctions.add((GraphFunction) object);
+            case GRAPHMARKER -> graphMarkers.add((GraphMarker) object);
+            case GRAPHOVAL -> graphOvals.add((GraphOval) object);
+            case GRAPHPOINT -> graphPoints.add((GraphPoint) object);
+            case GRAPHPOLYGON -> graphPolygons.add((GraphPolygon) object);
+            case GRAPHROW -> graphRows.add((GraphRow) object);
+        }
         updateSecondAxes();
         repaint();
     }
 
-    public void addMarker(GraphMarker graphMarker) {
-        graphMarkers.add(graphMarker);
-        updateSecondAxes();
-        repaint();
-    }
-
-    public void addOval(GraphOval graphOval) {
-        graphOvals.add(graphOval);
-        updateSecondAxes();
-        repaint();
-    }
-
-    public void addPoint(GraphPoint graphPoint) {
-        graphPoints.add(graphPoint);
-        updateSecondAxes();
-        repaint();
-    }
-
-    public void addPolygon(GraphPolygon graphPolygon) {
-        graphPolygons.add(graphPolygon);
-        updateSecondAxes();
-        repaint();
-    }
-
-    public void addRow(GraphRow graphRow) {
-        graphRows.add(graphRow);
+    public void remove(GraphObject object) {
+        switch (object.getType()) {
+            case GRAPHFUNCTION -> graphFunctions.remove((GraphFunction) object);
+            case GRAPHMARKER -> graphMarkers.remove((GraphMarker) object);
+            case GRAPHOVAL -> graphOvals.remove((GraphOval) object);
+            case GRAPHPOINT -> graphPoints.remove((GraphPoint) object);
+            case GRAPHPOLYGON -> graphPolygons.remove((GraphPolygon) object);
+            case GRAPHROW -> graphRows.remove((GraphRow) object);
+        }
         updateSecondAxes();
         repaint();
     }

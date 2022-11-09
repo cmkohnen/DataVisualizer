@@ -36,7 +36,7 @@ public class ContentPane extends JTabbedPane{
     private boolean graphDetached = false;
     public ContentPane(MainWindow window) {
         this.window = window;
-        this.graph = new Graph(window.getInstance());
+        this.graph = new Graph(window);
         add(graph, "Graph");
         add(table, "Table");
         add(graphComponents, "Functions and other markings");

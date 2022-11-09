@@ -19,15 +19,12 @@
 package com.github.chaosmelone9.datavisualizer.ui.windows;
 
 import com.github.chaosmelone9.datavisualizer.Main;
-import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
 import com.github.chaosmelone9.datavisualizer.datasets.Oval;
 import com.github.chaosmelone9.datavisualizer.datasets.Point;
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
+import com.github.chaosmelone9.datavisualizer.ui.components.GraphData.GraphDataSet;
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.ContentPane;
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphDataSet;
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphFunction;
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphMarker;
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphOval;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.*;
 import com.github.chaosmelone9.datavisualizer.ui.components.menubar.MenuBar;
 import com.github.chaosmelone9.datavisualizer.ui.components.optionpane.OptionPane;
 
@@ -46,6 +43,8 @@ public class MainWindow extends JFrame {
     private final ContentPane contentPane;
     private final JSplitPane splitPane;
 
+    private final GraphDataSet graphDataSet;
+
     private final MenuBar menuBar;
     public int dividerLocation = 200;
 
@@ -54,11 +53,11 @@ public class MainWindow extends JFrame {
     public MainWindow(Main instance) throws IOException {
         super();
         this.instance = instance;
-        this.optionPane = new OptionPane();
+        this.graphDataSet = new GraphDataSet();
+        this.optionPane = new OptionPane(this);
         this.contentPane = new ContentPane(this);
         this.splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, optionPane, contentPane);
         this.menuBar = new MenuBar(this);
-        GraphDataSet graphDataSet = new GraphDataSet(this);
         splitPane.setDividerLocation(dividerLocation);
 
         setTitle("DataVisualizer");
@@ -69,9 +68,10 @@ public class MainWindow extends JFrame {
         setJMenuBar(menuBar);
         setVisible(true);
 
-        graphDataSet.addFunction(new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), false, false, Adwaita.DARK5, true));
-        graphDataSet.addGraphOval(new GraphOval(new Oval(new Point(5, 10),10,10), false, false, Adwaita.GREEN2, true, true));
-        graphDataSet.addGraphMarker(new GraphMarker(true, 5, false, false, Adwaita.PURPLE4, true));
+        graphDataSet.add(new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), false, false, Adwaita.DARK5, true));
+        graphDataSet.add(new GraphOval(new Oval(new Point(5, 10),10,10), false, false, Adwaita.GREEN2, true, true));
+        graphDataSet.add(new GraphMarker(true, 5, false, false, Adwaita.PURPLE4, true));
+        graphDataSet.add(new GraphPoint(new Point(4,7),true,false,Adwaita.BLUE1, true));
 
         addWindowListener(new WindowAdapter()
         {
@@ -108,6 +108,10 @@ public class MainWindow extends JFrame {
     @Override
     public MenuBar getJMenuBar() {
         return menuBar;
+    }
+
+    public GraphDataSet getGraphDataSet() {
+        return graphDataSet;
     }
 
     public void registerPopupWindow(PopupWindow popupWindow) {

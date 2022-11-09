@@ -26,6 +26,7 @@ public class GraphFunction extends GraphObject {
 
     public GraphFunction(Function<Double, Double> function, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
+        this.type = Type.GRAPHFUNCTION;
         this.function = function;
     }
 

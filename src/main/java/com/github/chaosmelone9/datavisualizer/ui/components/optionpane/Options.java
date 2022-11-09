@@ -19,12 +19,15 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.optionpane;
 
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
+import com.github.chaosmelone9.datavisualizer.ui.components.GraphData.GraphDataChangeListener;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphObject;
+import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Options extends JPanel {
-    public Options() {
+    public Options(MainWindow window) {
         super();
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -34,9 +37,10 @@ public class Options extends JPanel {
         constraints.weighty = 1;
         add(new JLabel("Example Text"), constraints);
         setBackground(Adwaita.BLUE5);
-        for(int i = 0; i < 100; i++) {
-            constraints.gridy = i + 1;
-            add(new JButton("Click me"), constraints);
-        }
+
+        window.getGraphDataSet().addListener((type, object) -> {
+            constraints.gridy++;
+            add(new GraphObjectCustomizer(object), constraints);
+        });
     }
 }

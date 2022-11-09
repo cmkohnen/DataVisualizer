@@ -28,6 +28,8 @@ public class GraphObject {
     protected boolean allocateToSecondXAxis;
     protected boolean visible;
 
+    protected Type type = null;
+
     public GraphObject(boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
         this.colour = colour;
         this.allocateToSecondYAxis = allocateToSecondYAxis;
@@ -41,5 +43,18 @@ public class GraphObject {
 
     protected boolean isPointInRange(double minX, double minY, double maxX, double maxY, Point point) {
         return (minX <= point.x && point.x <= maxX) || (minY <= point.y && point.y <= maxY);
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public enum Type {
+        GRAPHFUNCTION,
+        GRAPHMARKER,
+        GRAPHOVAL,
+        GRAPHPOINT,
+        GRAPHPOLYGON,
+        GRAPHROW
     }
 }

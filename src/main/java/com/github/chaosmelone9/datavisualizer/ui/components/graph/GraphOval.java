@@ -31,6 +31,7 @@ public class GraphOval extends GraphObject {
 
     public GraphOval(Oval oval, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled, boolean visible) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
+        this.type = Type.GRAPHOVAL;
         this.oval = oval;
         this.filled = filled;
     }

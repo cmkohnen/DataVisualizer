@@ -27,6 +27,7 @@ public class GraphPoint extends GraphObject {
 
     public GraphPoint(Point point , boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color color, boolean visible) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, color, visible);
+        this.type = Type.GRAPHPOINT;
         this.point = point;
     }
 

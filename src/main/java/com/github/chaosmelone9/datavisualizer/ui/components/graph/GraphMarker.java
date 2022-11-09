@@ -26,6 +26,7 @@ public class GraphMarker extends GraphObject {
 
     public GraphMarker(boolean xOrY, double value, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
+        this.type = Type.GRAPHMARKER;
         this.xOrY = xOrY;
         this.value = value;
     }

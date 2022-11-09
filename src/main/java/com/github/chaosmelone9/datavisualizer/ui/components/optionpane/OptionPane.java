@@ -18,11 +18,13 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.components.optionpane;
 
+import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
+
 import javax.swing.*;
 
 public class OptionPane extends JTabbedPane {
-    public OptionPane() {
+    public OptionPane(MainWindow window) {
         super();
-        add(new JScrollPane(new Options()), "Options");
+        add(new JScrollPane(new Options(window)), "Options");
     }
 }

@@ -28,6 +28,7 @@ public class GraphRow extends GraphObject {
 
     public GraphRow(Row row, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
         super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
+        this.type = Type.GRAPHROW;
         this.row = row;
     }
 

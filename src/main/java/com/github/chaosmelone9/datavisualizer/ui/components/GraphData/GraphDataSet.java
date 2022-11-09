@@ -16,23 +16,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.GraphData;
 
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.*;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraphDataSet {
+
+    private final List<GraphDataChangeListener> graphDataChangeListeners = new ArrayList<>();
+    private final List<GraphObject> graphObjects;
     private final List<GraphFunction> graphFunctions;
     private final List<GraphMarker> graphMarkers;
     private final List<GraphOval> graphOvals;
     private final List<GraphPoint> graphPoints;
     private final List<GraphPolygon> graphPolygons;
     private final List<GraphRow> graphRows;
-    private final Graph graph;
-    public GraphDataSet(MainWindow window) {
-        this.graph = window.getContentPane().getGraph();
+
+    public GraphDataSet() {
+        this.graphObjects = new ArrayList<>();
         this.graphFunctions = new ArrayList<>();
         this.graphMarkers = new ArrayList<>();
         this.graphOvals = new ArrayList<>();
@@ -41,34 +45,23 @@ public class GraphDataSet {
         this.graphRows = new ArrayList<>();
     }
 
-    public void addFunction(GraphFunction graphFunction) {
-        this.graphFunctions.add(graphFunction);
-        this.graph.addFunction(graphFunction);
+    public void addListener(GraphDataChangeListener listener) {
+        graphDataChangeListeners.add(listener);
     }
 
-    public void addGraphMarker(GraphMarker graphMarker) {
-        this.graphMarkers.add(graphMarker);
-        this.graph.addMarker(graphMarker);
-    }
-
-    public void addGraphOval(GraphOval graphOval) {
-        this.graphOvals.add(graphOval);
-        this.graph.addOval(graphOval);
-    }
-
-    public void addGraphPolygon(GraphPolygon graphPolygon) {
-        this.graphPolygons.add(graphPolygon);
-        this.graph.addPolygon(graphPolygon);
-    }
-
-    public void addGraphPoint(GraphPoint graphPoint) {
-        this.graphPoints.add(graphPoint);
-        this.graph.addPoint(graphPoint);
-    }
-
-    public void addRow(GraphRow row) {
-        this.graphRows.add(row);
-        this.graph.addRow(row);
+    public void add(GraphObject object) {
+        graphObjects.add(object);
+        switch (object.getType()) {
+            case GRAPHFUNCTION -> graphFunctions.add((GraphFunction) object);
+            case GRAPHMARKER -> graphMarkers.add((GraphMarker) object);
+            case GRAPHOVAL -> graphOvals.add((GraphOval) object);
+            case GRAPHPOINT -> graphPoints.add((GraphPoint) object);
+            case GRAPHPOLYGON -> graphPolygons.add((GraphPolygon) object);
+            case GRAPHROW -> graphRows.add((GraphRow) object);
+        }
+        for (GraphDataChangeListener listener : graphDataChangeListeners) {
+            listener.onGraphDataChange(GraphDataChangeListener.ChangeType.ADD, object);
+        }
     }
 
     public List<GraphFunction> getGraphFunctions() {
@@ -93,5 +86,9 @@ public class GraphDataSet {
 
     public List<GraphRow> getGraphRows() {
         return graphRows;
+    }
+
+    public List<GraphObject> getGraphObjects() {
+        return graphObjects;
     }
 }
