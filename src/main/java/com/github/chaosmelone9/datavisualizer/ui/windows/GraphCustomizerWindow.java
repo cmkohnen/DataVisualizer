@@ -26,43 +26,126 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class GraphCustomizerWindow extends PopupWindow{
+public class GraphCustomizerWindow extends PopupWindow {
     Graph graph;
+
     public GraphCustomizerWindow(MainWindow window) {
         super("Customize Graph", window);
         autoAdjustSize();
         this.graph = window.getContentPane().getGraph();
 
-        //Checkboxes
+        // Checkboxes
         add(new JLabel("Select Components"));
-        add(new CheckBox("Draw x grid", graph.isDrawXGrid(), true, actionEvent -> graph.setDrawXGrid(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw y grid", graph.isDrawYGrid(), true, actionEvent -> graph.setDrawYGrid(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw x hatch marks of bottom x-axis", graph.isDrawXAHatchMarks(), true, actionEvent -> graph.setDrawXAHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw x hatch marks of top x-axis", graph.isDrawXBHatchMarks(), true, actionEvent -> graph.setDrawXBHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw hatch marks of left y-axis", graph.isDrawYAHatchMarks(), true, actionEvent -> graph.setDrawYAHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw hatch marks of right y-axis", graph.isDrawYBHatchMarks(), graph.hasSecondYAxis(), actionEvent -> graph.setDrawYBHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw x labels of bottom x-axis", graph.isDrawXALabels(), true, actionEvent -> graph.setDrawXALabels(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw x labels of top x-axis", graph.isDrawXBLabels(), graph.hasSecondXAxis(), actionEvent -> graph.setDrawXBLabels(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw y labels of left y-axis", graph.isDrawYALabels(), true, actionEvent -> graph.setDrawYALabels(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Draw y labels of right y-axis", graph.isDrawYBLabels(), graph.hasSecondYAxis(), actionEvent -> graph.setDrawYBLabels(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Indicate x position of mouse-pointer", graph.isIndicateMouseX(), true, actionEvent -> graph.setIndicateMouseX(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Indicate y position of mouse-pointer", graph.isIndicateMouseY(), true, actionEvent -> graph.setIndicateMouseY(((CheckBox) actionEvent.getSource()).isSelected())));
-        add(new CheckBox("Label x and y position of mouse-pointer", graph.isLabelMouseXY(), true, actionEvent -> graph.setLabelMouseXY(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw x grid",
+                graph.isDrawXGrid(),
+                true,
+                actionEvent -> graph.setDrawXGrid(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw y grid",
+                graph.isDrawYGrid(),
+                true,
+                actionEvent -> graph.setDrawYGrid(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw x hatch marks of bottom x-axis",
+                graph.isDrawXAHatchMarks(),
+                true,
+                actionEvent -> graph.setDrawXAHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw x hatch marks of top x-axis",
+                graph.isDrawXBHatchMarks(),
+                true,
+                actionEvent -> graph.setDrawXBHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw hatch marks of left y-axis",
+                graph.isDrawYAHatchMarks(),
+                true,
+                actionEvent -> graph.setDrawYAHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw hatch marks of right y-axis",
+                graph.isDrawYBHatchMarks(),
+                graph.hasSecondYAxis(),
+                actionEvent -> graph.setDrawYBHatchMarks(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw x labels of bottom x-axis",
+                graph.isDrawXALabels(),
+                true,
+                actionEvent -> graph.setDrawXALabels(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw x labels of top x-axis",
+                graph.isDrawXBLabels(),
+                graph.hasSecondXAxis(),
+                actionEvent -> graph.setDrawXBLabels(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw y labels of left y-axis",
+                graph.isDrawYALabels(),
+                true,
+                actionEvent -> graph.setDrawYALabels(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Draw y labels of right y-axis",
+                graph.isDrawYBLabels(),
+                graph.hasSecondYAxis(),
+                actionEvent -> graph.setDrawYBLabels(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Indicate x position of mouse-pointer",
+                graph.isIndicateMouseX(),
+                true,
+                actionEvent -> graph.setIndicateMouseX(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Indicate y position of mouse-pointer",
+                graph.isIndicateMouseY(),
+                true,
+                actionEvent -> graph.setIndicateMouseY(((CheckBox) actionEvent.getSource()).isSelected())));
+        add(new CheckBox(
+                "Label x and y position of mouse-pointer",
+                graph.isLabelMouseXY(),
+                true,
+                actionEvent -> graph.setLabelMouseXY(((CheckBox) actionEvent.getSource()).isSelected())));
 
-        //Color pickers
+        // Color pickers
         constraints.gridx = 1;
         constraints.gridy = 0;
         add(new JLabel("Colors"));
-        add(new ColorPicker("Background Color", actionEvent -> graph.setBackgroundColour(JColorChooser.showDialog(this, "Choose Colour", graph.getBackgroundColour()))));
-        add(new ColorPicker("Grid Color", actionEvent -> graph.setGridColour(JColorChooser.showDialog(this, "Choose Colour", graph.getGridColour()))));
-        add(new ColorPicker("Second Label Color", actionEvent -> graph.setLabelSecondColour(JColorChooser.showDialog(this, "Choose Colour", graph.getLabelSecondColour()))));
-        add(new ColorPicker("Label Color", actionEvent -> graph.setLabelColour(JColorChooser.showDialog(this, "Choose Colour", graph.getLabelColour()))));
-        add(new ColorPicker("Title Color", actionEvent -> graph.setTitleColour(JColorChooser.showDialog(this, "Choose Colour", graph.getTitleColour()))));
-        add(new ColorPicker("Axis Color", actionEvent -> graph.setAxisColour(JColorChooser.showDialog(this, "Choose Colour", graph.getAxisColour()))));
-        add(new ColorPicker("Hatch mark Color", actionEvent -> graph.setHatchMarkColour(JColorChooser.showDialog(this, "Choose Colour", graph.getHatchMarkColour()))));
-        add(new ColorPicker("Indicator Color", actionEvent -> graph.setIndicatorColour(JColorChooser.showDialog(this, "Choose Colour", graph.getIndicatorColour()))));
-        add(new ColorPicker("UI Color", actionEvent -> graph.setUiColour(JColorChooser.showDialog(this, "Choose Colour", graph.getUiColour()))));
-        add(new ColorPicker("UI Background Color", actionEvent -> graph.setUiBackgroundColour(JColorChooser.showDialog(this, "Choose Colour", graph.getUiBackgroundColour()))));
+        add(new ColorPicker(
+                "Background Color",
+                actionEvent -> graph.setBackgroundColour(
+                        JColorChooser.showDialog(this, "Choose Colour", graph.getBackgroundColour()))));
+        add(new ColorPicker(
+                "Grid Color",
+                actionEvent ->
+                        graph.setGridColour(JColorChooser.showDialog(this, "Choose Colour", graph.getGridColour()))));
+        add(new ColorPicker(
+                "Second Label Color",
+                actionEvent -> graph.setLabelSecondColour(
+                        JColorChooser.showDialog(this, "Choose Colour", graph.getLabelSecondColour()))));
+        add(new ColorPicker(
+                "Label Color",
+                actionEvent ->
+                        graph.setLabelColour(JColorChooser.showDialog(this, "Choose Colour", graph.getLabelColour()))));
+        add(new ColorPicker(
+                "Title Color",
+                actionEvent ->
+                        graph.setTitleColour(JColorChooser.showDialog(this, "Choose Colour", graph.getTitleColour()))));
+        add(new ColorPicker(
+                "Axis Color",
+                actionEvent ->
+                        graph.setAxisColour(JColorChooser.showDialog(this, "Choose Colour", graph.getAxisColour()))));
+        add(new ColorPicker(
+                "Hatch mark Color",
+                actionEvent -> graph.setHatchMarkColour(
+                        JColorChooser.showDialog(this, "Choose Colour", graph.getHatchMarkColour()))));
+        add(new ColorPicker(
+                "Indicator Color",
+                actionEvent -> graph.setIndicatorColour(
+                        JColorChooser.showDialog(this, "Choose Colour", graph.getIndicatorColour()))));
+        add(new ColorPicker(
+                "UI Color",
+                actionEvent ->
+                        graph.setUiColour(JColorChooser.showDialog(this, "Choose Colour", graph.getUiColour()))));
+        add(new ColorPicker(
+                "UI Background Color",
+                actionEvent -> graph.setUiBackgroundColour(
+                        JColorChooser.showDialog(this, "Choose Colour", graph.getUiBackgroundColour()))));
 
         add(new JLabel("Background Image"));
         JButton backgroundImageButton = new JButton("Background Image");

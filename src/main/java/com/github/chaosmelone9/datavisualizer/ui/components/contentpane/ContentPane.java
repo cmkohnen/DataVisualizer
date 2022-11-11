@@ -24,7 +24,7 @@ import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
 
-public class ContentPane extends JTabbedPane{
+public class ContentPane extends JTabbedPane {
     private final Graph graph;
     private final Table table = new Table();
     private final GraphComponents graphComponents = new GraphComponents();
@@ -34,6 +34,7 @@ public class ContentPane extends JTabbedPane{
     private GraphPopupWindow graphPopupWindow;
 
     private boolean graphDetached = false;
+
     public ContentPane(MainWindow window) {
         this.window = window;
         this.graph = new Graph(window);
@@ -55,7 +56,7 @@ public class ContentPane extends JTabbedPane{
     }
 
     public void manageGraph() {
-        if(!graphDetached) {
+        if (!graphDetached) {
             detachGraph();
         } else {
             reattachGraph();

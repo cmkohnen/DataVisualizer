@@ -71,7 +71,8 @@ public class GraphZoomWindow extends PopupWindow {
         minYB.setPreferredSize(spinnerDimension);
         JSpinner maxYB = new JSpinner(new SpinnerNumberModel(graph.getMaxYB(), null, null, 0.1));
         maxYB.addChangeListener(e -> {
-            graph.setMaxYB((double) maxYB.getValue()); graph.repaint();
+            graph.setMaxYB((double) maxYB.getValue());
+            graph.repaint();
         });
         maxYB.setPreferredSize(spinnerDimension);
 
@@ -107,6 +108,6 @@ public class GraphZoomWindow extends PopupWindow {
         add(maxYB);
 
         setResizable(false);
-        this.setSize(350,200);
+        this.setSize(350, 200);
     }
 }

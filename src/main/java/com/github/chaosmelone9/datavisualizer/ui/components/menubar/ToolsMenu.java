@@ -26,7 +26,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.IOException;
 
-public class ToolsMenu extends Menu{
+public class ToolsMenu extends Menu {
     public ToolsMenu(MainWindow window) {
         super(window, "Tools");
 
@@ -40,7 +40,8 @@ public class ToolsMenu extends Menu{
             fileChooser.setSelectedFile(new File("graph.png"));
             if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    ImageIO.write(window.getContentPane().getGraph().renderToImage(), "png", fileChooser.getSelectedFile());
+                    ImageIO.write(
+                            window.getContentPane().getGraph().renderToImage(), "png", fileChooser.getSelectedFile());
                 } catch (IOException e) {
                     window.getInstance().getLogger().logStackTrace(e);
                 }

@@ -32,12 +32,13 @@ public class Main {
     private Config config;
     private final ResourceFetcher fetcher;
     private Logger logger;
+
     public static void main(String[] args) {
         new Main(args);
     }
 
     public static void createNewGUIInstance() {
-        new Main(new String[]{});
+        new Main(new String[] {});
     }
 
     public Config getConfig() {
@@ -55,7 +56,7 @@ public class Main {
     private Main(String[] args) {
         this.dataDirectory = new DataDirectory();
         this.fetcher = new ResourceFetcher();
-        if(args.length > 0) {
+        if (args.length > 0) {
             try {
                 initCLI(args);
             } catch (Exception e) {
@@ -63,7 +64,7 @@ public class Main {
             }
         } else {
             try {
-                //UIManager.setLookAndFeel("UIManager.getSystemLookAndFeelClassName()");
+                // UIManager.setLookAndFeel("UIManager.getSystemLookAndFeelClassName()");
                 this.dataDirectory.initDirectory();
                 this.config = Config.load(new File(dataDirectory.getDirectory(), "config.yml"));
                 this.logger = config.getLogger();
@@ -71,11 +72,11 @@ public class Main {
             } catch (Exception e) {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
                 new ErrorWindow(true, "Something went wrong", e, true);
             }
         }
-
     }
 
     private void initGUI() throws Exception {
@@ -84,7 +85,7 @@ public class Main {
     }
 
     private void initCLI(String[] args) throws Exception {
-        if(args[0].equals("--about")) {
+        if (args[0].equals("--about")) {
             logger.echo(fetcher.fetchTextFromFile("about.txt"));
         }
     }

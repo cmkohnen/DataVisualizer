@@ -65,22 +65,22 @@ public class MainWindow extends JFrame {
 
         setTitle("DataVisualizer");
         setLocationRelativeTo(null);
-        setSize(1000,800);
+        setSize(1000, 800);
         setIconImage(ImageIO.read(instance.getFetcher().fetch("icon.png")));
         setContentPane(splitPane);
         setJMenuBar(menuBar);
         setVisible(true);
 
-        graphDataSet.add(new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), "1", false, false, Adwaita.DARK5, true));
-        graphDataSet.add(new GraphOval(new Oval(new Point(5, 10),10,10), "2", false, false, Adwaita.GREEN2, true, true));
+        graphDataSet.add(
+                new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), "1", false, false, Adwaita.DARK5, true));
+        graphDataSet.add(
+                new GraphOval(new Oval(new Point(5, 10), 10, 10), "2", false, false, Adwaita.GREEN2, true, true));
         graphDataSet.add(new GraphMarker(true, 5, "3", false, false, Adwaita.PURPLE4, true));
-        graphDataSet.add(new GraphPoint(new Point(4,7),"4", true,false,Adwaita.BLUE1, true));
+        graphDataSet.add(new GraphPoint(new Point(4, 7), "4", true, false, Adwaita.BLUE1, true));
 
-        addWindowListener(new WindowAdapter()
-        {
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e)
-            {
+            public void windowClosing(WindowEvent e) {
                 instance.getLogger().log("Closing application");
                 for (PopupWindow popupWindow : popupWindows) {
                     popupWindow.dispose();
@@ -95,7 +95,7 @@ public class MainWindow extends JFrame {
     }
 
     public void toggleOptionPane(boolean enabled) {
-        if(!enabled) {
+        if (!enabled) {
             dividerLocation = splitPane.getDividerLocation();
         } else {
             splitPane.setDividerLocation(dividerLocation);

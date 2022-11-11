@@ -31,6 +31,7 @@ import java.net.URISyntaxException;
 
 public class HelpMenu extends Menu {
     Logger logger;
+
     public HelpMenu(MainWindow window) {
         super(window, "Help");
         this.logger = window.getInstance().getLogger();

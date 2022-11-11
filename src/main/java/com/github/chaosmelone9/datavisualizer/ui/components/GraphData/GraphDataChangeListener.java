@@ -6,7 +6,7 @@ public interface GraphDataChangeListener {
     void onGraphDataChange(ChangeType type, GraphObject object);
 
     enum ChangeType {
-        ADD, REMOVE
+        ADD,
+        REMOVE
     }
 }
-

@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
- *  DataVisualizer
- *  Copyright (C) 2022 Christoph Kohnen <christoph.kohnen@gymbane.eu>
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+*  DataVisualizer
+*  Copyright (C) 2022 Christoph Kohnen <christoph.kohnen@gymbane.eu>
+*
+*  This program is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+*
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 package com.github.chaosmelone9.datavisualizer.ui;
 
 import java.awt.*;
@@ -42,9 +42,9 @@ public class Adwaita {
 
     public static final Color ORANGE1 = new Color(255, 190, 111);
     public static final Color ORANGE2 = new Color(255, 163, 72);
-    public static final Color ORANGE3 = new Color(255, 120,0);
-    public static final Color ORANGE4 = new Color(230, 97,0);
-    public static final Color ORANGE5 = new Color(198, 70,0);
+    public static final Color ORANGE3 = new Color(255, 120, 0);
+    public static final Color ORANGE4 = new Color(230, 97, 0);
+    public static final Color ORANGE5 = new Color(198, 70, 0);
 
     public static final Color RED1 = new Color(246, 97, 81);
     public static final Color RED2 = new Color(237, 51, 59);

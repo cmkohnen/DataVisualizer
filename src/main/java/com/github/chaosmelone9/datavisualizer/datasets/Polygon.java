@@ -24,6 +24,4 @@ public class Polygon {
     public Polygon(Point[] points) {
         this.points = points;
     }
-
-
 }

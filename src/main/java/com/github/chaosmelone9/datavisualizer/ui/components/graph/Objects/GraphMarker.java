@@ -24,7 +24,14 @@ public class GraphMarker extends GraphObject {
     public boolean xOrY;
     public double value;
 
-    public GraphMarker(boolean xOrY, double value, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+    public GraphMarker(
+            boolean xOrY,
+            double value,
+            String name,
+            boolean allocateToSecondXAxis,
+            boolean allocateToSecondYAxis,
+            Color colour,
+            boolean visible) {
         super(name, allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.type = Type.GRAPHMARKER;
         this.xOrY = xOrY;
@@ -33,7 +40,7 @@ public class GraphMarker extends GraphObject {
 
     @Override
     public boolean isInRange(double minX, double minY, double maxX, double maxY) {
-        if(xOrY) {
+        if (xOrY) {
             return minX < value && maxX > value;
         } else {
             return minY < value && maxY > value;

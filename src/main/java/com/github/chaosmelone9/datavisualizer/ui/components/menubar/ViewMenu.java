@@ -26,14 +26,22 @@ import javax.swing.*;
 
 public class ViewMenu extends Menu {
     private final CheckBoxMenuItem detachGraph;
+
     public ViewMenu(MainWindow window) {
         super(window, "View");
 
-        this.detachGraph = new CheckBoxMenuItem("Detach Graph", false, actionEvent -> window.getContentPane().manageGraph());
+        this.detachGraph = new CheckBoxMenuItem(
+                "Detach Graph", false, actionEvent -> window.getContentPane().manageGraph());
 
-        add(new CheckBoxMenuItem("Show options menu", true, actionEvent -> window.toggleOptionPane(((JCheckBoxMenuItem) (actionEvent.getSource())).isSelected())));
+        add(new CheckBoxMenuItem(
+                "Show options menu",
+                true,
+                actionEvent -> window.toggleOptionPane(((JCheckBoxMenuItem) (actionEvent.getSource())).isSelected())));
         add(new MenuItem("Customize Graph...", actionEvent -> new GraphCustomizerWindow(window)));
-        add(new MenuItem("Zoom...", actionEvent -> new GraphZoomWindow(window, window.getContentPane().getGraph())));
+        add(new MenuItem(
+                "Zoom...",
+                actionEvent ->
+                        new GraphZoomWindow(window, window.getContentPane().getGraph())));
         add(detachGraph);
     }
 

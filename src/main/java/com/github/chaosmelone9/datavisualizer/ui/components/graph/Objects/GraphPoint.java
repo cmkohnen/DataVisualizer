@@ -25,7 +25,13 @@ import java.awt.*;
 public class GraphPoint extends GraphObject {
     public Point point;
 
-    public GraphPoint(Point point, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color color, boolean visible) {
+    public GraphPoint(
+            Point point,
+            String name,
+            boolean allocateToSecondXAxis,
+            boolean allocateToSecondYAxis,
+            Color color,
+            boolean visible) {
         super(name, allocateToSecondXAxis, allocateToSecondYAxis, color, visible);
         this.type = Type.GRAPHPOINT;
         this.point = point;

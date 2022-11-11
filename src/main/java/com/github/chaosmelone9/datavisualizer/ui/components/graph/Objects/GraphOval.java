@@ -29,7 +29,14 @@ public class GraphOval extends GraphObject {
     public Oval oval;
     public boolean filled;
 
-    public GraphOval(Oval oval, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled, boolean visible) {
+    public GraphOval(
+            Oval oval,
+            String name,
+            boolean allocateToSecondXAxis,
+            boolean allocateToSecondYAxis,
+            Color colour,
+            boolean filled,
+            boolean visible) {
         super(name, allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.type = Type.GRAPHOVAL;
         this.oval = oval;
@@ -50,11 +57,11 @@ public class GraphOval extends GraphObject {
         list.add(oval.center);
         boolean isInRange = false;
         for (Point point : list) {
-            if(isPointInRange(minX, minY, maxX, maxY, point)) {
+            if (isPointInRange(minX, minY, maxX, maxY, point)) {
                 isInRange = true;
             }
         }
-        if(ovalMaxX > maxX && ovalMinX < minX && ovalMaxY > maxY && ovalMinY < minY) {
+        if (ovalMaxX > maxX && ovalMinX < minX && ovalMaxY > maxY && ovalMinY < minY) {
             isInRange = true;
         }
         return isInRange;

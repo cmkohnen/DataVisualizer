@@ -27,7 +27,14 @@ public class GraphPolygon extends GraphObject {
     public Polygon polygon;
     public boolean filled;
 
-    protected GraphPolygon(Polygon polygon, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled, boolean visible) {
+    protected GraphPolygon(
+            Polygon polygon,
+            String name,
+            boolean allocateToSecondXAxis,
+            boolean allocateToSecondYAxis,
+            Color colour,
+            boolean filled,
+            boolean visible) {
         super(name, allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.type = Type.GRAPHPOLYGON;
         this.polygon = polygon;
@@ -38,7 +45,7 @@ public class GraphPolygon extends GraphObject {
     public boolean isInRange(double minX, double minY, double maxX, double maxY) {
         boolean isInRange = false;
         for (Point point : polygon.points) {
-            if(isPointInRange(minX, minY, maxX, maxY, point)) {
+            if (isPointInRange(minX, minY, maxX, maxY, point)) {
                 isInRange = true;
                 break;
             }

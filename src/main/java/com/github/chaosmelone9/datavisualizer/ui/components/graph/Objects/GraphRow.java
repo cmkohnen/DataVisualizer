@@ -26,7 +26,13 @@ import java.awt.*;
 public class GraphRow extends GraphObject {
     public Row row;
 
-    public GraphRow(Row row, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+    public GraphRow(
+            Row row,
+            String name,
+            boolean allocateToSecondXAxis,
+            boolean allocateToSecondYAxis,
+            Color colour,
+            boolean visible) {
         super(name, allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.type = Type.GRAPHROW;
         this.row = row;
@@ -36,7 +42,7 @@ public class GraphRow extends GraphObject {
     public boolean isInRange(double minX, double minY, double maxX, double maxY) {
         boolean isInRange = false;
         for (Point point : row.points) {
-            if(isPointInRange(minX, minY, maxX, maxY, point)) {
+            if (isPointInRange(minX, minY, maxX, maxY, point)) {
                 isInRange = true;
                 break;
             }

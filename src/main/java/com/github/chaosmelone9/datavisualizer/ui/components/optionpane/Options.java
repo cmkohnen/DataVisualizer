@@ -47,6 +47,5 @@ public class Options extends JPanel {
                 case REMOVE -> selector.removeItem(object);
             }
         });
-
     }
 }

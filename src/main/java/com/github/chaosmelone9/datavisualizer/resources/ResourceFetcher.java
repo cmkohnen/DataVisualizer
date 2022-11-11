@@ -31,7 +31,7 @@ public class ResourceFetcher {
         StringBuilder output = new StringBuilder();
         int content;
         while ((content = stream.read()) != -1) {
-            output.append((char)content);
+            output.append((char) content);
         }
         return output.toString();
     }

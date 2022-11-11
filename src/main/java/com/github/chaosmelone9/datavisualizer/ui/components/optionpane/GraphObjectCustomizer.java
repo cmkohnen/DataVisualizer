@@ -17,6 +17,7 @@ public class GraphObjectCustomizer extends JPanel {
     JRadioButton allocateToSecondXAxis;
     JRadioButton allocateToSecondYAxis;
     JRadioButton visible;
+
     public GraphObjectCustomizer(MainWindow window, @Nullable GraphObject object) {
         super();
         this.window = window;
@@ -57,7 +58,7 @@ public class GraphObjectCustomizer extends JPanel {
         });
         add(visible);
 
-        if(object != null) {
+        if (object != null) {
             setObject(object);
         }
     }

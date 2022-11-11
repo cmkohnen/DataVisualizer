@@ -21,7 +21,7 @@ package com.github.chaosmelone9.datavisualizer.ui.windows;
 import javax.swing.*;
 import java.io.IOException;
 
-public class LicenseWindow extends PopupWindow{
+public class LicenseWindow extends PopupWindow {
     public LicenseWindow(MainWindow window) throws IOException {
         super("License", window);
         autoAdjustSize();

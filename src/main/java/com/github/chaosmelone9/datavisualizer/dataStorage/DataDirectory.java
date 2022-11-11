@@ -39,11 +39,10 @@ public class DataDirectory {
         setDirectory(directory);
     }
 
-    public DataDirectory() {
-    }
+    public DataDirectory() {}
 
     public File getDirectory() throws DataDirectoryNotInitialisedException {
-        if(directory == null) {
+        if (directory == null) {
             throw new DataDirectoryNotInitialisedException();
         }
         return directory;

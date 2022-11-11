@@ -31,7 +31,8 @@ public class GraphObject {
 
     public Type type = null;
 
-    public GraphObject(String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+    public GraphObject(
+            String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
         this.name = name;
         this.colour = colour;
         this.allocateToSecondYAxis = allocateToSecondYAxis;

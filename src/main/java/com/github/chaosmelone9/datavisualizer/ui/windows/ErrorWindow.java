@@ -32,7 +32,7 @@ public class ErrorWindow extends JDialog {
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         setSize(600, 200);
-        if(isFatal) {
+        if (isFatal) {
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         } else {
             setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -40,7 +40,7 @@ public class ErrorWindow extends JDialog {
         add(new JLabel(message), BorderLayout.NORTH);
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw, true);
-        if(logStackTrace) {
+        if (logStackTrace) {
             new Logger().logStackTrace(throwable);
         }
         throwable.printStackTrace(pw);
@@ -56,7 +56,7 @@ public class ErrorWindow extends JDialog {
         setTitle("Error");
         setLocationRelativeTo(null);
         setSize(600, 200);
-        if(isFatal) {
+        if (isFatal) {
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         } else {
             setDefaultCloseOperation(EXIT_ON_CLOSE);

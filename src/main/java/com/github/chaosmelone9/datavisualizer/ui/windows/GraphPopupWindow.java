@@ -29,11 +29,9 @@ public class GraphPopupWindow extends PopupWindow {
         setSize(graph.getSize());
         setContentPane(graph);
 
-        addWindowListener(new WindowAdapter()
-        {
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e)
-            {
+            public void windowClosing(WindowEvent e) {
                 e.getWindow().dispose();
                 window.getJMenuBar().getViewMenu().reattachGraph();
             }

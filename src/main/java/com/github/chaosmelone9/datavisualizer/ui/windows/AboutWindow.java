@@ -29,7 +29,7 @@ public class AboutWindow extends JDialog {
     MainWindow window;
 
     public AboutWindow(MainWindow window) throws IOException {
-        super(window,"about", true);
+        super(window, "about", true);
         this.window = window;
         setLocationRelativeTo(window);
         setSize((int) (window.getWidth() * .25), (int) (window.getHeight() * .25));
@@ -63,7 +63,7 @@ public class AboutWindow extends JDialog {
                 Image icon = ImageIO.read(fetcher.fetch("icon.png"));
                 graphics.drawImage(icon, 10, 10, this);
 
-                graphics.drawString(fetcher.fetchTextFromFile("about.txt"),10, icon.getHeight(this) + 20);
+                graphics.drawString(fetcher.fetchTextFromFile("about.txt"), 10, icon.getHeight(this) + 20);
             } catch (IOException e) {
                 e.printStackTrace();
             }

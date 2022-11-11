@@ -59,6 +59,7 @@ public class PopupWindow extends JFrame {
     }
 
     protected void autoAdjustSize() {
-        setSize((int) (mainWindow.getWidth() - mainWindow.getWidth() * .25), (int) (mainWindow.getHeight() - mainWindow.getHeight() * .25));
+        setSize((int) (mainWindow.getWidth() - mainWindow.getWidth() * .25), (int)
+                (mainWindow.getHeight() - mainWindow.getHeight() * .25));
     }
 }
