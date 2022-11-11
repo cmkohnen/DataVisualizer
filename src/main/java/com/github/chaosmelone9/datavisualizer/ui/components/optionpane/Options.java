@@ -18,29 +18,35 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.components.optionpane;
 
-import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
-import com.github.chaosmelone9.datavisualizer.ui.components.GraphData.GraphDataChangeListener;
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.GraphObject;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphObject;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.Objects;
 
 public class Options extends JPanel {
     public Options(MainWindow window) {
         super();
-        setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        add(new JLabel("Example Text"), constraints);
-        setBackground(Adwaita.BLUE5);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        JComboBox<GraphObject> selector = new JComboBox<>();
+        add(selector);
+
+        GraphObjectCustomizer customizer = new GraphObjectCustomizer(window, null);
+        add(customizer);
+
+        selector.addActionListener(actionEvent -> {
+            System.out.println("Selected: " + selector.getSelectedItem());
+            customizer.setObject((GraphObject) Objects.requireNonNull(selector.getSelectedItem()));
+            repaint();
+        });
 
         window.getGraphDataSet().addListener((type, object) -> {
-            constraints.gridy++;
-            add(new GraphObjectCustomizer(object), constraints);
+            switch (type) {
+                case ADD -> selector.addItem(object);
+                case REMOVE -> selector.removeItem(object);
+            }
         });
+
     }
 }

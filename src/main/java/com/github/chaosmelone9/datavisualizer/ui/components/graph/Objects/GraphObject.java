@@ -16,28 +16,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects;
 
 import com.github.chaosmelone9.datavisualizer.datasets.Point;
 
 import java.awt.*;
 
 public class GraphObject {
-    protected Color colour;
-    protected boolean allocateToSecondYAxis;
-    protected boolean allocateToSecondXAxis;
-    protected boolean visible;
+    public String name;
+    public boolean allocateToSecondYAxis;
+    public boolean allocateToSecondXAxis;
+    public Color colour;
+    public boolean visible;
 
-    protected Type type = null;
+    public Type type = null;
 
-    public GraphObject(boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+    public GraphObject(String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+        this.name = name;
         this.colour = colour;
         this.allocateToSecondYAxis = allocateToSecondYAxis;
         this.allocateToSecondXAxis = allocateToSecondXAxis;
         this.visible = visible;
     }
 
-    protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
+    public boolean isInRange(double minX, double minY, double maxX, double maxY) {
         return false;
     }
 
@@ -47,6 +49,11 @@ public class GraphObject {
 
     public Type getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public enum Type {

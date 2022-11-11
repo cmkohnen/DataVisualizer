@@ -20,8 +20,9 @@ package com.github.chaosmelone9.datavisualizer.ui.components.graph;
 
 import com.github.chaosmelone9.datavisualizer.Main;
 import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
-import com.github.chaosmelone9.datavisualizer.ui.components.GraphData.GraphDataChangeListener;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.*;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
+import org.jetbrains.annotations.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -130,7 +131,7 @@ public class Graph extends JPanel {
     private int zeroYA;
     private int zeroYB;
 
-    public Graph(MainWindow window) {
+    public Graph(@NotNull MainWindow window) {
         super();
         this.instance = window.getInstance();
         window.getGraphDataSet().addListener((changeType, graphObject) -> {
@@ -146,7 +147,7 @@ public class Graph extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics graphics) {
+    protected void paintComponent(@NotNull Graphics graphics) {
         try {
             final int width = getWidth();
             final int height = getHeight();
@@ -480,7 +481,7 @@ public class Graph extends JPanel {
         return this.hasSecondXAxis;
     }
 
-    private void updateSecondAxes() {
+    public void updateSecondAxes() {
         boolean secondX = false;
         boolean secondY = false;
         List<GraphObject> objects = new ArrayList<>();
@@ -605,7 +606,7 @@ public class Graph extends JPanel {
         return graphObject.isInRange(getMinX(graphObject.allocateToSecondXAxis), getMinY(graphObject.allocateToSecondYAxis), getMaxX(graphObject.allocateToSecondXAxis), getMaxY(graphObject.allocateToSecondYAxis));
     }
 
-    public void add(GraphObject object) {
+    public void add(@NotNull GraphObject object) {
         switch (object.getType()) {
             case GRAPHFUNCTION -> graphFunctions.add((GraphFunction) object);
             case GRAPHMARKER -> graphMarkers.add((GraphMarker) object);
@@ -618,7 +619,7 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public void remove(GraphObject object) {
+    public void remove(@NotNull GraphObject object) {
         switch (object.getType()) {
             case GRAPHFUNCTION -> graphFunctions.remove((GraphFunction) object);
             case GRAPHMARKER -> graphMarkers.remove((GraphMarker) object);

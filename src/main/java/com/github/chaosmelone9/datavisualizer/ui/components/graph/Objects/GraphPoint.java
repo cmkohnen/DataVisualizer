@@ -16,23 +16,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects;
 
 import com.github.chaosmelone9.datavisualizer.datasets.Point;
 
 import java.awt.*;
 
 public class GraphPoint extends GraphObject {
-    protected Point point;
+    public Point point;
 
-    public GraphPoint(Point point , boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color color, boolean visible) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, color, visible);
+    public GraphPoint(Point point, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color color, boolean visible) {
+        super(name, allocateToSecondXAxis, allocateToSecondYAxis, color, visible);
         this.type = Type.GRAPHPOINT;
         this.point = point;
     }
 
     @Override
-    protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
+    public boolean isInRange(double minX, double minY, double maxX, double maxY) {
         return isPointInRange(minX, minY, maxX, maxY, point);
     }
 }

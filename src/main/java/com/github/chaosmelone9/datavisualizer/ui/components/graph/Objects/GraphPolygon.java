@@ -16,27 +16,33 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects;
+
+import com.github.chaosmelone9.datavisualizer.datasets.Point;
+import com.github.chaosmelone9.datavisualizer.datasets.Polygon;
 
 import java.awt.*;
 
-public class GraphMarker extends GraphObject {
-    protected boolean xOrY;
-    protected double value;
+public class GraphPolygon extends GraphObject {
+    public Polygon polygon;
+    public boolean filled;
 
-    public GraphMarker(boolean xOrY, double value, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
-        this.type = Type.GRAPHMARKER;
-        this.xOrY = xOrY;
-        this.value = value;
+    protected GraphPolygon(Polygon polygon, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled, boolean visible) {
+        super(name, allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
+        this.type = Type.GRAPHPOLYGON;
+        this.polygon = polygon;
+        this.filled = filled;
     }
 
     @Override
     public boolean isInRange(double minX, double minY, double maxX, double maxY) {
-        if(xOrY) {
-            return minX < value && maxX > value;
-        } else {
-            return minY < value && maxY > value;
+        boolean isInRange = false;
+        for (Point point : polygon.points) {
+            if(isPointInRange(minX, minY, maxX, maxY, point)) {
+                isInRange = true;
+                break;
+            }
         }
+        return isInRange;
     }
 }

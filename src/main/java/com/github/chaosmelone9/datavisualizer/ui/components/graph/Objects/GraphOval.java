@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects;
 
 import com.github.chaosmelone9.datavisualizer.datasets.Oval;
 import com.github.chaosmelone9.datavisualizer.datasets.Point;
@@ -26,18 +26,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphOval extends GraphObject {
-    protected Oval oval;
-    protected boolean filled;
+    public Oval oval;
+    public boolean filled;
 
-    public GraphOval(Oval oval, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled, boolean visible) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
+    public GraphOval(Oval oval, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean filled, boolean visible) {
+        super(name, allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.type = Type.GRAPHOVAL;
         this.oval = oval;
         this.filled = filled;
     }
 
     @Override
-    protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
+    public boolean isInRange(double minX, double minY, double maxX, double maxY) {
         List<Point> list = new ArrayList<>();
         double ovalMinX = oval.center.x - oval.xHeight;
         double ovalMaxX = oval.center.x + oval.xHeight;

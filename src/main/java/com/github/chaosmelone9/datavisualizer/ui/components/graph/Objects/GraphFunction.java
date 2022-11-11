@@ -16,22 +16,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.github.chaosmelone9.datavisualizer.ui.components.graph;
+package com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects;
 
 import java.awt.*;
 import java.util.function.Function;
 
 public class GraphFunction extends GraphObject {
-    protected Function<Double, Double> function;
+    public Function<Double, Double> function;
 
-    public GraphFunction(Function<Double, Double> function, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
-        super(allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
+    public GraphFunction(Function<Double, Double> function, String name, boolean allocateToSecondXAxis, boolean allocateToSecondYAxis, Color colour, boolean visible) {
+        super(name, allocateToSecondXAxis, allocateToSecondYAxis, colour, visible);
         this.type = Type.GRAPHFUNCTION;
         this.function = function;
     }
 
     @Override
-    protected boolean isInRange(double minX, double minY, double maxX, double maxY) {
+    public boolean isInRange(double minX, double minY, double maxX, double maxY) {
         return true;
     }
 }

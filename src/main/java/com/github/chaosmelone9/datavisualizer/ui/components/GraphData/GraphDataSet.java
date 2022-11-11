@@ -18,8 +18,7 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.components.GraphData;
 
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.*;
-import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.*;
 
 import java.util.ArrayList;
 import java.util.List;

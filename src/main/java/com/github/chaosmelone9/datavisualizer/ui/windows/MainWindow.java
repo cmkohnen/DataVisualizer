@@ -24,7 +24,10 @@ import com.github.chaosmelone9.datavisualizer.datasets.Point;
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
 import com.github.chaosmelone9.datavisualizer.ui.components.GraphData.GraphDataSet;
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.ContentPane;
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.*;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphFunction;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphMarker;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphOval;
+import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphPoint;
 import com.github.chaosmelone9.datavisualizer.ui.components.menubar.MenuBar;
 import com.github.chaosmelone9.datavisualizer.ui.components.optionpane.OptionPane;
 
@@ -68,10 +71,10 @@ public class MainWindow extends JFrame {
         setJMenuBar(menuBar);
         setVisible(true);
 
-        graphDataSet.add(new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), false, false, Adwaita.DARK5, true));
-        graphDataSet.add(new GraphOval(new Oval(new Point(5, 10),10,10), false, false, Adwaita.GREEN2, true, true));
-        graphDataSet.add(new GraphMarker(true, 5, false, false, Adwaita.PURPLE4, true));
-        graphDataSet.add(new GraphPoint(new Point(4,7),true,false,Adwaita.BLUE1, true));
+        graphDataSet.add(new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), "1", false, false, Adwaita.DARK5, true));
+        graphDataSet.add(new GraphOval(new Oval(new Point(5, 10),10,10), "2", false, false, Adwaita.GREEN2, true, true));
+        graphDataSet.add(new GraphMarker(true, 5, "3", false, false, Adwaita.PURPLE4, true));
+        graphDataSet.add(new GraphPoint(new Point(4,7),"4", true,false,Adwaita.BLUE1, true));
 
         addWindowListener(new WindowAdapter()
         {
