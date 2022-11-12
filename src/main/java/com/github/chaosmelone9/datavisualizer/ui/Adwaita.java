@@ -64,7 +64,7 @@ public class Adwaita {
     public static final Color BROWN4 = new Color(134, 94, 60);
     public static final Color BROWN5 = new Color(99, 69, 44);
 
-    public static final Color LIGHT1 = Color.WHITE;
+    public static final Color LIGHT1 = new Color(255, 255, 255);
     public static final Color LIGHT2 = new Color(246, 245, 244);
     public static final Color LIGHT3 = new Color(222, 221, 218);
     public static final Color LIGHT4 = new Color(192, 191, 188);
@@ -74,5 +74,5 @@ public class Adwaita {
     public static final Color DARK2 = new Color(94, 92, 100);
     public static final Color DARK3 = new Color(61, 56, 70);
     public static final Color DARK4 = new Color(36, 31, 49);
-    public static final Color DARK5 = Color.BLACK;
+    public static final Color DARK5 = new Color(0, 0, 0);
 }

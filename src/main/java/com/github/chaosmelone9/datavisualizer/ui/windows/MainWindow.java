@@ -71,12 +71,12 @@ public class MainWindow extends JFrame {
         setJMenuBar(menuBar);
         setVisible(true);
 
-        graphDataSet.add(
-                new GraphFunction(aDouble -> (1 - aDouble) * aDouble * (-1), "1", false, false, Adwaita.DARK5, true));
-        graphDataSet.add(
-                new GraphOval(new Oval(new Point(5, 10), 10, 10), "2", false, false, Adwaita.GREEN2, true, true));
-        graphDataSet.add(new GraphMarker(true, 5, "3", false, false, Adwaita.PURPLE4, true));
-        graphDataSet.add(new GraphPoint(new Point(4, 7), "4", true, false, Adwaita.BLUE1, true));
+        graphDataSet.add(new GraphFunction(
+                aDouble -> (1 - aDouble) * aDouble * (-1), "Test function", false, false, Adwaita.DARK5, true));
+        graphDataSet.add(new GraphOval(
+                new Oval(new Point(5, 10), 10, 10), "Test oval", false, false, Adwaita.GREEN2, true, true));
+        graphDataSet.add(new GraphMarker(true, 5, "Test marker", false, false, Adwaita.PURPLE4, true));
+        graphDataSet.add(new GraphPoint(new Point(4, 7), "Test point", true, false, Adwaita.BLUE1, true));
 
         addWindowListener(new WindowAdapter() {
             @Override

@@ -25,6 +25,6 @@ import javax.swing.*;
 public class OptionPane extends JTabbedPane {
     public OptionPane(MainWindow window) {
         super();
-        add(new JScrollPane(new Options(window)), "Options");
+        add(new Options(window), "Options");
     }
 }

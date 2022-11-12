@@ -22,6 +22,7 @@ import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphO
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Objects;
 
 public class Options extends JPanel {
@@ -30,13 +31,13 @@ public class Options extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JComboBox<GraphObject> selector = new JComboBox<>();
+        selector.setMaximumSize(new Dimension(200, 30));
         add(selector);
 
         GraphObjectCustomizer customizer = new GraphObjectCustomizer(window, null);
         add(customizer);
 
         selector.addActionListener(actionEvent -> {
-            System.out.println("Selected: " + selector.getSelectedItem());
             customizer.setObject((GraphObject) Objects.requireNonNull(selector.getSelectedItem()));
             repaint();
         });
