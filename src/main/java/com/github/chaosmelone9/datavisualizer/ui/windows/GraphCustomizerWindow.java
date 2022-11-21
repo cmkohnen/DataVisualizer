@@ -116,8 +116,8 @@ public class GraphCustomizerWindow extends PopupWindow {
                         graph.setGridColour(JColorChooser.showDialog(this, "Choose Colour", graph.getGridColour()))));
         add(new ColorPicker(
                 "Second Label Color",
-                actionEvent -> graph.setLabelSecondColour(
-                        JColorChooser.showDialog(this, "Choose Colour", graph.getLabelSecondColour()))));
+                actionEvent -> graph.setSecondLabelColour(
+                        JColorChooser.showDialog(this, "Choose Colour", graph.getSecondLabelColour()))));
         add(new ColorPicker(
                 "Label Color",
                 actionEvent ->

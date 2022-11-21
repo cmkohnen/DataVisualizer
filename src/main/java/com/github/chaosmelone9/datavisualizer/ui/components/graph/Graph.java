@@ -80,7 +80,7 @@ public class Graph extends JPanel {
     private Color backgroundColour = GraphConfig.DEFAULT_BACKGROUND_COLOUR;
     private Color gridColour = GraphConfig.DEFAULT_GRID_COLOUR;
     private Color labelColour = GraphConfig.DEFAULT_LABEL_COLOUR;
-    private Color labelSecondColour = GraphConfig.DEFAULT_SECOND_LABEL_COLOUR;
+    private Color SecondLabelColour = GraphConfig.DEFAULT_SECOND_LABEL_COLOUR;
     private Color titleColour = GraphConfig.DEFAULT_TITLE_COLOUR;
     private Color axisColour = GraphConfig.DEFAULT_AXIS_COLOUR;
     private Color hatchMarkColour = GraphConfig.DEFAULT_HATCH_MARK_COLOUR;
@@ -419,7 +419,7 @@ public class Graph extends JPanel {
                             metrics.stringWidth("0") + 4,
                             metrics.getHeight());
                     renderHelper.drawBorderedRect(labelRectangle, backgroundColour, uiColour);
-                    graphics2D.setColor(labelSecondColour);
+                    graphics2D.setColor(SecondLabelColour);
                     graphics2D.drawString(
                             "0", zeroXA - (metrics.stringWidth("0") / 2), stopY + metrics.getHeight() - 3);
                 }
@@ -432,7 +432,7 @@ public class Graph extends JPanel {
                             metrics.stringWidth("0") + 4,
                             metrics.getHeight());
                     renderHelper.drawBorderedRect(labelRectangle, backgroundColour, uiColour);
-                    graphics2D.setColor(labelSecondColour);
+                    graphics2D.setColor(SecondLabelColour);
                     graphics2D.drawString("0", zeroXB - (metrics.stringWidth("0") / 2), startY - 3);
                 }
                 if (minYA < 0 && maxYA > 0) {
@@ -444,7 +444,7 @@ public class Graph extends JPanel {
                             metrics.stringWidth("0") + 8,
                             metrics.getHeight());
                     renderHelper.drawBorderedRect(labelRectangle, backgroundColour, uiColour);
-                    graphics2D.setColor(labelSecondColour);
+                    graphics2D.setColor(SecondLabelColour);
                     graphics2D.drawString(
                             "0", startX - metrics.stringWidth("0") - 5, zeroYA + (metrics.getHeight() / 2) - 3);
                 }
@@ -457,7 +457,7 @@ public class Graph extends JPanel {
                             metrics.stringWidth("0") + 8,
                             metrics.getHeight());
                     renderHelper.drawBorderedRect(labelRectangle, backgroundColour, uiColour);
-                    graphics2D.setColor(labelSecondColour);
+                    graphics2D.setColor(SecondLabelColour);
                     graphics2D.drawString("0", stopX + 5, zeroYB + (metrics.getHeight() / 2) - 3);
                 }
 
@@ -1051,12 +1051,12 @@ public class Graph extends JPanel {
         return labelColour;
     }
 
-    public void setLabelSecondColour(Color labelSecondColour) {
-        this.labelSecondColour = labelSecondColour;
+    public void setSecondLabelColour(Color secondLabelColour) {
+        this.SecondLabelColour = secondLabelColour;
     }
 
-    public Color getLabelSecondColour() {
-        return labelSecondColour;
+    public Color getSecondLabelColour() {
+        return SecondLabelColour;
     }
 
     public void setTitleColour(Color titleColour) {

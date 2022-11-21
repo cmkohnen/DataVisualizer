@@ -20,12 +20,17 @@ package com.github.chaosmelone9.datavisualizer.config;
 
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Graph;
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.Serializable;
 
-@SuppressWarnings("unchecked")
 public class GraphConfig {
     public static final String DEFAULT_TITLE = null;
 
@@ -79,97 +84,123 @@ public class GraphConfig {
 
     public static final double DEFAULT_ZOOM_FACTOR = 0.1;
 
-    public static JSONObject readJSONFromGraph(Graph graph) throws ClassCastException {
-        JSONObject object = new JSONObject();
-        object.put("title", graph.getTitle());
-        object.put("MinimumSize", graph.getMinimumSize());
-        object.put("Padding", graph.getPadding());
-        object.put("LabelPadding", graph.getLabelPadding());
-        object.put("TitlePadding", graph.getTitlePadding());
-        object.put("PointRadius", graph.getPointRadius());
-        object.put("NumberXDivisions", graph.getNumberXDivisions());
-        object.put("NumberYDivisions", graph.getNumberYDivisions());
-        object.put("DrawXGrid", graph.isDrawXGrid());
-        object.put("DrawYGrid", graph.isDrawYGrid());
-        object.put("DrawXAHatchMarks", graph.isDrawXAHatchMarks());
-        object.put("DrawXBHatchMarks", graph.isDrawXBHatchMarks());
-        object.put("DrawYAHatchMarks", graph.isDrawYAHatchMarks());
-        object.put("DrawYBHatchMarks", graph.isDrawYBHatchMarks());
-        object.put("DrawXALabels", graph.isDrawXALabels());
-        object.put("DrawXBLabels", graph.isDrawXBLabels());
-        object.put("DrawYALabels", graph.isDrawYALabels());
-        object.put("DrawYBLabels", graph.isDrawYBLabels());
-        object.put("IndicateMouseX", graph.isIndicateMouseX());
-        object.put("IndicateMouseY", graph.isIndicateMouseY());
-        object.put("LabelMouseXY", graph.isLabelMouseXY());
-        object.put("BackgroundColour", graph.getBackgroundColour());
-        object.put("GridColour", graph.getGridColour());
-        object.put("LabelColour", graph.getLabelColour());
-        object.put("LabelSecondColour", graph.getLabelSecondColour());
-        object.put("TitleColour", graph.getTitleColour());
-        object.put("AxisColour", graph.getAxisColour());
-        object.put("HatchMarkColour", graph.getHatchMarkColour());
-        object.put("IndicatorColour", graph.getIndicatorColour());
-        object.put("UIColour", graph.getUiColour());
-        object.put("UIBackgroundColour", graph.getUiBackgroundColour());
-        object.put("BackgroundImage", graph.getBackgroundImage());
-        object.put("GraphStroke", graph.getGraphStroke());
-        object.put("UIStroke", graph.getUiStroke());
-        object.put("MinXA", graph.getMinXA());
-        object.put("MinXB", graph.getMinXB());
-        object.put("MaxXA", graph.getMaxXA());
-        object.put("MaxXB", graph.getMaxXB());
-        object.put("MinYA", graph.getMinYA());
-        object.put("MinYB", graph.getMinYB());
-        object.put("MaxYA", graph.getMaxYA());
-        object.put("MaxYB", graph.getMaxYB());
-        object.put("ZoomFactor", graph.getZoomFactor());
-        return object;
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(Color.class, new TypeAdapter<Color>() {
+                @Override
+                public void write(JsonWriter jsonWriter, Color color) throws IOException {
+                    jsonWriter.value(String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue()));
+                }
+
+                @Override
+                public Color read(JsonReader jsonReader) throws IOException {
+                    return Color.decode(jsonReader.nextString());
+                }
+            })
+            .setPrettyPrinting()
+            .create();
+
+    public static String readJSONFromGraph(Graph graph) throws ClassCastException {
+        AbstractGraph abstractGraph = new AbstractGraph();
+        abstractGraph.title = graph.getTitle();
+        abstractGraph.minimumSize = graph.getMinimumSize();
+        abstractGraph.padding = graph.getPadding();
+        abstractGraph.labelPadding = graph.getLabelPadding();
+        abstractGraph.titlePadding = graph.getTitlePadding();
+        abstractGraph.pointRadius = graph.getPointRadius();
+        abstractGraph.numberXDivisions = graph.getNumberXDivisions();
+        abstractGraph.numberYDivisions = graph.getNumberYDivisions();
+        abstractGraph.drawXGrid = graph.isDrawXGrid();
+        abstractGraph.drawYGrid = graph.isDrawYGrid();
+        abstractGraph.drawXAHatchMarks = graph.isDrawXAHatchMarks();
+        abstractGraph.drawXBHatchMarks = graph.isDrawXBHatchMarks();
+        abstractGraph.drawYAHatchMarks = graph.isDrawYAHatchMarks();
+        abstractGraph.drawYBHatchMarks = graph.isDrawYBHatchMarks();
+        abstractGraph.drawXALabels = graph.isDrawXALabels();
+        abstractGraph.drawXBLabels = graph.isDrawXBLabels();
+        abstractGraph.drawYALabels = graph.isDrawYALabels();
+        abstractGraph.drawYBLabels = graph.isDrawYBLabels();
+        abstractGraph.indicateMouseX = graph.isIndicateMouseX();
+        abstractGraph.indicateMouseY = graph.isIndicateMouseY();
+        abstractGraph.labelMouseXY = graph.isLabelMouseXY();
+        abstractGraph.backgroundColour = graph.getBackgroundColour();
+        abstractGraph.gridColour = graph.getGridColour();
+        abstractGraph.labelColour = graph.getLabelColour();
+        abstractGraph.secondLabelColour = graph.getSecondLabelColour();
+        abstractGraph.titleColour = graph.getTitleColour();
+        abstractGraph.axisColour = graph.getAxisColour();
+        abstractGraph.hatchMarkColour = graph.getHatchMarkColour();
+        abstractGraph.indicatorColour = graph.getIndicatorColour();
+        abstractGraph.uiColour = graph.getUiColour();
+        abstractGraph.uiBackgroundColour = graph.getUiBackgroundColour();
+        return GSON.toJson(abstractGraph);
     }
 
-    public static void applyJSONToGraph(JSONObject object, Graph graph) throws ClassCastException {
-        graph.setTitle((String) object.get("Title"));
-        graph.setMinimumSize((Dimension) object.get("MinimumSize"));
-        graph.setPadding((Integer) object.get("Padding"));
-        graph.setLabelPadding((Integer) object.get("LabelPadding"));
-        graph.setTitlePadding((Integer) object.get("TitlePadding"));
-        graph.setPointRadius((Integer) object.get("PointRadius"));
-        graph.setNumberXDivisions((Integer) object.get("NumberXDivisions"));
-        graph.setNumberYDivisions((Integer) object.get("NumberYDivisions"));
-        graph.setDrawXGrid((Boolean) object.get("DrawXGrid"));
-        graph.setDrawYGrid((Boolean) object.get("DrawYGrid"));
-        graph.setDrawXAHatchMarks((Boolean) object.get("DrawXAHatchMarks"));
-        graph.setDrawXBHatchMarks((Boolean) object.get("DrawXBHatchMarks"));
-        graph.setDrawYAHatchMarks((Boolean) object.get("DrawYAHatchMarks"));
-        graph.setDrawYBHatchMarks((Boolean) object.get("DrawYBHatchMarks"));
-        graph.setDrawXALabels((Boolean) object.get("DrawXALabels"));
-        graph.setDrawXBLabels((Boolean) object.get("DrawXBLabels"));
-        graph.setDrawYALabels((Boolean) object.get("DrawYALabels"));
-        graph.setDrawYBLabels((Boolean) object.get("DrawYBLabels"));
-        graph.setIndicateMouseX((Boolean) object.get("IndicateMouseX"));
-        graph.setIndicateMouseY((Boolean) object.get("IndicateMouseY"));
-        graph.setLabelMouseXY((Boolean) object.get("LabelMouseXY"));
-        graph.setBackgroundColour((Color) object.get("BackgroundColour"));
-        graph.setGridColour((Color) object.get("GridColour"));
-        graph.setLabelColour((Color) object.get("LabelColour"));
-        graph.setLabelSecondColour((Color) object.get("LabelSecondColour"));
-        graph.setTitleColour((Color) object.get("TitleColour"));
-        graph.setAxisColour((Color) object.get("AxisColour"));
-        graph.setHatchMarkColour((Color) object.get("HatchMarkColour"));
-        graph.setIndicatorColour((Color) object.get("IndicatorColour"));
-        graph.setUiColour((Color) object.get("UIColour"));
-        graph.setUiBackgroundColour((Color) object.get("UIBackgroundColour"));
-        graph.setBackgroundImage((BufferedImage) object.get("BackgroundImage"));
-        graph.setGraphStroke((Stroke) object.get("GraphStroke"));
-        graph.setUiStroke((Stroke) object.get("UIStroke"));
-        graph.setMinXA((Double) object.get("MinXA"));
-        graph.setMinXB((Double) object.get("MinXB"));
-        graph.setMaxXA((Double) object.get("MaxXA"));
-        graph.setMaxXB((Double) object.get("MaxXB"));
-        graph.setMinYA((Double) object.get("MinYA"));
-        graph.setMinYB((Double) object.get("MinYB"));
-        graph.setMaxYA((Double) object.get("MaxYA"));
-        graph.setMaxYB((Double) object.get("MaxYB"));
-        graph.setZoomFactor((Double) object.get("ZoomFactor"));
+    public static void applyJSONToGraph(String object, Graph graph) throws ClassCastException {
+        AbstractGraph abstractGraph = GSON.fromJson(object, AbstractGraph.class);
+        graph.setTitle(abstractGraph.title);
+        graph.setMinimumSize(abstractGraph.minimumSize);
+        graph.setPadding(abstractGraph.padding);
+        graph.setLabelPadding(abstractGraph.labelPadding);
+        graph.setTitlePadding(abstractGraph.titlePadding);
+        graph.setPointRadius(abstractGraph.pointRadius);
+        graph.setNumberXDivisions(abstractGraph.numberXDivisions);
+        graph.setNumberYDivisions(abstractGraph.numberYDivisions);
+        graph.setDrawXGrid(abstractGraph.drawXGrid);
+        graph.setDrawYGrid(abstractGraph.drawYGrid);
+        graph.setDrawXAHatchMarks(abstractGraph.drawXAHatchMarks);
+        graph.setDrawXBHatchMarks(abstractGraph.drawXBHatchMarks);
+        graph.setDrawYAHatchMarks(abstractGraph.drawYAHatchMarks);
+        graph.setDrawYBHatchMarks(abstractGraph.drawYBHatchMarks);
+        graph.setDrawXALabels(abstractGraph.drawXALabels);
+        graph.setDrawXBLabels(abstractGraph.drawXBLabels);
+        graph.setDrawYALabels(abstractGraph.drawYALabels);
+        graph.setDrawYBLabels(abstractGraph.drawYBLabels);
+        graph.setIndicateMouseX(abstractGraph.indicateMouseX);
+        graph.setIndicateMouseY(abstractGraph.indicateMouseY);
+        graph.setLabelMouseXY(abstractGraph.labelMouseXY);
+        graph.setBackgroundColour(abstractGraph.backgroundColour);
+        graph.setGridColour(abstractGraph.gridColour);
+        graph.setLabelColour(abstractGraph.labelColour);
+        graph.setSecondLabelColour(abstractGraph.secondLabelColour);
+        graph.setTitleColour(abstractGraph.titleColour);
+        graph.setAxisColour(abstractGraph.axisColour);
+        graph.setHatchMarkColour(abstractGraph.hatchMarkColour);
+        graph.setIndicatorColour(abstractGraph.indicatorColour);
+        graph.setUiColour(abstractGraph.uiColour);
+        graph.setUiBackgroundColour(abstractGraph.uiBackgroundColour);
+    }
+
+    private static class AbstractGraph implements Serializable {
+        public String title;
+        public Dimension minimumSize;
+        public int padding;
+        public int labelPadding;
+        public int titlePadding;
+        public int pointRadius;
+        public int numberXDivisions;
+        public int numberYDivisions;
+        public boolean drawXGrid;
+        public boolean drawYGrid;
+        public boolean drawXAHatchMarks;
+        public boolean drawXBHatchMarks;
+        public boolean drawYAHatchMarks;
+        public boolean drawYBHatchMarks;
+        public boolean drawXALabels;
+        public boolean drawXBLabels;
+        public boolean drawYALabels;
+        public boolean drawYBLabels;
+        public boolean indicateMouseX;
+        public boolean indicateMouseY;
+        public boolean labelMouseXY;
+        public Color backgroundColour;
+        public Color gridColour;
+        public Color labelColour;
+        public Color secondLabelColour;
+        public Color titleColour;
+        public Color axisColour;
+        public Color hatchMarkColour;
+        public Color indicatorColour;
+        public Color uiColour;
+        public Color uiBackgroundColour;
     }
 }
