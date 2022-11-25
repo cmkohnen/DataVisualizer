@@ -1,4 +1,4 @@
-package com.github.chaosmelone9.datavisualizer.ui.components.GraphData;
+package com.github.chaosmelone9.datavisualizer.ui.GraphData;
 
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphObject;
 

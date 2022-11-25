@@ -41,8 +41,8 @@ public class GraphRow extends GraphObject {
     @Override
     public boolean isInRange(double minX, double minY, double maxX, double maxY) {
         boolean isInRange = false;
-        for (Point point : row.points) {
-            if (isPointInRange(minX, minY, maxX, maxY, point)) {
+        for (Double x : row.points.keySet()) {
+            if (isPointInRange(minX, minY, maxX, maxY, new Point(x, row.points.get(x)))) {
                 isInRange = true;
                 break;
             }

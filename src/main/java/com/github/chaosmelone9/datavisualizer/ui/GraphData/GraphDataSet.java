@@ -16,7 +16,7 @@
 *  You should have received a copy of the GNU General Public License
 *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-package com.github.chaosmelone9.datavisualizer.ui.components.GraphData;
+package com.github.chaosmelone9.datavisualizer.ui.GraphData;
 
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.*;
 

@@ -84,20 +84,17 @@ public class GraphConfig {
 
     public static final double DEFAULT_ZOOM_FACTOR = 0.1;
 
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Color.class, new TypeAdapter<Color>() {
-                @Override
-                public void write(JsonWriter jsonWriter, Color color) throws IOException {
-                    jsonWriter.value(String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue()));
-                }
+    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Color.class, new TypeAdapter<Color>() {
+        @Override
+        public void write(JsonWriter jsonWriter, Color color) throws IOException {
+            jsonWriter.value(String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue()));
+        }
 
-                @Override
-                public Color read(JsonReader jsonReader) throws IOException {
-                    return Color.decode(jsonReader.nextString());
-                }
-            })
-            .setPrettyPrinting()
-            .create();
+        @Override
+        public Color read(JsonReader jsonReader) throws IOException {
+            return Color.decode(jsonReader.nextString());
+        }
+    }).setPrettyPrinting().create();
 
     public static String readJSONFromGraph(Graph graph) throws ClassCastException {
         AbstractGraph abstractGraph = new AbstractGraph();

@@ -30,7 +30,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -214,15 +216,37 @@ public class Graph extends JPanel {
 
                 /* Begin rendering of Content */
                 graphics2D.setStroke(graphStroke);
+                // render ovals
+                for (GraphOval graphOval : graphOvals) {
+                    if (graphOval.visible && isGraphObjectInRange(graphOval)) {
+                        graphics2D.setColor(graphOval.colour);
+                        int x = getXOf(graphOval.oval.center.x, graphOval.allocateToSecondXAxis);
+                        int y = getYOf(graphOval.oval.center.y, graphOval.allocateToSecondYAxis);
+                        int x1;
+                        int y1;
+                        if (graphOval.allocateToSecondXAxis) {
+                            x1 = (int) (graphOval.oval.xHeight * xBScale);
+                        } else x1 = (int) (graphOval.oval.xHeight * xAScale);
+                        if (graphOval.allocateToSecondYAxis) {
+                            y1 = (int) (graphOval.oval.yHeight * yBScale);
+                        } else y1 = (int) (graphOval.oval.yHeight * yAScale);
+                        if (graphOval.filled) {
+                            graphics2D.fillOval(x, y, x1, y1);
+                        } else graphics2D.drawOval(x, y, x1, y1);
+                    }
+                }
+
                 // render rows
                 for (GraphRow graphRow : graphRows) {
                     if (graphRow.visible && isGraphObjectInRange(graphRow)) {
                         graphics2D.setColor(graphRow.colour);
-                        for (int i = 0; i < graphRow.row.points.length - 1; i++) {
-                            int x0 = getXOf(graphRow.row.points[i].x, graphRow.allocateToSecondXAxis);
-                            int x1 = getXOf(graphRow.row.points[i + 1].x, graphRow.allocateToSecondXAxis);
-                            int y0 = getYOf(graphRow.row.points[i].y, graphRow.allocateToSecondYAxis);
-                            int y1 = getYOf(graphRow.row.points[i + 1].y, graphRow.allocateToSecondYAxis);
+                        Double[] xPoints = graphRow.row.points.keySet().toArray(new Double[0]);
+                        Arrays.sort(xPoints);
+                        for (int i = 0; i < graphRow.row.points.size() - 1; i++) {
+                            int x0 = getXOf(xPoints[i], graphRow.allocateToSecondXAxis);
+                            int x1 = getXOf(xPoints[i + 1], graphRow.allocateToSecondXAxis);
+                            int y0 = getYOf(graphRow.row.points.get(xPoints[i]), graphRow.allocateToSecondYAxis);
+                            int y1 = getYOf(graphRow.row.points.get(xPoints[i + 1]), graphRow.allocateToSecondYAxis);
                             if (isInGraphRange(x0, y0) && isInGraphRange(x1, y1)) {
                                 graphics2D.drawLine(x0, y0, x1, y1);
                             }
@@ -245,26 +269,6 @@ public class Graph extends JPanel {
                                 graphics2D.drawLine(i - 1, y0, i, y1);
                             }
                         }
-                    }
-                }
-
-                // render ovals
-                for (GraphOval graphOval : graphOvals) {
-                    if (graphOval.visible && isGraphObjectInRange(graphOval)) {
-                        graphics2D.setColor(graphOval.colour);
-                        int x = getXOf(graphOval.oval.center.x, graphOval.allocateToSecondXAxis);
-                        int y = getYOf(graphOval.oval.center.y, graphOval.allocateToSecondYAxis);
-                        int x1;
-                        int y1;
-                        if (graphOval.allocateToSecondXAxis) {
-                            x1 = (int) (graphOval.oval.xHeight * xBScale);
-                        } else x1 = (int) (graphOval.oval.xHeight * xAScale);
-                        if (graphOval.allocateToSecondYAxis) {
-                            y1 = (int) (graphOval.oval.yHeight * yBScale);
-                        } else y1 = (int) (graphOval.oval.yHeight * yAScale);
-                        if (graphOval.filled) {
-                            graphics2D.fillOval(x, y, x1, y1);
-                        } else graphics2D.drawOval(x, y, x1, y1);
                     }
                 }
 

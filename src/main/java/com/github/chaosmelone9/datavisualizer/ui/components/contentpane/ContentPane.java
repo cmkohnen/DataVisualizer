@@ -19,6 +19,7 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.contentpane;
 
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Graph;
+import com.github.chaosmelone9.datavisualizer.ui.components.table.Table;
 import com.github.chaosmelone9.datavisualizer.ui.windows.GraphPopupWindow;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
 
@@ -26,7 +27,7 @@ import javax.swing.*;
 
 public class ContentPane extends JTabbedPane {
     private final Graph graph;
-    private final Table table = new Table();
+    private final Table table;
     private final GraphComponents graphComponents = new GraphComponents();
 
     private final MainWindow window;
@@ -38,6 +39,7 @@ public class ContentPane extends JTabbedPane {
     public ContentPane(MainWindow window) {
         this.window = window;
         this.graph = new Graph(window);
+        this.table = new Table(window.getGraphDataSet());
         add(graph, "Graph");
         add(table, "Table");
         add(graphComponents, "Functions and other markings");

@@ -18,10 +18,12 @@
  */
 package com.github.chaosmelone9.datavisualizer.datasets;
 
-public class Row {
-    public Point[] points;
+import java.util.Map;
 
-    public Row(Point[] points) {
+public class Row {
+    public Map<Double, Double> points;
+
+    public Row(Map<Double, Double> points) {
         this.points = points;
     }
 }
