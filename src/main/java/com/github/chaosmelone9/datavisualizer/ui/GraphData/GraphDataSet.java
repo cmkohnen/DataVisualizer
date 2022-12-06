@@ -63,6 +63,27 @@ public class GraphDataSet {
         }
     }
 
+    public void remove(GraphObject object) {
+        graphObjects.remove(object);
+        switch (object.getType()) {
+            case GRAPHFUNCTION -> graphFunctions.remove((GraphFunction) object);
+            case GRAPHMARKER -> graphMarkers.remove((GraphMarker) object);
+            case GRAPHOVAL -> graphOvals.remove((GraphOval) object);
+            case GRAPHPOINT -> graphPoints.remove((GraphPoint) object);
+            case GRAPHPOLYGON -> graphPolygons.remove((GraphPolygon) object);
+            case GRAPHROW -> graphRows.remove((GraphRow) object);
+        }
+        for (GraphDataChangeListener listener : graphDataChangeListeners) {
+            listener.onGraphDataChange(GraphDataChangeListener.ChangeType.REMOVE, object);
+        }
+    }
+
+    public void dataChanged() {
+        for (GraphDataChangeListener listener : graphDataChangeListeners) {
+            listener.onGraphDataChange(GraphDataChangeListener.ChangeType.UPDATE, null);
+        }
+    }
+
     public List<GraphFunction> getGraphFunctions() {
         return graphFunctions;
     }

@@ -11,11 +11,10 @@ public class ButtonPanel extends JPanel {
         JTextField textField = new JTextField();
         add(textField);
         JButton applyButton = new JButton("Apply");
-        applyButton.addActionListener(e -> {
-            table.tablePanel.setSelectedValue(Double.parseDouble(textField.getText()));
-        });
+        applyButton.addActionListener(e -> table.tablePanel.setSelectedValue(Double.parseDouble(textField.getText())));
         add(applyButton);
         JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(e -> table.tablePanel.clearSelectedValue());
         add(clearButton);
         JButton addRowButton = new JButton("Add Row");
         add(addRowButton);

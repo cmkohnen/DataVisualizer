@@ -18,22 +18,18 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.components.table;
 
-import com.github.chaosmelone9.datavisualizer.datasets.Point;
-import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
 import com.github.chaosmelone9.datavisualizer.ui.GraphData.GraphDataSet;
-import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphRow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Table extends JPanel {
     protected final ButtonPanel buttonPanel;
     protected final TablePanel tablePanel;
     protected List<CellSelectedListener> cellSelectedListeners = new ArrayList<>();
+
     public Table(GraphDataSet dataSet) {
         super();
         setLayout(new BorderLayout());

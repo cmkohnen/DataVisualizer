@@ -7,6 +7,7 @@ public interface GraphDataChangeListener {
 
     enum ChangeType {
         ADD,
-        REMOVE
+        REMOVE,
+        UPDATE
     }
 }

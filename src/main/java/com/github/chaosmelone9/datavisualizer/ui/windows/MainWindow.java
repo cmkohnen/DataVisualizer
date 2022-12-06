@@ -34,7 +34,10 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainWindow extends JFrame {
 
@@ -85,20 +88,26 @@ public class MainWindow extends JFrame {
             }
         });
 
-        Map<Double, Double> points = new HashMap<>();
-        points.put(1.0, 2.0);
-        points.put(2.0, 4.0);
-        points.put(3.0, 4.5);
-        points.put(4.0, 5.25);
-        points.put(5.0, 6.0);
-        GraphRow graphRow = new GraphRow(
-                new Row(points),
-                "Test row", false, false, Adwaita.RED1, true);
+        Map<Double, Double> points1 = new HashMap<>();
+        points1.put(1.0, 2.0);
+        points1.put(2.0, 4.0);
+        points1.put(3.0, 4.5);
+        points1.put(4.0, 5.25);
+        points1.put(5.0, 6.0);
 
-        graphDataSet.add(graphRow);
-        graphDataSet.add(graphRow);
-        graphDataSet.add(graphRow);
-        graphDataSet.add(graphRow);
+        Map<Double, Double> points2 = new HashMap<>();
+        points2.put(1.0, 3.0);
+        points2.put(2.0, 5.0);
+        points2.put(3.0, 7.5);
+        points2.put(4.0, 9.25);
+        points2.put(5.0, 8.0);
+
+        graphDataSet.add(new GraphRow(
+                new Row(points1),
+                "Test row", false, false, Adwaita.RED1, true));
+        graphDataSet.add(new GraphRow(
+                new Row(points2),
+                "Test row", false, false, Adwaita.BLUE1, true));
     }
 
     public Main getInstance() {

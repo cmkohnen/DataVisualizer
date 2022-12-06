@@ -22,7 +22,7 @@ import com.github.chaosmelone9.datavisualizer.Main;
 import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.*;
 import com.github.chaosmelone9.datavisualizer.ui.windows.MainWindow;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -30,7 +30,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -141,6 +140,7 @@ public class Graph extends JPanel {
                 case ADD -> add(graphObject);
                 case REMOVE -> remove(graphObject);
             }
+            repaint();
         });
         GraphListener listener = new GraphListener();
         addMouseMotionListener(listener);
@@ -339,7 +339,7 @@ public class Graph extends JPanel {
                             if (drawYALabels) {
                                 String yALabel =
                                         ((int) ((minYA + (maxYA - minYA) * ((i * 1.0) / numberYDivisions)) * 100))
-                                                        / 100.0
+                                                / 100.0
                                                 + "";
                                 graphics2D.drawString(
                                         yALabel,
@@ -349,7 +349,7 @@ public class Graph extends JPanel {
                             if (hasSecondYAxis && drawYBLabels) {
                                 String yBLabel =
                                         ((int) ((minYB + (maxYB - minYB) * ((i * 1.0) / numberYDivisions)) * 100))
-                                                        / 100.0
+                                                / 100.0
                                                 + "";
                                 graphics2D.drawString(yBLabel, stopX + 5, y + (metrics.getHeight() / 2) - 3);
                             }
@@ -378,7 +378,7 @@ public class Graph extends JPanel {
                             if (drawXALabels) {
                                 String xALabel =
                                         ((int) ((minXA + (maxXA - minXA) * ((i * 1.0) / numberXDivisions)) * 100))
-                                                        / 100.0
+                                                / 100.0
                                                 + "";
                                 graphics2D.drawString(
                                         xALabel, x - metrics.stringWidth(xALabel) / 2, stopY + metrics.getHeight() - 3);
@@ -386,7 +386,7 @@ public class Graph extends JPanel {
                             if (hasSecondXAxis && drawXBLabels) {
                                 String xBLabel =
                                         ((int) ((minXB + (maxXB - minXB) * ((i * 1.0) / numberXDivisions)) * 100))
-                                                        / 100.0
+                                                / 100.0
                                                 + "";
                                 graphics2D.drawString(xBLabel, x - metrics.stringWidth(xBLabel) / 2, startY - 3);
                             }
@@ -674,7 +674,6 @@ public class Graph extends JPanel {
             case GRAPHROW -> graphRows.add((GraphRow) object);
         }
         updateSecondAxes();
-        repaint();
     }
 
     public void remove(@NotNull GraphObject object) {
@@ -687,7 +686,6 @@ public class Graph extends JPanel {
             case GRAPHROW -> graphRows.remove((GraphRow) object);
         }
         updateSecondAxes();
-        repaint();
     }
 
     public void clearData() {
@@ -828,14 +826,18 @@ public class Graph extends JPanel {
         return mouseY;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
         this.hasTitle = title != null;
         repaint();
     }
 
-    public String getTitle() {
-        return title;
+    public BufferedImage getBackgroundImage() {
+        return backgroundImage;
     }
 
     public void setBackgroundImage(BufferedImage image) {
@@ -844,17 +846,17 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public BufferedImage getBackgroundImage() {
-        return backgroundImage;
+    @Override
+    public Dimension getMinimumSize() {
+        return minimumSize;
     }
 
     public void setMinimumSize(Dimension size) {
         this.minimumSize = size;
     }
 
-    @Override
-    public Dimension getMinimumSize() {
-        return minimumSize;
+    public int getPadding() {
+        return padding;
     }
 
     public void setPadding(int padding) {
@@ -862,8 +864,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public int getPadding() {
-        return padding;
+    public int getLabelPadding() {
+        return labelPadding;
     }
 
     public void setLabelPadding(int labelPadding) {
@@ -871,8 +873,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public int getLabelPadding() {
-        return labelPadding;
+    public int getTitlePadding() {
+        return titlePadding;
     }
 
     public void setTitlePadding(int titlePadding) {
@@ -880,8 +882,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public int getTitlePadding() {
-        return titlePadding;
+    public int getPointRadius() {
+        return pointRadius;
     }
 
     public void setPointRadius(int pointRadius) {
@@ -889,8 +891,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public int getPointRadius() {
-        return pointRadius;
+    public int getNumberXDivisions() {
+        return numberXDivisions;
     }
 
     public void setNumberXDivisions(int numberXDivisions) {
@@ -898,8 +900,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public int getNumberXDivisions() {
-        return numberXDivisions;
+    public int getNumberYDivisions() {
+        return numberYDivisions;
     }
 
     public void setNumberYDivisions(int numberYDivisions) {
@@ -907,8 +909,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public int getNumberYDivisions() {
-        return numberYDivisions;
+    public boolean isDrawXGrid() {
+        return drawXGrid;
     }
 
     public void setDrawXGrid(boolean drawXGrid) {
@@ -916,8 +918,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawXGrid() {
-        return drawXGrid;
+    public boolean isDrawYGrid() {
+        return drawYGrid;
     }
 
     public void setDrawYGrid(boolean drawYGrid) {
@@ -925,8 +927,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawYGrid() {
-        return drawYGrid;
+    public boolean isDrawXAHatchMarks() {
+        return drawXAHatchMarks;
     }
 
     public void setDrawXAHatchMarks(boolean drawXAHatchMarks) {
@@ -934,8 +936,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawXAHatchMarks() {
-        return drawXAHatchMarks;
+    public boolean isDrawXBHatchMarks() {
+        return drawXBHatchMarks;
     }
 
     public void setDrawXBHatchMarks(boolean drawXBHatchMarks) {
@@ -943,8 +945,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawXBHatchMarks() {
-        return drawXBHatchMarks;
+    public boolean isDrawYAHatchMarks() {
+        return drawYAHatchMarks;
     }
 
     public void setDrawYAHatchMarks(boolean drawYAHatchMarks) {
@@ -952,8 +954,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawYAHatchMarks() {
-        return drawYAHatchMarks;
+    public boolean isDrawYBHatchMarks() {
+        return drawYBHatchMarks;
     }
 
     public void setDrawYBHatchMarks(boolean drawYBHatchMarks) {
@@ -961,8 +963,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawYBHatchMarks() {
-        return drawYBHatchMarks;
+    public boolean isDrawXALabels() {
+        return drawXALabels;
     }
 
     public void setDrawXALabels(boolean drawXALabels) {
@@ -970,8 +972,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawXALabels() {
-        return drawXALabels;
+    public boolean isDrawXBLabels() {
+        return drawXBLabels;
     }
 
     public void setDrawXBLabels(boolean drawXBLabels) {
@@ -979,8 +981,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawXBLabels() {
-        return drawXBLabels;
+    public boolean isDrawYALabels() {
+        return drawYALabels;
     }
 
     public void setDrawYALabels(boolean drawYALabels) {
@@ -988,8 +990,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawYALabels() {
-        return drawYALabels;
+    public boolean isDrawYBLabels() {
+        return drawYBLabels;
     }
 
     public void setDrawYBLabels(boolean drawYBLabels) {
@@ -997,8 +999,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isDrawYBLabels() {
-        return drawYBLabels;
+    public boolean isIndicateMouseX() {
+        return indicateMouseX;
     }
 
     public void setIndicateMouseX(boolean indicateMouseX) {
@@ -1006,8 +1008,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isIndicateMouseX() {
-        return indicateMouseX;
+    public boolean isIndicateMouseY() {
+        return indicateMouseY;
     }
 
     public void setIndicateMouseY(boolean indicateMouseY) {
@@ -1015,8 +1017,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isIndicateMouseY() {
-        return indicateMouseY;
+    public boolean isLabelMouseXY() {
+        return labelMouseXY;
     }
 
     public void setLabelMouseXY(boolean labelMouseXY) {
@@ -1024,8 +1026,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public boolean isLabelMouseXY() {
-        return labelMouseXY;
+    public Color getBackgroundColour() {
+        return backgroundColour;
     }
 
     public void setBackgroundColour(Color backgroundColour) {
@@ -1033,8 +1035,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getBackgroundColour() {
-        return backgroundColour;
+    public Color getGridColour() {
+        return gridColour;
     }
 
     public void setGridColour(Color gridColour) {
@@ -1042,8 +1044,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getGridColour() {
-        return gridColour;
+    public Color getLabelColour() {
+        return labelColour;
     }
 
     public void setLabelColour(Color labelColour) {
@@ -1051,16 +1053,16 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getLabelColour() {
-        return labelColour;
+    public Color getSecondLabelColour() {
+        return SecondLabelColour;
     }
 
     public void setSecondLabelColour(Color secondLabelColour) {
         this.SecondLabelColour = secondLabelColour;
     }
 
-    public Color getSecondLabelColour() {
-        return SecondLabelColour;
+    public Color getTitleColour() {
+        return titleColour;
     }
 
     public void setTitleColour(Color titleColour) {
@@ -1068,8 +1070,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getTitleColour() {
-        return titleColour;
+    public Color getAxisColour() {
+        return axisColour;
     }
 
     public void setAxisColour(Color axisColour) {
@@ -1077,8 +1079,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getAxisColour() {
-        return axisColour;
+    public Color getHatchMarkColour() {
+        return hatchMarkColour;
     }
 
     public void setHatchMarkColour(Color hatchMarkColour) {
@@ -1086,8 +1088,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getHatchMarkColour() {
-        return hatchMarkColour;
+    public Color getIndicatorColour() {
+        return indicatorColour;
     }
 
     public void setIndicatorColour(Color indicatorColour) {
@@ -1095,8 +1097,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getIndicatorColour() {
-        return indicatorColour;
+    public Color getUiColour() {
+        return uiColour;
     }
 
     public void setUiColour(Color uiColour) {
@@ -1104,8 +1106,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getUiColour() {
-        return uiColour;
+    public Color getUiBackgroundColour() {
+        return uiBackgroundColour;
     }
 
     public void setUiBackgroundColour(Color uiBackgroundColour) {
@@ -1113,8 +1115,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Color getUiBackgroundColour() {
-        return uiBackgroundColour;
+    public Stroke getGraphStroke() {
+        return graphStroke;
     }
 
     public void setGraphStroke(Stroke graphStroke) {
@@ -1122,8 +1124,8 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Stroke getGraphStroke() {
-        return graphStroke;
+    public Stroke getUiStroke() {
+        return uiStroke;
     }
 
     public void setUiStroke(Stroke uiStroke) {
@@ -1131,80 +1133,76 @@ public class Graph extends JPanel {
         repaint();
     }
 
-    public Stroke getUiStroke() {
-        return uiStroke;
+    public double getMinXA() {
+        return minXA;
     }
 
     public void setMinXA(double minXA) {
         this.minXA = minXA;
     }
 
-    public double getMinXA() {
-        return minXA;
+    public double getMinXB() {
+        return minXB;
     }
 
     public void setMinXB(double minXB) {
         this.minXB = minXB;
     }
 
-    public double getMinXB() {
-        return minXB;
+    public double getMaxXA() {
+        return maxXA;
     }
 
     public void setMaxXA(double maxXA) {
         this.maxXA = maxXA;
     }
 
-    public double getMaxXA() {
-        return maxXA;
+    public double getMaxXB() {
+        return maxXB;
     }
 
     public void setMaxXB(double maxXB) {
         this.maxXB = maxXB;
     }
 
-    public double getMaxXB() {
-        return maxXB;
+    public double getMinYA() {
+        return minYA;
     }
 
     public void setMinYA(double minYA) {
         this.minYA = minYA;
     }
 
-    public double getMinYA() {
-        return minYA;
+    public double getMinYB() {
+        return minYB;
     }
 
     public void setMinYB(double minYB) {
         this.minYB = minYB;
     }
 
-    public double getMinYB() {
-        return minYB;
+    public double getMaxYA() {
+        return maxYA;
     }
 
     public void setMaxYA(double maxYA) {
         this.maxYA = maxYA;
     }
 
-    public double getMaxYA() {
-        return maxYA;
+    public double getMaxYB() {
+        return maxYB;
     }
 
     public void setMaxYB(double maxYB) {
         this.maxYB = maxYB;
     }
 
-    public double getMaxYB() {
-        return maxYB;
+    public double getZoomFactor() {
+        return zoomFactor;
     }
 
     public void setZoomFactor(double factor) {
         this.zoomFactor = factor;
-    }
-
-    public double getZoomFactor() {
-        return zoomFactor;
     }
 
     public BufferedImage renderToImage() {
@@ -1261,16 +1259,20 @@ public class Graph extends JPanel {
         }
 
         @Override
-        public void mousePressed(MouseEvent mouseEvent) {}
+        public void mousePressed(MouseEvent mouseEvent) {
+        }
 
         @Override
-        public void mouseReleased(MouseEvent mouseEvent) {}
+        public void mouseReleased(MouseEvent mouseEvent) {
+        }
 
         @Override
-        public void mouseEntered(MouseEvent mouseEvent) {}
+        public void mouseEntered(MouseEvent mouseEvent) {
+        }
 
         @Override
-        public void mouseExited(MouseEvent mouseEvent) {}
+        public void mouseExited(MouseEvent mouseEvent) {
+        }
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {

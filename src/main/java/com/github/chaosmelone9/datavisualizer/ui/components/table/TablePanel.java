@@ -1,6 +1,5 @@
 package com.github.chaosmelone9.datavisualizer.ui.components.table;
 
-import com.github.chaosmelone9.datavisualizer.datasets.Point;
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
 import com.github.chaosmelone9.datavisualizer.ui.GraphData.GraphDataSet;
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.GraphRow;
@@ -9,28 +8,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class TablePanel extends JPanel {
-    private final GraphDataSet dataSet;
     private static final int ROW_HEIGHT = 20;
     private static final int COLUMN_WIDTH = 100;
+    private final GraphDataSet dataSet;
     protected double startValue = 1;
     protected double stepSize = 1;
     protected int displayed_rows = 100;
-    private int cell_x = 0;
-    private int cell_y = 0;
     protected int selected_x = 1;
     protected int selected_y = 4;
-    private Graphics2D g2;
     protected Color staticCellColour = Adwaita.LIGHT3;
+    private int cell_x = 0;
+    private int cell_y = 0;
+    private Graphics2D g2;
 
-    private Map<Double, Double> points;
     public TablePanel(Table table, GraphDataSet graphDataSet) {
         super();
         this.dataSet = graphDataSet;
+        graphDataSet.addListener((type, object) -> repaint());
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -101,8 +99,8 @@ public class TablePanel extends JPanel {
             for (int i1 = 0; i1 < displayed_rows; i1++) {
                 cell_y = i1 + 2;
                 double keyValue = getRowValue(i1);
-                this.points = row.row.points;
-                if(points.containsKey(keyValue)) {
+                Map<Double, Double> points = row.row.points;
+                if (points.containsKey(keyValue)) {
                     drawCell(Double.toString(points.get(keyValue)));
                 }
             }
@@ -136,10 +134,16 @@ public class TablePanel extends JPanel {
     }
 
     protected Double getSelectedValue() {
-        return points.get(getRowValue(selected_y - 2));
+        return dataSet.getGraphRows().get(selected_x - 1).row.points.get(getRowValue(selected_y - 2));
     }
 
     protected void setSelectedValue(Double value) {
-        points.put(getRowValue(selected_y - 2), value);
+        dataSet.getGraphRows().get(selected_x - 1).row.points.put(getRowValue(selected_y - 2), value);
+        dataSet.dataChanged();
+    }
+
+    protected void clearSelectedValue() {
+        dataSet.getGraphRows().get(selected_x - 1).row.points.remove(getRowValue(selected_y - 2));
+        dataSet.dataChanged();
     }
 }
