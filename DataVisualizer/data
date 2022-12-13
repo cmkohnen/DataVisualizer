@@ -1,0 +1,170 @@
+{
+  "graphObjects": [
+    {
+      "oval": {
+        "center": {
+          "x": 5.0,
+          "y": 10.0,
+          "type": "POINT"
+        },
+        "xHeight": 10,
+        "yHeight": 10,
+        "type": "OVAL"
+      },
+      "filled": true,
+      "name": "Test oval",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#57e389",
+      "visible": true,
+      "type": "GRAPHOVAL"
+    },
+    {
+      "xOrY": true,
+      "value": 5.0,
+      "name": "Test marker",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#813d9c",
+      "visible": true,
+      "type": "GRAPHMARKER"
+    },
+    {
+      "point": {
+        "x": 4.0,
+        "y": 7.0,
+        "type": "POINT"
+      },
+      "name": "Test point",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": true,
+      "colour": "#99c1f1",
+      "visible": true,
+      "type": "GRAPHPOINT"
+    },
+    {
+      "row": {
+        "points": {
+          "1.0": 2.0,
+          "2.0": 4.0,
+          "4.0": 5.25,
+          "5.0": 6.0,
+          "3.0": 4.5
+        },
+        "type": "ROW"
+      },
+      "name": "Test row",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#f66151",
+      "visible": true,
+      "type": "GRAPHROW"
+    },
+    {
+      "row": {
+        "points": {
+          "1.0": 3.0,
+          "2.0": 5.0,
+          "4.0": 9.25,
+          "5.0": 8.0,
+          "3.0": 7.5
+        },
+        "type": "ROW"
+      },
+      "name": "Test row",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#99c1f1",
+      "visible": true,
+      "type": "GRAPHROW"
+    }
+  ],
+  "graphFunctions": [],
+  "graphMarkers": [
+    {
+      "xOrY": true,
+      "value": 5.0,
+      "name": "Test marker",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#813d9c",
+      "visible": true,
+      "type": "GRAPHMARKER"
+    }
+  ],
+  "graphOvals": [
+    {
+      "oval": {
+        "center": {
+          "x": 5.0,
+          "y": 10.0,
+          "type": "POINT"
+        },
+        "xHeight": 10,
+        "yHeight": 10,
+        "type": "OVAL"
+      },
+      "filled": true,
+      "name": "Test oval",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#57e389",
+      "visible": true,
+      "type": "GRAPHOVAL"
+    }
+  ],
+  "graphPoints": [
+    {
+      "point": {
+        "x": 4.0,
+        "y": 7.0,
+        "type": "POINT"
+      },
+      "name": "Test point",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": true,
+      "colour": "#99c1f1",
+      "visible": true,
+      "type": "GRAPHPOINT"
+    }
+  ],
+  "graphPolygons": [],
+  "graphRows": [
+    {
+      "row": {
+        "points": {
+          "1.0": 2.0,
+          "2.0": 4.0,
+          "4.0": 5.25,
+          "5.0": 6.0,
+          "3.0": 4.5
+        },
+        "type": "ROW"
+      },
+      "name": "Test row",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#f66151",
+      "visible": true,
+      "type": "GRAPHROW"
+    },
+    {
+      "row": {
+        "points": {
+          "1.0": 3.0,
+          "2.0": 5.0,
+          "4.0": 9.25,
+          "5.0": 8.0,
+          "3.0": 7.5
+        },
+        "type": "ROW"
+      },
+      "name": "Test row",
+      "allocateToSecondYAxis": false,
+      "allocateToSecondXAxis": false,
+      "colour": "#99c1f1",
+      "visible": true,
+      "type": "GRAPHROW"
+    }
+  ]
+}

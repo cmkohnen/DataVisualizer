@@ -18,30 +18,23 @@
 */
 package com.github.chaosmelone9.datavisualizer.ui.GraphData;
 
+import com.github.chaosmelone9.datavisualizer.config.GraphConfig;
+import com.github.chaosmelone9.datavisualizer.datasets.*;
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraphDataSet {
-
     private final List<GraphDataChangeListener> graphDataChangeListeners = new ArrayList<>();
-    private final List<GraphObject> graphObjects;
-    private final List<GraphFunction> graphFunctions;
-    private final List<GraphMarker> graphMarkers;
-    private final List<GraphOval> graphOvals;
-    private final List<GraphPoint> graphPoints;
-    private final List<GraphPolygon> graphPolygons;
-    private final List<GraphRow> graphRows;
+    private final DataSet dataSet;
 
     public GraphDataSet() {
-        this.graphObjects = new ArrayList<>();
-        this.graphFunctions = new ArrayList<>();
-        this.graphMarkers = new ArrayList<>();
-        this.graphOvals = new ArrayList<>();
-        this.graphPolygons = new ArrayList<>();
-        this.graphPoints = new ArrayList<>();
-        this.graphRows = new ArrayList<>();
+        this.dataSet = new DataSet();
+    }
+
+    public DataSet getDataSet() {
+        return dataSet;
     }
 
     public void addListener(GraphDataChangeListener listener) {
@@ -49,29 +42,54 @@ public class GraphDataSet {
     }
 
     public void add(GraphObject object) {
-        graphObjects.add(object);
+        dataSet.graphObjects.add(object);
         switch (object.getType()) {
-            case GRAPHFUNCTION -> graphFunctions.add((GraphFunction) object);
-            case GRAPHMARKER -> graphMarkers.add((GraphMarker) object);
-            case GRAPHOVAL -> graphOvals.add((GraphOval) object);
-            case GRAPHPOINT -> graphPoints.add((GraphPoint) object);
-            case GRAPHPOLYGON -> graphPolygons.add((GraphPolygon) object);
-            case GRAPHROW -> graphRows.add((GraphRow) object);
+            case GRAPHFUNCTION -> dataSet.graphFunctions.add((GraphFunction) object);
+            case GRAPHMARKER -> dataSet.graphMarkers.add((GraphMarker) object);
+            case GRAPHOVAL -> dataSet.graphOvals.add((GraphOval) object);
+            case GRAPHPOINT -> dataSet.graphPoints.add((GraphPoint) object);
+            case GRAPHPOLYGON -> dataSet.graphPolygons.add((GraphPolygon) object);
+            case GRAPHROW -> dataSet.graphRows.add((GraphRow) object);
         }
         for (GraphDataChangeListener listener : graphDataChangeListeners) {
             listener.onGraphDataChange(GraphDataChangeListener.ChangeType.ADD, object);
         }
     }
 
+    public void addAll(List<GraphObject> objects) {
+        for (GraphObject object : objects) {
+            add(object);
+        }
+    }
+
+    public void addAll(DataSet dataSet) {
+        for (GraphObject object : dataSet.graphObjects) {
+            add(object);
+        }
+    }
+
+    public void add(DataObject dataObject) {
+        switch (dataObject.getType()) {
+            case OVAL ->
+                    dataSet.graphOvals.add(new GraphOval((Oval) dataObject, String.format("Oval %d", dataSet.graphOvals.size()), false, false, GraphConfig.DEFAULT_OVAL_COLOUR, true, true));
+            case POLYGON ->
+                    dataSet.graphPolygons.add(new GraphPolygon((Polygon) dataObject, String.format("Polygon %d", dataSet.graphPolygons.size()), false, false, GraphConfig.DEFAULT_POLYGON_COLOUR, true, true));
+            case POINT ->
+                    dataSet.graphPoints.add(new GraphPoint((Point) dataObject, String.format("Point %d", dataSet.graphPoints.size()), false, false, GraphConfig.DEFAULT_POINT_COLOUR, true));
+            case ROW ->
+                    dataSet.graphRows.add(new GraphRow((Row) dataObject, String.format("Row %d", dataSet.graphRows.size()), false, false, GraphConfig.DEFAULT_ROW_COLOUR, true));
+        }
+    }
+
     public void remove(GraphObject object) {
-        graphObjects.remove(object);
+        dataSet.graphObjects.remove(object);
         switch (object.getType()) {
-            case GRAPHFUNCTION -> graphFunctions.remove((GraphFunction) object);
-            case GRAPHMARKER -> graphMarkers.remove((GraphMarker) object);
-            case GRAPHOVAL -> graphOvals.remove((GraphOval) object);
-            case GRAPHPOINT -> graphPoints.remove((GraphPoint) object);
-            case GRAPHPOLYGON -> graphPolygons.remove((GraphPolygon) object);
-            case GRAPHROW -> graphRows.remove((GraphRow) object);
+            case GRAPHFUNCTION -> dataSet.graphFunctions.remove((GraphFunction) object);
+            case GRAPHMARKER -> dataSet.graphMarkers.remove((GraphMarker) object);
+            case GRAPHOVAL -> dataSet.graphOvals.remove((GraphOval) object);
+            case GRAPHPOINT -> dataSet.graphPoints.remove((GraphPoint) object);
+            case GRAPHPOLYGON -> dataSet.graphPolygons.remove((GraphPolygon) object);
+            case GRAPHROW -> dataSet.graphRows.remove((GraphRow) object);
         }
         for (GraphDataChangeListener listener : graphDataChangeListeners) {
             listener.onGraphDataChange(GraphDataChangeListener.ChangeType.REMOVE, object);
@@ -85,30 +103,30 @@ public class GraphDataSet {
     }
 
     public List<GraphFunction> getGraphFunctions() {
-        return graphFunctions;
+        return dataSet.graphFunctions;
     }
 
     public List<GraphMarker> getGraphMarkers() {
-        return graphMarkers;
+        return dataSet.graphMarkers;
     }
 
     public List<GraphOval> getGraphOvals() {
-        return graphOvals;
+        return dataSet.graphOvals;
     }
 
     public List<GraphPolygon> getGraphPolygons() {
-        return graphPolygons;
+        return dataSet.graphPolygons;
     }
 
     public List<GraphPoint> getGraphPoints() {
-        return graphPoints;
+        return dataSet.graphPoints;
     }
 
     public List<GraphRow> getGraphRows() {
-        return graphRows;
+        return dataSet.graphRows;
     }
 
     public List<GraphObject> getGraphObjects() {
-        return graphObjects;
+        return dataSet.graphObjects;
     }
 }

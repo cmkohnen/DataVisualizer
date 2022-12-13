@@ -30,7 +30,7 @@ public class DataDirectory {
         this.directory = new File(Paths.get("").toAbsolutePath().toString(), "DataVisualizer");
         if (!directory.exists()) {
             if (!directory.mkdir()) {
-                throw new IOException("Could not create DataVisualizer directory");
+                throw new IOException(String.format("Could not create directory %s", directory.getAbsolutePath()));
             }
         }
     }

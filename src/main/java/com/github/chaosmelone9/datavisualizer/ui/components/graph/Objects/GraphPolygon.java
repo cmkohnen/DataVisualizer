@@ -27,7 +27,7 @@ public class GraphPolygon extends GraphObject {
     public Polygon polygon;
     public boolean filled;
 
-    protected GraphPolygon(
+    public GraphPolygon(
             Polygon polygon,
             String name,
             boolean allocateToSecondXAxis,

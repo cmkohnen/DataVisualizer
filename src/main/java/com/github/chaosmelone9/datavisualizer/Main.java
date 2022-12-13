@@ -66,7 +66,7 @@ public class Main {
             try {
                 // UIManager.setLookAndFeel("UIManager.getSystemLookAndFeelClassName()");
                 this.dataDirectory.initDirectory();
-                this.config = Config.load(new File(dataDirectory.getDirectory(), "config.yml"));
+                this.config = new Config();
                 this.logger = config.getLogger();
                 initGUI();
             } catch (Exception e) {
@@ -88,5 +88,9 @@ public class Main {
         if (args[0].equals("--about")) {
             logger.echo(fetcher.fetchTextFromFile("about.txt"));
         }
+    }
+
+    public DataDirectory getDataDirectory() {
+        return dataDirectory;
     }
 }

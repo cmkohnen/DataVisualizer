@@ -18,11 +18,16 @@
  */
 package com.github.chaosmelone9.datavisualizer.ui.windows;
 
+import com.github.chaosmelone9.datavisualizer.CustomGSON;
 import com.github.chaosmelone9.datavisualizer.Main;
+import com.github.chaosmelone9.datavisualizer.dataStorage.DataDirectory;
+import com.github.chaosmelone9.datavisualizer.dataStorage.FileInteractor;
+import com.github.chaosmelone9.datavisualizer.dataStorage.JSONConverter;
 import com.github.chaosmelone9.datavisualizer.datasets.Oval;
 import com.github.chaosmelone9.datavisualizer.datasets.Point;
 import com.github.chaosmelone9.datavisualizer.datasets.Row;
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
+import com.github.chaosmelone9.datavisualizer.ui.GraphData.DataSet;
 import com.github.chaosmelone9.datavisualizer.ui.GraphData.GraphDataSet;
 import com.github.chaosmelone9.datavisualizer.ui.components.contentpane.ContentPane;
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Objects.*;
@@ -33,6 +38,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +58,7 @@ public class MainWindow extends JFrame {
     private final List<PopupWindow> popupWindows = new ArrayList<>();
     public int dividerLocation = 200;
 
-    public MainWindow(Main instance) throws IOException {
+    public MainWindow(Main instance) throws Exception {
         super();
         this.instance = instance;
         this.graphDataSet = new GraphDataSet();
@@ -87,27 +93,6 @@ public class MainWindow extends JFrame {
                 e.getWindow().dispose();
             }
         });
-
-        Map<Double, Double> points1 = new HashMap<>();
-        points1.put(1.0, 2.0);
-        points1.put(2.0, 4.0);
-        points1.put(3.0, 4.5);
-        points1.put(4.0, 5.25);
-        points1.put(5.0, 6.0);
-
-        Map<Double, Double> points2 = new HashMap<>();
-        points2.put(1.0, 3.0);
-        points2.put(2.0, 5.0);
-        points2.put(3.0, 7.5);
-        points2.put(4.0, 9.25);
-        points2.put(5.0, 8.0);
-
-        graphDataSet.add(new GraphRow(
-                new Row(points1),
-                "Test row", false, false, Adwaita.RED1, true));
-        graphDataSet.add(new GraphRow(
-                new Row(points2),
-                "Test row", false, false, Adwaita.BLUE1, true));
     }
 
     public Main getInstance() {

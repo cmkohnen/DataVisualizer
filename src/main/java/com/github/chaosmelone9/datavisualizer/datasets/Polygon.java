@@ -18,10 +18,11 @@
  */
 package com.github.chaosmelone9.datavisualizer.datasets;
 
-public class Polygon {
+public class Polygon extends DataObject {
     public Point[] points;
 
     public Polygon(Point[] points) {
+        this.type = Type.POLYGON;
         this.points = points;
     }
 }

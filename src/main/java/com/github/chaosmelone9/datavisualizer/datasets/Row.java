@@ -20,10 +20,11 @@ package com.github.chaosmelone9.datavisualizer.datasets;
 
 import java.util.Map;
 
-public class Row {
+public class Row extends DataObject {
     public Map<Double, Double> points;
 
     public Row(Map<Double, Double> points) {
+        this.type = Type.ROW;
         this.points = points;
     }
 }

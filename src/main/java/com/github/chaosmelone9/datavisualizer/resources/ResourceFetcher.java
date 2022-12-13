@@ -18,6 +18,7 @@
  */
 package com.github.chaosmelone9.datavisualizer.resources;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 

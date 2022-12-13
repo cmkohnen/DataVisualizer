@@ -18,12 +18,13 @@
  */
 package com.github.chaosmelone9.datavisualizer.datasets;
 
-public class Oval {
+public class Oval extends DataObject {
     public Point center;
     public int xHeight;
     public int yHeight;
 
     public Oval(Point center, int xHeight, int yHeight) {
+        this.type = Type.OVAL;
         this.center = center;
         this.xHeight = xHeight;
         this.yHeight = yHeight;

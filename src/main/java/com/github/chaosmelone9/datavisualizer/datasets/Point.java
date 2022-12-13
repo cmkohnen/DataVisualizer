@@ -18,11 +18,12 @@
  */
 package com.github.chaosmelone9.datavisualizer.datasets;
 
-public class Point {
+public class Point extends DataObject {
     public double x;
     public double y;
 
     public Point(double x, double y) {
+        this.type = Type.POINT;
         this.x = x;
         this.y = y;
     }

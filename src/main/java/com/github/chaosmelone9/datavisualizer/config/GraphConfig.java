@@ -18,6 +18,7 @@
 */
 package com.github.chaosmelone9.datavisualizer.config;
 
+import com.github.chaosmelone9.datavisualizer.CustomGSON;
 import com.github.chaosmelone9.datavisualizer.ui.Adwaita;
 import com.github.chaosmelone9.datavisualizer.ui.components.graph.Graph;
 import com.google.gson.Gson;
@@ -84,17 +85,10 @@ public class GraphConfig {
 
     public static final double DEFAULT_ZOOM_FACTOR = 0.1;
 
-    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Color.class, new TypeAdapter<Color>() {
-        @Override
-        public void write(JsonWriter jsonWriter, Color color) throws IOException {
-            jsonWriter.value(String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue()));
-        }
-
-        @Override
-        public Color read(JsonReader jsonReader) throws IOException {
-            return Color.decode(jsonReader.nextString());
-        }
-    }).setPrettyPrinting().create();
+    public static final Color DEFAULT_OVAL_COLOUR = Adwaita.BLUE5;
+    public static final Color DEFAULT_POINT_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_ROW_COLOUR = Adwaita.DARK5;
+    public static final Color DEFAULT_POLYGON_COLOUR = Adwaita.DARK5;
 
     public static String readJSONFromGraph(Graph graph) throws ClassCastException {
         AbstractGraph abstractGraph = new AbstractGraph();
@@ -129,11 +123,11 @@ public class GraphConfig {
         abstractGraph.indicatorColour = graph.getIndicatorColour();
         abstractGraph.uiColour = graph.getUiColour();
         abstractGraph.uiBackgroundColour = graph.getUiBackgroundColour();
-        return GSON.toJson(abstractGraph);
+        return CustomGSON.GSON.toJson(abstractGraph);
     }
 
     public static void applyJSONToGraph(String object, Graph graph) throws ClassCastException {
-        AbstractGraph abstractGraph = GSON.fromJson(object, AbstractGraph.class);
+        AbstractGraph abstractGraph = CustomGSON.GSON.fromJson(object, AbstractGraph.class);
         graph.setTitle(abstractGraph.title);
         graph.setMinimumSize(abstractGraph.minimumSize);
         graph.setPadding(abstractGraph.padding);

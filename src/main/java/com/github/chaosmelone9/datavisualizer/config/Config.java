@@ -19,20 +19,18 @@
 package com.github.chaosmelone9.datavisualizer.config;
 
 import com.github.chaosmelone9.datavisualizer.Logger;
+import com.github.chaosmelone9.datavisualizer.dataStorage.DataDirectory;
+import com.github.chaosmelone9.datavisualizer.dataStorage.FileInteractor;
+import com.github.chaosmelone9.datavisualizer.dataStorage.JSONConverter;
 
 import java.io.File;
 
 public class Config {
     public Config() {}
 
-    public static Config init() {
+    public static Config init(DataDirectory dataDirectory) throws Exception {
         // TODO check for existing config or write one to location. Also check for args later
-        return load(new File(""));
-    }
-
-    public static Config load(File configFile) {
-        // TODO make config actually load
-        return new Config();
+        return JSONConverter.convertConfigFromJSON(FileInteractor.getStringFromFile(new File(dataDirectory.getDirectory(), "config.json")));
     }
 
     public Logger getLogger() {
